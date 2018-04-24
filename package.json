@@ -1,0 +1,35 @@
+{
+  "name": "@duagentur/react-native-zoomable-view",
+  "version": "1.0.0",
+  "description": "A view component for react-native with pinch to zoom, tap to move and double tap to zoom capability.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DuAgentur/react-native-zoomable-view.git"
+  },
+  "keywords": [
+    "react-native",
+    "react-component",
+    "ios",
+    "android",
+    "pinch-to-zoom",
+    "pinch",
+    "mobile",
+    "native",
+    "component",
+    "view",
+    "zoom",
+    "zoomable",
+    "double",
+    "tap"
+  ],
+  "author": "Simon Auer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DuAgentur/react-native-zoomable-view/issues"
+  },
+  "homepage": "https://github.com/DuAgentur/react-native-zoomable-view#readme"
+}
