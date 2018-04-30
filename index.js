@@ -30,7 +30,7 @@ class PinchZoomView extends Component {
       onPanResponderGrant: this._handlePanResponderGrant,
       onPanResponderMove: this._handlePanResponderMove,
       onPanResponderRelease: this._handlePanResponderEnd,
-      onPanResponderTerminationRequest: evt => true,
+      onPanResponderTerminationRequest: evt => false,
       onShouldBlockNativeResponder: evt => false,
     });
   }
@@ -128,12 +128,14 @@ class PinchZoomView extends Component {
   _getBoundOffsetValue(offsetValue: number, containerSize: number, elementSize: number, zoomLevel: number, forceNumericReturn = false) {
     const zoomLevelOffsetValue = (zoomLevel * offsetValue);
 
-    // calculate distance to start and end borders
-    const startBorder = (-(elementSize / 2) + (containerSize / 2));
-    const endBorder = (containerSize - (startBorder + elementSize)) / zoomLevel;
+    const containerToScaledElementRatioSub = 1 - (containerSize / elementSize);
+    const halfLengthPlusScaledHalf = 0.5 + (0.5 / zoomLevel);
+    const startBorder = containerSize * containerToScaledElementRatioSub * halfLengthPlusScaledHalf;
+    const endBorder = (containerSize + startBorder - containerSize) * -1;
 
-    const distanceToStart = (zoomLevelOffsetValue + startBorder);
-    const distanceToEnd = (containerSize - (distanceToStart + elementSize));
+    // calculate distance to start and end borders
+    const distanceToStart = (offsetValue - startBorder);
+    const distanceToEnd = (offsetValue + startBorder) * -1;
 
     // if both sides (before and after the element) have a positive distance
     // => (our zoomed content is smaller than the frame)
@@ -146,7 +148,7 @@ class PinchZoomView extends Component {
     // => (one side is outside of the borders)
     // => find out which one it is and make sure it is 0
     if (distanceToStart > 0) {
-      return -(containerSize - (startBorder + elementSize)) / zoomLevel;
+      return startBorder;
     }
 
     // if there is distance to the end border
@@ -400,7 +402,7 @@ class PinchZoomView extends Component {
         onLayout={this._getBoxDimensions}
       >
         <View
-          style={[styles.container, this.props.style, {
+          style={[styles.wrapper, this.props.style, {
             transform: [
               { scale: this.state.zoomLevel },
               { scale: this.state.zoomLevel },
@@ -440,6 +442,7 @@ PinchZoomView.defaultProps = {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
+    width: '100%',
     justifyContent: 'center',
   },
   container: {
@@ -451,3 +454,4 @@ const styles = StyleSheet.create({
 });
 
 export default PinchZoomView;
+
