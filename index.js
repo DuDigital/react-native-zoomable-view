@@ -6,7 +6,7 @@ import {
   PanResponder,
 } from 'react-native';
 
-class PinchZoomView extends Component {
+class ReactNativeZoomableView extends Component {
   constructor(props) {
     super(props);
 
@@ -418,7 +418,7 @@ class PinchZoomView extends Component {
   }
 }
 
-PinchZoomView.propTypes = {
+ReactNativeZoomableView.propTypes = {
   ...View.propTypes,
   zoomEnabled: PropTypes.bool,
   initialZoom: PropTypes.number,
@@ -429,7 +429,7 @@ PinchZoomView.propTypes = {
   zoomStep: PropTypes.number, // how much zoom should be applied on double tap
 };
 
-PinchZoomView.defaultProps = {
+ReactNativeZoomableView.defaultProps = {
   zoomEnabled: true,
   initialZoom: 1,
   maxZoom: null,
@@ -453,5 +453,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PinchZoomView;
-
+export default ReactNativeZoomableView;
