@@ -1,6 +1,6 @@
 {
   "name": "@duagentur/react-native-zoomable-view",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A view component for react-native with pinch to zoom, tap to move and double tap to zoom capability.",
   "main": "index.js",
   "scripts": {
