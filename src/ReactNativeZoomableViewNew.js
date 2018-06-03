@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
+  ScrollView,
   View,
   StyleSheet,
   PanResponder,
@@ -50,11 +51,10 @@ class ReactNativeZoomableView extends Component {
    * @returns {{}}
    * @private
    */
-  _getZoomableViewEventObject(overwriteObj = {}) {
+  _getZoomableViewEventObject() {
     return {
       ...this.state,
       ...this.contextState,
-      ...overwriteObj,
     };
   }
 
@@ -154,8 +154,8 @@ class ReactNativeZoomableView extends Component {
     }
 
     if (this.gestureType === 'pinch') {
-      if (this.props.onZoomEnd) {
-        this.props.onZoomEnd(e, gestureState, this._getZoomableViewEventObject());
+      if (this.props.onPinchEnd) {
+        this.props.onPinchEnd(e, gestureState, this._getZoomableViewEventObject());
       }
     } else if (this.gestureType === 'shift') {
       if (this.props.onShiftingEnd) {
@@ -313,8 +313,8 @@ class ReactNativeZoomableView extends Component {
     let dy = Math.abs(e.nativeEvent.touches[0].pageY - e.nativeEvent.touches[1].pageY);
     let distant = Math.sqrt(dx * dx + dy * dy);
 
-    if (this.props.onZoomBefore) {
-      if (this.props.onZoomBefore(e, gestureState, this._getZoomableViewEventObject())) {
+    if (this.props.onPinchMovementBefore) {
+      if (this.props.onPinchMovementBefore(e, gestureState, this._getZoomableViewEventObject())) {
         return false;
       }
     }
@@ -338,8 +338,8 @@ class ReactNativeZoomableView extends Component {
     }, null);
 
     this.setState(changeStateObj, () => {
-      if (this.props.onZoomAfter) {
-        this.props.onZoomAfter(e, gestureState, this._getZoomableViewEventObject());
+      if (this.props.onPinchMovementAfter) {
+        this.props.onPinchMovementAfter(e, gestureState, this._getZoomableViewEventObject());
       }
     });
   };
@@ -358,6 +358,7 @@ class ReactNativeZoomableView extends Component {
    * @private
    */
   _handleMovement = (e, gestureState) => {
+    return;
     if (this.state.lastMovePinch) {
       gestureState.dx = 0;
       gestureState.dy = 0;
@@ -415,7 +416,7 @@ class ReactNativeZoomableView extends Component {
    *
    * @private
    */
-  _handleDoubleTap(e, gestureState) {
+  _handleDoubleTap(event, gestureState) {
     // ignore more than 2 touches
     if (gestureState.numberActiveTouches > 1) {
       return;
@@ -430,16 +431,10 @@ class ReactNativeZoomableView extends Component {
     const nextZoomStep = this._getNextZoomStep();
 
     this._zoomToLocation(
-      e.nativeEvent.locationX,
-      e.nativeEvent.locationY,
+      event.nativeEvent.locationX,
+      event.nativeEvent.locationY,
       nextZoomStep,
     );
-
-    if (this.props.onZoomEnd) {
-      this.props.onZoomEnd(e, gestureState, this._getZoomableViewEventObject({
-        zoomLevel: nextZoomStep,
-      }));
-    }
   }
 
 
@@ -517,24 +512,28 @@ class ReactNativeZoomableView extends Component {
 
   render() {
     return (
-      <View
-        style={styles.container}
-        {...this.gestureHandlers.panHandlers}
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ flex: 1 }}
         onLayout={this._getBoxDimensions}
       >
         <View
-          style={[styles.wrapper, this.props.style, {
-            transform: [
-              { scale: this.state.zoomLevel },
-              { scale: this.state.zoomLevel },
-              { translateX: this.state.offsetX },
-              { translateY: this.state.offsetY },
-            ],
-          }]}
+          style={styles.container}
         >
-          {this.props.children}
+          <View
+            style={[styles.wrapper, this.props.style, {
+              transform: [
+                { scale: this.state.zoomLevel },
+                { scale: this.state.zoomLevel },
+                { translateX: this.state.offsetX },
+                { translateY: this.state.offsetY },
+              ],
+            }]}
+          >
+            {this.props.children}
+          </View>
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }
@@ -548,12 +547,10 @@ ReactNativeZoomableView.propTypes = {
   doubleTapDelay: PropTypes.number, // how much delay will still be recognized as double press
   bindToBorders: PropTypes.bool, // makes sure that the object stays within box borders
   zoomStep: PropTypes.number, // how much zoom should be applied on double tap
-  onZoomBefore: PropTypes.func, // triggered before pinch movement
-  onZoomAfter: PropTypes.func, // triggered after pinch movement
-  onZoomEnd: PropTypes.func, // triggered after pinch movement ended
+  onPinchMovementBefore: PropTypes.func, // triggered before pinch movement
+  onPinchMovementAfter: PropTypes.func, // triggered after pinch movement
   onShiftingBefore: PropTypes.func, // triggered before shift movement
   onShiftingAfter: PropTypes.func, // triggered after shift movement
-  onShiftingEnd: PropTypes.func, // triggered after shift movement ended
 };
 
 ReactNativeZoomableView.defaultProps = {
@@ -574,9 +571,11 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    width:1000,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
+    backgroundColor: 'red',
   },
 });
 

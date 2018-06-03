@@ -14,10 +14,10 @@ export const swipeDirections = {
 class ReactNativeZoomableViewWithGestures extends React.Component {
   _onShiftingEnd = (e, gestureState, zoomableViewState) => {
     if (this.props.onShiftingEnd) {
-      this._onShiftingEnd(e, gestureState, zoomableViewState);
+      this.props.onShiftingEnd(e, gestureState, zoomableViewState);
     }
 
-    if (!this._couldCallSwipeEvent) {
+    if (!this._couldCallSwipeEvent(zoomableViewState)) {
       return;
     }
 
