@@ -152,7 +152,7 @@ class ReactNativeZoomableView extends Component {
     if (this.props.onPanResponderEnd) {
       this.props.onPanResponderEnd(e, gestureState, this._getZoomableViewEventObject());
     }
-
+    
     if (this.gestureType === 'pinch') {
       if (this.props.onZoomEnd) {
         this.props.onZoomEnd(e, gestureState, this._getZoomableViewEventObject());
@@ -293,7 +293,9 @@ class ReactNativeZoomableView extends Component {
       this._handlePinching(e, gestureState);
     }
     else if (gestureState.numberActiveTouches === 1) {
-      this.gestureType = 'shift';
+      if (this.gestureType !== 'pinch') {
+        this.gestureType = 'shift';
+      }
       this._handleMovement(e, gestureState);
     }
   };
