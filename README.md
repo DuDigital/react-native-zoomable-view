@@ -157,7 +157,7 @@ Sometimes you need to change deeper level behavior, so we prepared these panresp
 ### zoomableViewEventObject
 
 The zoomableViewEventObject object is attached to every event and represents the current state of our zoomable view.
-```json
+```
    {
       zoomLevel: number,         // current level of zooming (usually a value between minZoom and maxZoom)
       offsetX: number,           // current offset left
