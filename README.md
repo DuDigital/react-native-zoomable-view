@@ -18,6 +18,8 @@ We are happy to hear from you about bugs, issues and would also appreciate your 
 - [Events](#events)
 - [Pan Responder Hooks](#pan-responder-hooks)
 - [Example](#example)
+- [Expo Snack Example](#expo-snack-example)
+- [Example Repo](#example repo)
 
 ### Installation
 
@@ -109,6 +111,15 @@ export default class App extends React.Component {
   }
 }
 ```
+
+### Expo Snack Example
+
+https://snack.expo.io/SkltQtr8Q
+
+### Example Repo
+
+https://github.com/DuDigital/react-native-zoomable-view-example
+
 
 ### Props
 
