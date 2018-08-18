@@ -33,8 +33,6 @@
   },
   "homepage": "https://github.com/DuDigital/react-native-zoomable-view#readme",
   "dependencies": {
-    "react": "^16.0.0",
-    "react-native": "^0.53.0",
-    "prop-types": "^15.0.0"
+    "prop-types": "^15.5.10"
   }
 }
