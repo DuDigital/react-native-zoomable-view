@@ -25,7 +25,7 @@ We are happy to hear from you about bugs, issues and would also appreciate your 
 
 or 
 
-`$ yarn add @dudigital/react-native-zoomable-view --save`
+`$ yarn add @dudigital/react-native-zoomable-view`
 
 ### Basic Usage
 
