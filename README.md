@@ -19,7 +19,7 @@ We are happy to hear from you about bugs, issues and would also appreciate your 
 - [Pan Responder Hooks](#pan-responder-hooks)
 - [Example](#example)
 - [Expo Snack Example](#expo-snack-example)
-- [Example Repo](#example repo)
+- [Example Repo](#example-repo)
 
 ### Installation
 
