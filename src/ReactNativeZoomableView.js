@@ -12,7 +12,7 @@ class ReactNativeZoomableView extends Component {
 
     this.state = {
       zoomLevel: props.initialZoom,
-      lastScale: 1,
+      lastZoomLevel: 1,
       offsetX: 0,
       offsetY: 0,
       lastX: 0,
@@ -144,7 +144,7 @@ class ReactNativeZoomableView extends Component {
     this.setState({
       lastX: this.state.offsetX,
       lastY: this.state.offsetY,
-      lastScale: this.state.zoomLevel,
+      lastZoomLevel: this.state.zoomLevel,
     });
 
     this.lastPressHolder = null;
@@ -321,9 +321,8 @@ class ReactNativeZoomableView extends Component {
       }
     }
 
-    // let zoomLevel = (distant / (zoomLevelFactor / 1500)) * this.state.lastScale;
-    let zoomLevel = distant / this.distance * this.state.lastScale;
-    if (zoomLevel > maxZoom) {
+    let zoomLevel = distant / this.distance * this.state.lastZoomLevel;
+    if (maxZoom !== null && zoomLevel > maxZoom) {
       zoomLevel = maxZoom;
     }
 
@@ -346,11 +345,6 @@ class ReactNativeZoomableView extends Component {
     });
   };
 
-  _getSwipeDistanceAndDirection = (e, gestureState) => {
-
-    const { vx, dy } = gestureState;
-  }
-
   /**
    * Handles movement by tap and move
    *
@@ -364,6 +358,7 @@ class ReactNativeZoomableView extends Component {
       gestureState.dx = 0;
       gestureState.dy = 0;
     }
+
     let offsetX = this.state.lastX + gestureState.dx / this.state.zoomLevel;
     let offsetY = this.state.lastY + gestureState.dy / this.state.zoomLevel;
 
@@ -419,7 +414,7 @@ class ReactNativeZoomableView extends Component {
    */
   _handleDoubleTap(e, gestureState) {
     // ignore more than 2 touches
-    if (gestureState.numberActiveTouches > 1) {
+    if (gestureState.numberActiveTouches > 1 || !this.props.zoomEnabled) {
       return;
     }
 
@@ -437,7 +432,6 @@ class ReactNativeZoomableView extends Component {
     );
 
     if (this.props.onDoubleTapAfter) {
-    console.log('lalalala', nextZoomStep)
       this.props.onDoubleTapAfter(e, gestureState, this._getZoomableViewEventObject({
         zoomLevel: nextZoomStep,
       }));
@@ -461,8 +455,7 @@ class ReactNativeZoomableView extends Component {
     }
 
     let nextZoomStep = zoomLevel + (zoomLevel * zoomStep);
-
-    if (nextZoomStep > maxZoom) {
+    if (maxZoom !== null && nextZoomStep > maxZoom) {
       return maxZoom;
     }
 
@@ -511,7 +504,7 @@ class ReactNativeZoomableView extends Component {
       zoomLevel: newZoomLevel,
       offsetX: offsetAdjustedPosition.x,
       offsetY: offsetAdjustedPosition.y,
-      lastScale: newZoomLevel,
+      lastZoomLevel: newZoomLevel,
       lastX: offsetAdjustedPosition.x,
       lastY: offsetAdjustedPosition.y,
     }, bindToBorders);
@@ -564,13 +557,18 @@ ReactNativeZoomableView.propTypes = {
   onShiftingBefore: PropTypes.func, // triggered before shift movement
   onShiftingAfter: PropTypes.func, // triggered after shift movement
   onShiftingEnd: PropTypes.func, // triggered after shift movement ended
+  onStartShouldSetPanResponder: PropTypes.func,
+  onMoveShouldSetPanResponder: PropTypes.func,
+  onPanResponderGrant: PropTypes.func,
+  onPanResponderEnd: PropTypes.func,
+  onPanResponderMove: PropTypes.func,
 };
 
 ReactNativeZoomableView.defaultProps = {
   zoomEnabled: true,
   initialZoom: 1,
-  maxZoom: null,
-  minZoom: null,
+  maxZoom: 1.5,
+  minZoom: 0.5,
   doubleTapDelay: 300,
   bindToBorders: true,
   zoomStep: 0.5,
