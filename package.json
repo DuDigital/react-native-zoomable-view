@@ -31,5 +31,10 @@
   "bugs": {
     "url": "https://github.com/DuAgentur/react-native-zoomable-view/issues"
   },
-  "homepage": "https://github.com/DuAgentur/react-native-zoomable-view#readme"
+  "homepage": "https://github.com/DuAgentur/react-native-zoomable-view#readme",
+  "dependencies": {
+    "react": "^16.0.0",
+    "react-native": "^0.53.0",
+    "prop-types": "^15.0.0"
+  }
 }
