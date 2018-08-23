@@ -38,7 +38,6 @@ class ReactNativeZoomableGestures extends React.Component {
     this.swipeConfig = Object.assign(swipeConfig, props.config);
 
     const parent = ReactNativeZoomableView.prototype.parentHandleMoveShouldSetPanResponder.call(this);
-    console.log('MAMAMAMAA: ', parent);
   }
 
   componentWillReceiveProps(props) {
