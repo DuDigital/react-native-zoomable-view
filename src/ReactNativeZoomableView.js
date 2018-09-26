@@ -45,6 +45,12 @@ class ReactNativeZoomableView extends Component {
   }
 
   /**
+   * Current position of zoom center
+   * @type { x: number, y: number }
+   */
+  pinchZoomPosition = null;
+
+  /**
    * Returns additional information about components current state for external event hooks
    *
    * @returns {{}}
@@ -155,6 +161,7 @@ class ReactNativeZoomableView extends Component {
 
     if (this.gestureType === 'pinch') {
       if (this.props.onZoomEnd) {
+        this.pinchZoomPosition = null;
         this.props.onZoomEnd(e, gestureState, this._getZoomableViewEventObject());
       }
     } else if (this.gestureType === 'shift') {
@@ -309,7 +316,7 @@ class ReactNativeZoomableView extends Component {
    * @private
    */
   _handlePinching = (e, gestureState) => {
-    const { maxZoom, minZoom } = this.props;
+    const { maxZoom, minZoom, zoomCenteringLevelDistance, pinchToZoomInSensitivity, pinchToZoomOutSensitivity } = this.props;
 
     let dx = Math.abs(e.nativeEvent.touches[0].pageX - e.nativeEvent.touches[1].pageX);
     let dy = Math.abs(e.nativeEvent.touches[0].pageY - e.nativeEvent.touches[1].pageY);
@@ -321,7 +328,12 @@ class ReactNativeZoomableView extends Component {
       }
     }
 
-    let zoomLevel = distant / this.distance * this.state.lastZoomLevel;
+    // define the new zoom level and take zoom level sensitivity into consideration
+    const zoomChangeFromStartOfPinch = (distant / this.distance);
+    const pinchToZoomSensitivity = (zoomChangeFromStartOfPinch < 1) ? pinchToZoomOutSensitivity : pinchToZoomInSensitivity;
+    let zoomLevel = ((zoomChangeFromStartOfPinch * this.state.lastZoomLevel) + this.state.lastZoomLevel * pinchToZoomSensitivity) / (pinchToZoomSensitivity + 1);
+
+    // make sure max and min zoom levels are respected
     if (maxZoom !== null && zoomLevel > maxZoom) {
       zoomLevel = maxZoom;
     }
@@ -330,12 +342,26 @@ class ReactNativeZoomableView extends Component {
       zoomLevel = minZoom;
     }
 
+    // only use the first position we get by pinching, or the screen will "wobble" during zoom action
+    if (this.pinchZoomPosition === null) {
+	    const pinchToZoomCenterX = Math.min(e.nativeEvent.touches[ 0 ].pageX, e.nativeEvent.touches[ 1 ].pageX) + ( dx / 2 );
+	    const pinchToZoomCenterY = Math.min(e.nativeEvent.touches[ 0 ].pageY, e.nativeEvent.touches[ 1 ].pageY) + ( dy / 2 );
+
+	    this.pinchZoomPosition = this._getOffsetAdjustedPosition(pinchToZoomCenterX, pinchToZoomCenterY);
+    }
+
+    // make sure we shift the layer slowly during our zoom movement
+    const zoomStage = Math.abs(zoomLevel - this.state.lastZoomLevel) / zoomCenteringLevelDistance;
+
+    const ratioOffsetX = this.state.lastX + zoomStage * this.pinchZoomPosition.x;
+    const ratioOffsetY = this.state.lastY + zoomStage * this.pinchZoomPosition.y;
+
     // define the changeObject and make sure the offset values are bound to view
     const changeStateObj = this._bindOffsetValuesToBorders({
       zoomLevel,
       lastMovePinch: true,
-      offsetX: this.state.lastX,
-      offsetY: this.state.lastY,
+      offsetX: ratioOffsetX,
+      offsetY: ratioOffsetY,
     }, null);
 
     this.setState(changeStateObj, () => {
@@ -354,13 +380,15 @@ class ReactNativeZoomableView extends Component {
    * @private
    */
   _handleMovement = (e, gestureState) => {
-    if (this.state.lastMovePinch) {
-      gestureState.dx = 0;
-      gestureState.dy = 0;
+    const { movementSensibility } = this.props;
+
+    // make sure not to accidentally move after pinch to zoom
+    if (this.pinchZoomPosition) {
+      return;
     }
 
-    let offsetX = this.state.lastX + gestureState.dx / this.state.zoomLevel;
-    let offsetY = this.state.lastY + gestureState.dy / this.state.zoomLevel;
+    let offsetX = this.state.lastX + gestureState.dx / this.state.zoomLevel / movementSensibility;
+    let offsetY = this.state.lastY + gestureState.dy / this.state.zoomLevel / movementSensibility;
 
     if (this.props.onShiftingBefore) {
       if (this.props.onShiftingBefore(e, gestureState, this._getZoomableViewEventObject())) {
@@ -546,6 +574,10 @@ ReactNativeZoomableView.propTypes = {
   initialZoom: PropTypes.number,
   maxZoom: PropTypes.number,
   minZoom: PropTypes.number,
+  pinchToZoomInSensitivity: PropTypes.number, // the level of resistance (sensitivity) to zoom in (0 - 10) - higher is less sensitive - default: 3
+  pinchToZoomOutSensitivity: PropTypes.number, // the level of resistance (sensitivity) to zoom out (0 - 10) - higher is less sensitive default: 1
+  zoomCenteringLevelDistance: PropTypes.number, // the (zoom level - 0 - maxZoom) distance for pinch to zoom actions until they are shifted on new pinch to zoom center - higher means it centeres slower - default 0.5
+  movementSensibility: PropTypes.number, // how resistant should shifting the view around be? (0.5 - 5) - higher is less sensitive - default: 1.9
   doubleTapDelay: PropTypes.number, // how much delay will still be recognized as double press
   bindToBorders: PropTypes.bool, // makes sure that the object stays within box borders
   zoomStep: PropTypes.number, // how much zoom should be applied on double tap
@@ -569,6 +601,10 @@ ReactNativeZoomableView.defaultProps = {
   initialZoom: 1,
   maxZoom: 1.5,
   minZoom: 0.5,
+  pinchToZoomInSensitivity: 3,
+  pinchToZoomOutSensitivity: 1,
+  zoomCenteringLevelDistance: 0.5,
+  movementSensibility: 1.9,
   doubleTapDelay: 300,
   bindToBorders: true,
   zoomStep: 0.5,
