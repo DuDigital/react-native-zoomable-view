@@ -136,7 +136,10 @@ These options can be used to limit and change the zoom behavior.
 | doubleTapDelay | number  | How much delay will still be recognized as double press (ms) | 300 |
 | bindToBorders | boolean | If true, it makes sure the object stays within box borders | true |
 | zoomStep | number | How much zoom should be applied on double tap | 0.5 |
-
+| pinchToZoomInSensitivity | number | the level of resistance (sensitivity) to zoom in (0 - 10) - higher is less sensitive | 3 |
+| pinchToZoomOutSensitivity | number | the level of resistance (sensitivity) to zoom out (0 - 10) - higher is less sensitive | 1 |
+| zoomCenteringLevelDistance | number | the (zoom level - 0 - maxZoom) distance for pinch to zoom actions until they are shifted on new pinch to zoom center - higher means it centeres slower | 0.5 |
+| movementSensibility | number | how resistant should shifting the view around be? (0.5 - 5) - higher is less sensitive | 1.9 |
 
 #### Events
 
