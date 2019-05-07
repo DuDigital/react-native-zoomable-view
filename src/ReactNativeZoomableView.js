@@ -785,7 +785,7 @@ ReactNativeZoomableView.defaultProps = {
   bindToBorders: true,
   zoomStep: 0.5,
   onLongPress: null,
-  longPressDuration: 1000
+  longPressDuration: 700
 };
 
 const styles = StyleSheet.create({
