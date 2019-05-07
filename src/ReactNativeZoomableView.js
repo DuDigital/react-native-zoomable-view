@@ -26,6 +26,8 @@ class ReactNativeZoomableView extends Component {
       distanceTop: 0,
       distanceBottom: 0
     };
+
+    this.longPressTimeout = null;
   }
 
   componentWillMount() {
@@ -145,7 +147,14 @@ class ReactNativeZoomableView extends Component {
       let distant = Math.sqrt(dx * dx + dy * dy);
       this.distance = distant;
     }
-
+    if (this.props.onLongPress) {
+      this.longPressTimeout = setTimeout(() => {
+        if (this.props.onLongPress) {
+          this.props.onLongPress();
+          this.longPressTimeout = null;
+        }
+      }, this.props.longPressDuration);
+    }
     if (this.props.onPanResponderGrant) {
       this.props.onPanResponderGrant(
         e,
@@ -169,7 +178,9 @@ class ReactNativeZoomableView extends Component {
       lastY: this.state.offsetY,
       lastZoomLevel: this.state.zoomLevel
     });
-
+    if (this.longPressTimeout) {
+      clearTimeout(this.longPressTimeout);      
+    }
     this.lastPressHolder = null;
 
     if (this.props.onPanResponderEnd) {
@@ -358,9 +369,17 @@ class ReactNativeZoomableView extends Component {
     }
 
     if (gestureState.numberActiveTouches === 2) {
+      if (this.longPressTimeout) {
+        clearTimeout(this.longPressTimeout);
+        this.longPressTimeout = null;
+      }
       this.gestureType = "pinch";
       this._handlePinching(e, gestureState);
     } else if (gestureState.numberActiveTouches === 1) {
+      if (this.longPressTimeout && Math.abs(gestureState.dx) > 3 || Math.abs(gestureState.dy) > 3)  {
+        clearTimeout(this.longPressTimeout);
+        this.longPressTimeout = null;
+      }
       if (this.gestureType !== "pinch") {
         this.gestureType = "shift";
       }
@@ -743,6 +762,8 @@ ReactNativeZoomableView.propTypes = {
   onPanResponderGrant: PropTypes.func,
   onPanResponderEnd: PropTypes.func,
   onPanResponderMove: PropTypes.func
+  onLongPress: PropTypes.func
+  longPressDuration: PropTypes.number
 };
 
 ReactNativeZoomableView.defaultProps = {
@@ -758,7 +779,9 @@ ReactNativeZoomableView.defaultProps = {
   movementSensibility: 1.9,
   doubleTapDelay: 300,
   bindToBorders: true,
-  zoomStep: 0.5
+  zoomStep: 0.5,
+  onLongPress: null,
+  longPressDuration: 700
 };
 
 const styles = StyleSheet.create({
