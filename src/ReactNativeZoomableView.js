@@ -368,7 +368,6 @@ class ReactNativeZoomableView extends Component {
         return false;
       }
     }
-
     if (gestureState.numberActiveTouches === 2) {
       if (this.longPressTimeout) {
         clearTimeout(this.longPressTimeout);
@@ -379,7 +378,7 @@ class ReactNativeZoomableView extends Component {
     } else if (gestureState.numberActiveTouches === 1) {
       if (
         this.longPressTimeout &&
-        (Math.abs(gestureState.dx) > 5 || Math.abs(gestureState.dy)) > 5
+        (Math.abs(gestureState.dx) > 5 || Math.abs(gestureState.dy) > 5)
       ) {
         clearTimeout(this.longPressTimeout);
         this.longPressTimeout = null;
