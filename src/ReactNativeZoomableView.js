@@ -99,7 +99,7 @@ class ReactNativeZoomableView extends Component {
       );
     }
 
-    return false;
+    return this.props.zoomEnabled;
   };
 
   /**
@@ -179,7 +179,8 @@ class ReactNativeZoomableView extends Component {
       lastZoomLevel: this.state.zoomLevel
     });
     if (this.longPressTimeout) {
-      clearTimeout(this.longPressTimeout);      
+      clearTimeout(this.longPressTimeout);
+      this.longPressTimeout = null;
     }
     this.lastPressHolder = null;
 
@@ -376,7 +377,10 @@ class ReactNativeZoomableView extends Component {
       this.gestureType = "pinch";
       this._handlePinching(e, gestureState);
     } else if (gestureState.numberActiveTouches === 1) {
-      if (this.longPressTimeout && Math.abs(gestureState.dx) > 3 || Math.abs(gestureState.dy) > 3)  {
+      if (
+        this.longPressTimeout &&
+        (Math.abs(gestureState.dx) > 5 || Math.abs(gestureState.dy)) > 5
+      ) {
         clearTimeout(this.longPressTimeout);
         this.longPressTimeout = null;
       }
@@ -448,14 +452,14 @@ class ReactNativeZoomableView extends Component {
     if (this.pinchZoomPosition === null) {
       const pinchToZoomCenterX =
         Math.min(
-          e.nativeEvent.touches[0].pageX,
-          e.nativeEvent.touches[1].pageX
+          e.nativeEvent.touches[0].locationX,
+          e.nativeEvent.touches[1].locationX
         ) +
         dx / 2;
       const pinchToZoomCenterY =
         Math.min(
-          e.nativeEvent.touches[0].pageY,
-          e.nativeEvent.touches[1].pageY
+          e.nativeEvent.touches[0].locationY,
+          e.nativeEvent.touches[1].locationY
         ) +
         dy / 2;
 
@@ -761,8 +765,8 @@ ReactNativeZoomableView.propTypes = {
   onMoveShouldSetPanResponder: PropTypes.func,
   onPanResponderGrant: PropTypes.func,
   onPanResponderEnd: PropTypes.func,
-  onPanResponderMove: PropTypes.func
-  onLongPress: PropTypes.func
+  onPanResponderMove: PropTypes.func,
+  onLongPress: PropTypes.func,
   longPressDuration: PropTypes.number
 };
 
@@ -781,7 +785,7 @@ ReactNativeZoomableView.defaultProps = {
   bindToBorders: true,
   zoomStep: 0.5,
   onLongPress: null,
-  longPressDuration: 700
+  longPressDuration: 1000
 };
 
 const styles = StyleSheet.create({
