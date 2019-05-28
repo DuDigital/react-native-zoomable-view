@@ -140,6 +140,9 @@ These options can be used to limit and change the zoom behavior.
 | pinchToZoomOutSensitivity | number | the level of resistance (sensitivity) to zoom out (0 - 10) - higher is less sensitive | 1 |
 | zoomCenteringLevelDistance | number | the (zoom level - 0 - maxZoom) distance for pinch to zoom actions until they are shifted on new pinch to zoom center - higher means it centeres slower | 0.5 |
 | movementSensibility | number | how resistant should shifting the view around be? (0.5 - 5) - higher is less sensitive | 1.9 |
+| initialOffsetX | number | The horizontal offset the image should start at | 0 |
+| initialOffsetY | number | The vertical offset the image should start at | 0 |
+| longPressDuration | number | Duration in ms until a press is considered a long press | 700 |
 
 #### Events
 
@@ -155,6 +158,7 @@ These events can be used to work with data after specific events.
 | onZoomBefore | Will be called, while the user pinches the screen, but before our zoom work kicks in (so this is the place to interrupt zooming, if you need to) | event, gestureState, zoomableViewEventObject | {boolean} if this returns false, ZoomableView will not process the pinch, otherwise it will |
 | onZoomAfter | Will be called, while the user pinches the screen, but after the values have changed already | event, gestureState, zoomableViewEventObject | {boolean} if this returns false, ZoomableView will not process the pinch, otherwise it will |
 | onZoomEnd | Will be called after pinchzooming has ended | event, gestureState, zoomableViewEventObject | {boolean} if this returns false, ZoomableView will not process the pinch, otherwise it will |
+| onLongPress | Will be called after the user pressed on the image for a while | event, gestureState | void | 
 
 #### Pan Responder Hooks
 

@@ -150,7 +150,7 @@ class ReactNativeZoomableView extends Component {
     if (this.props.onLongPress) {
       this.longPressTimeout = setTimeout(() => {
         if (this.props.onLongPress) {
-          this.props.onLongPress();
+          this.props.onLongPress(e, gestureState, this._getZoomableViewEventObject());
           this.longPressTimeout = null;
         }
       }, this.props.longPressDuration);
