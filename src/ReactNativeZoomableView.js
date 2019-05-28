@@ -57,7 +57,7 @@ class ReactNativeZoomableView extends Component {
       });
     }
   }
-
+  
   /**
    * Current position of zoom center
    * @type { x: number, y: number }
@@ -122,7 +122,7 @@ class ReactNativeZoomableView extends Component {
    */
   _handleMoveShouldSetPanResponder = (e, gestureState) => {
     let baseComponentResult = this.props.zoomEnabled
-      && (Math.abs(gestureState.dx) > 2 || Math.abs(gestureState.dy) > 2 || gestureState.numberActiveTouches === 2);
+        && (Math.abs(gestureState.dx) > 2 || Math.abs(gestureState.dy) > 2 || gestureState.numberActiveTouches === 2);
 
     if (this.props.onMoveShouldSetPanResponder) {
       baseComponentResult = this.props.onMoveShouldSetPanResponder(e, gestureState, this._getZoomableViewEventObject(), baseComponentResult);
@@ -198,7 +198,7 @@ class ReactNativeZoomableView extends Component {
    *
    * @returns {number}
    */
-  _getBoundOffsetValue(axis: 'x' | 'y', offsetValue: number, containerSize: number, elementSize: number, zoomLevel: number) {
+  _getBoundOffsetValue(axis: 'x'|'y', offsetValue: number, containerSize: number, elementSize: number, zoomLevel: number) {
     const zoomLevelOffsetValue = (zoomLevel * offsetValue);
 
     const containerToScaledElementRatioSub = 1 - (containerSize / elementSize);
@@ -248,7 +248,7 @@ class ReactNativeZoomableView extends Component {
    * @param distanceToEnd
    * @private
    */
-  _setContextStateDistances(axis: 'x' | 'y', distanceToStart: number, distanceToEnd: number) {
+  _setContextStateDistances(axis: 'x'|'y', distanceToStart: number, distanceToEnd: number) {
     if (axis === 'x') {
       this.contextState.distanceLeft = distanceToStart;
       this.contextState.distanceRight = distanceToEnd;
@@ -275,7 +275,7 @@ class ReactNativeZoomableView extends Component {
   _bindOffsetValuesToBorders(changeObj, bindToBorders = null) {
     // if bindToBorders is disabled -> nothing do here
     if (bindToBorders === false ||
-      (bindToBorders === null && !this.props.bindToBorders)) {
+        (bindToBorders === null && !this.props.bindToBorders)) {
       return changeObj;
     }
 
@@ -358,8 +358,8 @@ class ReactNativeZoomableView extends Component {
 
     // only use the first position we get by pinching, or the screen will "wobble" during zoom action
     if (this.pinchZoomPosition === null) {
-      const pinchToZoomCenterX = Math.min(e.nativeEvent.touches[0].pageX, e.nativeEvent.touches[1].pageX) + (dx / 2);
-      const pinchToZoomCenterY = Math.min(e.nativeEvent.touches[0].pageY, e.nativeEvent.touches[1].pageY) + (dy / 2);
+      const pinchToZoomCenterX = Math.min(e.nativeEvent.touches[ 0 ].pageX, e.nativeEvent.touches[ 1 ].pageX) + ( dx / 2 );
+      const pinchToZoomCenterY = Math.min(e.nativeEvent.touches[ 0 ].pageY, e.nativeEvent.touches[ 1 ].pageY) + ( dy / 2 );
 
       this.pinchZoomPosition = this._getOffsetAdjustedPosition(pinchToZoomCenterX, pinchToZoomCenterY);
     }
@@ -467,10 +467,10 @@ class ReactNativeZoomableView extends Component {
     const nextZoomStep = this._getNextZoomStep();
 
     this._zoomToLocation(
-      e.nativeEvent.locationX,
-      e.nativeEvent.locationY,
-      nextZoomStep,
-      true
+        e.nativeEvent.locationX,
+        e.nativeEvent.locationY,
+        nextZoomStep,
+        true
     );
 
     if (this.props.onDoubleTapAfter) {
@@ -560,25 +560,25 @@ class ReactNativeZoomableView extends Component {
 
   render() {
     return (
-      <View
-        style={styles.container}
-        {...this.gestureHandlers.panHandlers}
-        onLayout={this._getBoxDimensions}
-      >
         <View
-          style={[styles.wrapper, this.props.style, {
-            transform: [
-              { scale: this.state.zoomLevel },
-              { scale: this.state.zoomLevel },
-              { translateX: this.state.offsetX },
-              { translateY: this.state.offsetY },
-            ],
-          }]}
+    style={styles.container}
+    {...this.gestureHandlers.panHandlers}
+    onLayout={this._getBoxDimensions}
         >
-          {this.props.children}
-        </View>
-      </View>
-    );
+        <View
+    style={[styles.wrapper, this.props.style, {
+      transform: [
+        { scale: this.state.zoomLevel },
+        { scale: this.state.zoomLevel },
+        { translateX: this.state.offsetX },
+        { translateY: this.state.offsetY },
+      ],
+    }]}
+  >
+    {this.props.children}
+  </View>
+    </View>
+  );
   }
 }
 
