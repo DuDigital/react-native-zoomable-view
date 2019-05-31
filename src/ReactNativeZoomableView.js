@@ -2,18 +2,24 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { View, StyleSheet, PanResponder } from "react-native";
 
+const initialState = {
+  lastZoomLevel: 1,
+  offsetX: 0,
+  offsetY: 0,
+  lastX: 0,
+  lastY: 0,
+  lastMovePinch: false
+};
+
 class ReactNativeZoomableView extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       zoomLevel: props.initialZoom,
-      lastZoomLevel: 1,
+      ...initialState,
       offsetX: props.initialOffsetX,
       offsetY: props.initialOffsetY,
-      lastX: 0,
-      lastY: 0,
-      lastMovePinch: false
     };
 
     this.distance = 150;
@@ -42,6 +48,16 @@ class ReactNativeZoomableView extends Component {
     });
   }
 
+  componentDidUpdate(prevProps) {
+    const { zoomEnabled, initialZoom } = this.props;
+    if (prevProps.zoomEnabled && !zoomEnabled) {
+      this.setState({
+        zoomLevel: initialZoom,
+        ...initialState
+      });
+    }
+  }
+  
   /**
    * Current position of zoom center
    * @type { x: number, y: number }
