@@ -19,6 +19,16 @@ class ReactNativeZoomableView extends Component {
   constructor(props) {
     super(props);
 
+    this.gestureHandlers = PanResponder.create({
+      onStartShouldSetPanResponder: this._handleStartShouldSetPanResponder,
+      onMoveShouldSetPanResponder: this._handleMoveShouldSetPanResponder,
+      onPanResponderGrant: this._handlePanResponderGrant,
+      onPanResponderMove: this._handlePanResponderMove,
+      onPanResponderRelease: this._handlePanResponderEnd,
+      onPanResponderTerminationRequest: evt => false,
+      onShouldBlockNativeResponder: evt => false,
+    });
+    
     this.state = {
       zoomLevel: props.initialZoom,
       ...initialState,
@@ -36,18 +46,6 @@ class ReactNativeZoomableView extends Component {
       distanceTop: 0,
       distanceBottom: 0,
     };
-  }
-
-  componentWillMount() {
-    this.gestureHandlers = PanResponder.create({
-      onStartShouldSetPanResponder: this._handleStartShouldSetPanResponder,
-      onMoveShouldSetPanResponder: this._handleMoveShouldSetPanResponder,
-      onPanResponderGrant: this._handlePanResponderGrant,
-      onPanResponderMove: this._handlePanResponderMove,
-      onPanResponderRelease: this._handlePanResponderEnd,
-      onPanResponderTerminationRequest: evt => false,
-      onShouldBlockNativeResponder: evt => false,
-    });
   }
 
   componentDidUpdate(prevProps) {
