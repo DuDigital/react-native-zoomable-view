@@ -199,7 +199,6 @@ The zoomableViewEventObject object is attached to every event and represents the
 * Improve documentation
 * Add examples for more complex scenarios (react-native-zoomable-view in a swiper)
 * TESTS
-* Flow/Typescript types
 
 ## Contributing
 
