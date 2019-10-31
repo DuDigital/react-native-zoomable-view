@@ -32,6 +32,7 @@
     "url": "https://github.com/DuDigital/react-native-zoomable-view/issues"
   },
   "homepage": "https://github.com/DuDigital/react-native-zoomable-view#readme",
+  "types": "typings/index.d.ts",
   "dependencies": {
     "prop-types": "^15.5.10"
   }
