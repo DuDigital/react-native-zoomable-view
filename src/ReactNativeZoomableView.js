@@ -37,6 +37,7 @@ class ReactNativeZoomableView extends Component {
     };
 
     this.distance = 150;
+	this.isDistanceSet = true;
 
     this.gestureType = null;
 
@@ -127,11 +128,7 @@ class ReactNativeZoomableView extends Component {
    * @returns {Boolean|boolean}
    */
   _handleMoveShouldSetPanResponder = (e, gestureState) => {
-    let baseComponentResult =
-            this.props.zoomEnabled &&
-            (Math.abs(gestureState.dx) > 2 ||
-                Math.abs(gestureState.dy) > 2 ||
-                gestureState.numberActiveTouches === 2);
+    let baseComponentResult = this.props.zoomEnabled;
 
     if (this.props.onMoveShouldSetPanResponder) {
       baseComponentResult = this.props.onMoveShouldSetPanResponder(
@@ -154,12 +151,15 @@ class ReactNativeZoomableView extends Component {
    * @private
    */
   _handlePanResponderGrant = (e, gestureState) => {
+	this.isDistanceSet = false;
+	  
     if (gestureState.numberActiveTouches === 2) {
       let dx = Math.abs(e.nativeEvent.touches[0].pageX - e.nativeEvent.touches[1].pageX);
       let dy = Math.abs(e.nativeEvent.touches[0].pageY - e.nativeEvent.touches[1].pageY);
 
       let distant = Math.sqrt(dx * dx + dy * dy);
       this.distance = distant;
+	  this.isDistanceSet = true;
     }
 
     if (this.props.onLongPress) {
@@ -343,6 +343,10 @@ class ReactNativeZoomableView extends Component {
         clearTimeout(this.longPressTimeout);
         this.longPressTimeout = null;
       }
+	  
+	  if (!this.isDistanceSet) {
+		this._handlePanResponderGrant(e, gestureState);
+	  }
 
       this.gestureType = 'pinch';
       this._handlePinching(e, gestureState);
