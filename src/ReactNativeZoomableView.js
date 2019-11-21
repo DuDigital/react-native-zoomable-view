@@ -4,6 +4,7 @@ import {
   View,
   StyleSheet,
   PanResponder,
+  TouchableWithoutFeedback,
 } from 'react-native';
 
 const initialState = {
@@ -606,18 +607,20 @@ class ReactNativeZoomableView extends Component {
             {...this.gestureHandlers.panHandlers}
             onLayout={this._getBoxDimensions}
         >
-          <View
-              style={[styles.wrapper, this.props.style, {
-                transform: [
-                  { scale: this.state.zoomLevel },
-                  { scale: this.state.zoomLevel },
-                  { translateX: this.state.offsetX },
-                  { translateY: this.state.offsetY },
-                ],
-              }]}
-          >
-            {this.props.children}
-          </View>
+          <TouchableWithoutFeedback onPress={() => {}}>
+            <View
+                style={[styles.wrapper, this.props.style, {
+                  transform: [
+                    { scale: this.state.zoomLevel },
+                    { scale: this.state.zoomLevel },
+                    { translateX: this.state.offsetX },
+                    { translateY: this.state.offsetY },
+                  ],
+                }]}
+            >
+              {this.props.children}
+            </View>
+          </TouchableWithoutFeedback>
         </View>
     );
   }
