@@ -28,7 +28,7 @@ class ReactNativeZoomableView extends Component {
       onPanResponderTerminationRequest: evt => false,
       onShouldBlockNativeResponder: evt => false,
     });
-    
+
     this.state = {
       zoomLevel: props.initialZoom,
       ...initialState,
@@ -37,6 +37,7 @@ class ReactNativeZoomableView extends Component {
     };
 
     this.distance = 150;
+    this.isDistanceSet = true;
 
     this.gestureType = null;
 
@@ -116,7 +117,7 @@ class ReactNativeZoomableView extends Component {
       this.props.onStartShouldSetPanResponder(e, gestureState, this._getZoomableViewEventObject(), false);
     }
 
-    return false;
+    return this.props.captureEvent;
   };
 
   /**
@@ -128,17 +129,17 @@ class ReactNativeZoomableView extends Component {
    */
   _handleMoveShouldSetPanResponder = (e, gestureState) => {
     let baseComponentResult =
-            this.props.zoomEnabled &&
-            (Math.abs(gestureState.dx) > 2 ||
-                Math.abs(gestureState.dy) > 2 ||
-                gestureState.numberActiveTouches === 2);
+          this.props.zoomEnabled &&
+          (Math.abs(gestureState.dx) > 2 ||
+            Math.abs(gestureState.dy) > 2 ||
+            gestureState.numberActiveTouches === 2);
 
     if (this.props.onMoveShouldSetPanResponder) {
       baseComponentResult = this.props.onMoveShouldSetPanResponder(
-          e,
-          gestureState,
-          this._getZoomableViewEventObject(),
-          baseComponentResult
+        e,
+        gestureState,
+        this._getZoomableViewEventObject(),
+        baseComponentResult
       );
     }
 
@@ -154,12 +155,15 @@ class ReactNativeZoomableView extends Component {
    * @private
    */
   _handlePanResponderGrant = (e, gestureState) => {
+    this.isDistanceSet = false;
+
     if (gestureState.numberActiveTouches === 2) {
       let dx = Math.abs(e.nativeEvent.touches[0].pageX - e.nativeEvent.touches[1].pageX);
       let dy = Math.abs(e.nativeEvent.touches[0].pageY - e.nativeEvent.touches[1].pageY);
 
       let distant = Math.sqrt(dx * dx + dy * dy);
       this.distance = distant;
+      this.isDistanceSet = true;
     }
 
     if (this.props.onLongPress) {
@@ -195,8 +199,6 @@ class ReactNativeZoomableView extends Component {
       clearTimeout(this.longPressTimeout);
       this.longPressTimeout = null;
     }
-
-    this.lastPressHolder = null;
 
     if (this.props.onPanResponderEnd) {
       this.props.onPanResponderEnd(e, gestureState, this._getZoomableViewEventObject());
@@ -304,7 +306,7 @@ class ReactNativeZoomableView extends Component {
   _bindOffsetValuesToBorders(changeObj, bindToBorders = null) {
     // if bindToBorders is disabled -> nothing do here
     if (bindToBorders === false ||
-        (bindToBorders === null && !this.props.bindToBorders)) {
+      (bindToBorders === null && !this.props.bindToBorders)) {
       return changeObj;
     }
 
@@ -344,13 +346,17 @@ class ReactNativeZoomableView extends Component {
         this.longPressTimeout = null;
       }
 
+      if (!this.isDistanceSet) {
+        this._handlePanResponderGrant(e, gestureState);
+      }
+
       this.gestureType = 'pinch';
       this._handlePinching(e, gestureState);
     }
     else if (gestureState.numberActiveTouches === 1) {
       if (
-          this.longPressTimeout &&
-          (Math.abs(gestureState.dx) > 5 || Math.abs(gestureState.dy) > 5)
+        this.longPressTimeout &&
+        (Math.abs(gestureState.dx) > 5 || Math.abs(gestureState.dy) > 5)
       ) {
         clearTimeout(this.longPressTimeout);
         this.longPressTimeout = null;
@@ -476,7 +482,7 @@ class ReactNativeZoomableView extends Component {
    *
    * @private
    */
-  _doubleTapCheck(e, gestureState) {
+  _doubleTapCheck = (e, gestureState) => {
     const now = new Date().getTime();
 
     if (this.lastPressHolder && (now - this.lastPressHolder) < this.props.doubleTapDelay) {
@@ -508,10 +514,10 @@ class ReactNativeZoomableView extends Component {
     const nextZoomStep = this._getNextZoomStep();
 
     this._zoomToLocation(
-        e.nativeEvent.locationX,
-        e.nativeEvent.locationY,
-        nextZoomStep,
-        true
+      e.nativeEvent.locationX,
+      e.nativeEvent.locationY,
+      nextZoomStep,
+      true
     );
 
     if (this.props.onDoubleTapAfter) {
@@ -601,24 +607,24 @@ class ReactNativeZoomableView extends Component {
 
   render() {
     return (
+      <View
+        style={styles.container}
+        {...this.gestureHandlers.panHandlers}
+        onLayout={this._getBoxDimensions}
+      >
         <View
-            style={styles.container}
-            {...this.gestureHandlers.panHandlers}
-            onLayout={this._getBoxDimensions}
+          style={[styles.wrapper, this.props.style, {
+            transform: [
+              { scale: this.state.zoomLevel },
+              { scale: this.state.zoomLevel },
+              { translateX: this.state.offsetX },
+              { translateY: this.state.offsetY },
+            ],
+          }]}
         >
-          <View
-              style={[styles.wrapper, this.props.style, {
-                transform: [
-                  { scale: this.state.zoomLevel },
-                  { scale: this.state.zoomLevel },
-                  { translateX: this.state.offsetX },
-                  { translateY: this.state.offsetY },
-                ],
-              }]}
-          >
-            {this.props.children}
-          </View>
+          {this.props.children}
         </View>
+      </View>
     );
   }
 }
@@ -670,7 +676,8 @@ ReactNativeZoomableView.defaultProps = {
   bindToBorders: true,
   zoomStep: 0.5,
   onLongPress: null,
-  longPressDuration: 700
+  longPressDuration: 700,
+  captureEvent: false,
 };
 
 const styles = StyleSheet.create({
@@ -688,4 +695,3 @@ const styles = StyleSheet.create({
 });
 
 export default ReactNativeZoomableView;
-
