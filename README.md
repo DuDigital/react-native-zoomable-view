@@ -143,6 +143,7 @@ These options can be used to limit and change the zoom behavior.
 | initialOffsetX | number | The horizontal offset the image should start at | 0 |
 | initialOffsetY | number | The vertical offset the image should start at | 0 |
 | longPressDuration | number | Duration in ms until a press is considered a long press | 700 |
+| captureEvent | boolean | Defines whether the pan responder of the parent element should be captured. (useful for react-native modals, set it to true) | false |
 
 #### Events
 
@@ -190,9 +191,18 @@ The zoomableViewEventObject object is attached to every event and represents the
       distanceTop: number,       // view offset from bottom border
       lastMovePinch: boolean,    // boolean, that states if this movement was a pinch movement
       originalHeight: number,    // original height of the outer view
-      originalWidth: numbner,    // original width of the outer view
+      originalWidth: number,     // original width of the outer view
+      captureEvent: boolean,     // should the panresponder be taken away from parent component (used for react-native modals) 
    }
 ```
+
+## Special configurations
+
+### React Native Modal
+
+To make this work with react-native modals, you have to set the `captureEvent` prop to `true`.
+Otherwise the modal will stop the pinch2zoom event and it will not work.
+
 
 ## TODO
 
