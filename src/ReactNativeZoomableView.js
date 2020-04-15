@@ -32,6 +32,7 @@ class ReactNativeZoomableView extends Component {
     this.state = {
       zoomLevel: props.initialZoom,
       ...initialState,
+      lastZoomLevel: props.initialZoom || initialState.lastZoomLevel,
       offsetX: props.initialOffsetX,
       offsetY: props.initialOffsetY,
     };
