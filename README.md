@@ -153,12 +153,12 @@ These events can be used to work with data after specific events.
 | ---- | ----------- | ------ | --------------- |
 | onDoubleTapBefore | Will be called, at the start of a double tap | event, gestureState, zoomableViewEventObject | void |
 | onDoubleTapAfter | Will be called at the end of a double tap | event, gestureState, zoomableViewEventObject | void |
-| onShiftingBefore | Will be called, when user taps and moves the view, but before our view movement work kicks in (so this is the place to interrupt movement, if you need to)  | event, gestureState, zoomableViewEventObject |  {boolean} if this returns false, ZoomableView will not process the shift, otherwise it will |
+| onShiftingBefore | Will be called, when user taps and moves the view, but before our view movement work kicks in (so this is the place to interrupt movement, if you need to)  | event, gestureState, zoomableViewEventObject |  {boolean} if this returns true, ZoomableView will not process the shift, otherwise it will |
 | onShiftingAfter | Will be called, when user taps and moves the view, but after the values have changed already | event, gestureState, zoomableViewEventObject | void |
 | onShiftingEnd | Will be called, when user stops a tap and move gesture | event, gestureState, zoomableViewEventObject | void |
-| onZoomBefore | Will be called, while the user pinches the screen, but before our zoom work kicks in (so this is the place to interrupt zooming, if you need to) | event, gestureState, zoomableViewEventObject | {boolean} if this returns false, ZoomableView will not process the pinch, otherwise it will |
-| onZoomAfter | Will be called, while the user pinches the screen, but after the values have changed already | event, gestureState, zoomableViewEventObject | {boolean} if this returns false, ZoomableView will not process the pinch, otherwise it will |
-| onZoomEnd | Will be called after pinchzooming has ended | event, gestureState, zoomableViewEventObject | {boolean} if this returns false, ZoomableView will not process the pinch, otherwise it will |
+| onZoomBefore | Will be called, while the user pinches the screen, but before our zoom work kicks in (so this is the place to interrupt zooming, if you need to) | event, gestureState, zoomableViewEventObject | {boolean} if this returns true, ZoomableView will not process the pinch, otherwise it will |
+| onZoomAfter | Will be called, while the user pinches the screen, but after the values have changed already | event, gestureState, zoomableViewEventObject | {boolean} if this returns true, ZoomableView will not process the pinch, otherwise it will |
+| onZoomEnd | Will be called after pinchzooming has ended | event, gestureState, zoomableViewEventObject | {boolean} if this returns true, ZoomableView will not process the pinch, otherwise it will |
 | onLongPress | Will be called after the user pressed on the image for a while | event, gestureState | void | 
 
 #### Pan Responder Hooks
