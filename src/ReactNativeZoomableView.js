@@ -507,7 +507,7 @@ class ReactNativeZoomableView extends Component {
       return;
     }
 
-    if (this.props.onDoubleTap) {
+    if (this.props.onDoubleTapBefore) {
       this.props.onDoubleTapBefore(e, gestureState, this._getZoomableViewEventObject());
     }
 
