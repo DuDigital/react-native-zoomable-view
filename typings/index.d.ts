@@ -40,6 +40,7 @@ declare module '@dudigital/react-native-zoomable-view' {
     initialOffsetX?: number;
     initialOffsetY?: number;
     longPressDuration?: number;
+    captureEvent?: boolean;
     onDoubleTapBefore?: (event: Event, gestureState: PanResponderGestureState, zoomableViewEventObject: ZoomableViewEvent) => void;
     onDoubleTapAfter?: (event: Event, gestureState: PanResponderGestureState, zoomableViewEventObject: ZoomableViewEvent) => void;
     onShiftingBefore?: (event: Event, gestureState: PanResponderGestureState, zoomableViewEventObject: ZoomableViewEvent) => boolean;
