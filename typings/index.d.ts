@@ -57,7 +57,7 @@ declare module '@dudigital/react-native-zoomable-view' {
     onPanResponderMove?: (event: Event, gestureState: PanResponderGestureState, zoomableViewEventObject: ZoomableViewEvent) => void;
   }
 
-  export class ReactNativeZoomableView extends React.PureComponent<ReactNativeZoomableViewProps> { }
+  export class ReactNativeZoomableView extends React.PureComponent<ReactNativeZoomableViewProps> {}
 
   export interface ReactNativeZoomableViewWithGesturesProps extends ReactNativeZoomableViewProps {
     swipeLengthThreshold?: number,
@@ -73,7 +73,7 @@ declare module '@dudigital/react-native-zoomable-view' {
     onSwipeRight?: (gestureState: PanResponderGestureState) => void,
   }
 
-  export class ReactNativeZoomableViewWithGestures extends ReactNativeZoomableView { }
+  export class ReactNativeZoomableViewWithGestures extends ReactNativeZoomableView {}
 }
 
 declare module '@dudigital/react-native-zoomable-view/src/ReactNativeZoomableView' {
