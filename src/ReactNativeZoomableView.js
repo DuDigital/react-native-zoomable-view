@@ -515,8 +515,8 @@ class ReactNativeZoomableView extends Component {
     const nextZoomStep = this._getNextZoomStep();
 
     this._zoomToLocation(
-      e.nativeEvent.locationX,
-      e.nativeEvent.locationY,
+      0,
+      0,
       nextZoomStep,
       true
     );
@@ -566,6 +566,13 @@ class ReactNativeZoomableView extends Component {
 
     const currentElementWidth = originalWidth;
     const currentElementHeight = originalHeight;
+
+    if (x === 0 && y === 0) {
+      return {
+        x: 0,
+        y: 0,
+      }
+    }
 
     const returnObj = {
       x: (-x + (currentElementWidth / 2)),
