@@ -50,8 +50,8 @@ declare module '@dudigital/react-native-zoomable-view' {
     onZoomAfter?: (event: Event, gestureState: PanResponderGestureState, zoomableViewEventObject: ZoomableViewEvent) => boolean;
     onZoomEnd?: (event: Event, gestureState: PanResponderGestureState, zoomableViewEventObject: ZoomableViewEvent) => boolean;
     onLongPress?: (event: Event, gestureState: PanResponderGestureState) => void;
-    onStartShouldSetPanResponder?: (event: Event, gestureState: PanResponderGestureState, zoomableViewEventObject: ZoomableViewEvent, any) => boolean;
-    onMoveShouldSetPanResponder?: (event: Event, gestureState: PanResponderGestureState, zoomableViewEventObject: ZoomableViewEvent, any) => boolean;
+    onStartShouldSetPanResponder?: (event: Event, gestureState: PanResponderGestureState, zoomableViewEventObject: ZoomableViewEvent, baseComponentResult: boolean) => boolean;
+    onMoveShouldSetPanResponder?: (event: Event, gestureState: PanResponderGestureState, zoomableViewEventObject: ZoomableViewEvent, baseComponentResult: boolean) => boolean;
     onPanResponderGrant?: (event: Event, gestureState: PanResponderGestureState, zoomableViewEventObject: ZoomableViewEvent) => void;
     onPanResponderEnd?: (event: Event, gestureState: PanResponderGestureState, zoomableViewEventObject: ZoomableViewEvent) => void;
     onPanResponderMove?: (event: Event, gestureState: PanResponderGestureState, zoomableViewEventObject: ZoomableViewEvent) => void;
