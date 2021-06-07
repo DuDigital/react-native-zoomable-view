@@ -513,19 +513,24 @@ class ReactNativeZoomableView extends Component {
     }
 
     const nextZoomStep = this._getNextZoomStep();
+    const offsetAdjustedPosition = this._getOffsetAdjustedPosition(e.nativeEvent.locationX, e.nativeEvent.locationY);
 
-    this._zoomToLocation(
-      e.nativeEvent.locationX,
-      e.nativeEvent.locationY,
-      nextZoomStep,
-      true
-    );
+    const changeStateObj = this._bindOffsetValuesToBorders({
+      zoomLevel: nextZoomStep,
+      offsetX: offsetAdjustedPosition.x,
+      offsetY: offsetAdjustedPosition.y,
+      lastZoomLevel: nextZoomStep,
+      lastX: offsetAdjustedPosition.x,
+      lastY: offsetAdjustedPosition.y,
+    }, true);
 
-    if (this.props.onDoubleTapAfter) {
-      this.props.onDoubleTapAfter(e, gestureState, this._getZoomableViewEventObject({
-        zoomLevel: nextZoomStep,
-      }));
-    }
+    this.setState(changeStateObj, () => {
+      if (this.props.onDoubleTapAfter) {
+        this.props.onDoubleTapAfter(e, gestureState, this._getZoomableViewEventObject({
+          zoomLevel: nextZoomStep,
+        }));
+      }
+    });
 
   }
 
@@ -573,37 +578,6 @@ class ReactNativeZoomableView extends Component {
     };
 
     return returnObj;
-  }
-
-  /**
-   * Zooms to a specific location in our view
-   *
-   * @param x
-   * @param y
-   * @param newZoomLevel
-   * @param bindToBorders
-   * @param callbk
-   *
-   * @private
-   */
-  _zoomToLocation(x: number, y: number, newZoomLevel: number, bindToBorders = true, callbk = null) {
-    const offsetAdjustedPosition = this._getOffsetAdjustedPosition(x, y);
-
-    // define the changeObject and make sure the offset values are bound to view
-    const changeStateObj = this._bindOffsetValuesToBorders({
-      zoomLevel: newZoomLevel,
-      offsetX: offsetAdjustedPosition.x,
-      offsetY: offsetAdjustedPosition.y,
-      lastZoomLevel: newZoomLevel,
-      lastX: offsetAdjustedPosition.x,
-      lastY: offsetAdjustedPosition.y,
-    }, bindToBorders);
-
-    this.setState(changeStateObj, () => {
-      if (callbk) {
-        callbk();
-      }
-    });
   }
 
   render() {
