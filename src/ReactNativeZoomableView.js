@@ -532,14 +532,15 @@ class ReactNativeZoomableView extends Component {
       zoomPositionCoordinates.x,
       zoomPositionCoordinates.y,
       nextZoomStep,
-      true
+      true,
+      () => {
+        if (onDoubleTapAfter) {
+          onDoubleTapAfter(e, gestureState, this._getZoomableViewEventObject({
+            zoomLevel: nextZoomStep,
+          }));
+        }
+      }
     );
-
-    if (onDoubleTapAfter) {
-      onDoubleTapAfter(e, gestureState, this._getZoomableViewEventObject({
-        zoomLevel: nextZoomStep,
-      }));
-    }
 
   }
 
