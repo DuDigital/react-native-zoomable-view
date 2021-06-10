@@ -503,26 +503,40 @@ class ReactNativeZoomableView extends Component {
    * @private
    */
   _handleDoubleTap(e, gestureState) {
+    const { onDoubleTapBefore, onDoubleTapAfter, doubleTapZoomToCenter } = this.props;
+
     // ignore more than 2 touches
     if (gestureState.numberActiveTouches > 1 || !this.props.zoomEnabled) {
       return;
     }
 
-    if (this.props.onDoubleTapBefore) {
-      this.props.onDoubleTapBefore(e, gestureState, this._getZoomableViewEventObject());
+    if (onDoubleTapBefore) {
+      onDoubleTapBefore(e, gestureState, this._getZoomableViewEventObject());
     }
 
     const nextZoomStep = this._getNextZoomStep();
 
+    // define new zoom position coordinates
+    const zoomPositionCoordinates = {
+      x: e.nativeEvent.locationX,
+      y: e.nativeEvent.locationY,
+    };
+
+    // if doubleTapZoomToCenter enabled -> always zoom to center instead
+    if (doubleTapZoomToCenter) {
+      zoomPositionCoordinates.x = 0;
+      zoomPositionCoordinates.y = 0;
+    }
+
     this._zoomToLocation(
-      0,
-      0,
+      zoomPositionCoordinates.x,
+      zoomPositionCoordinates.y,
       nextZoomStep,
       true
     );
 
-    if (this.props.onDoubleTapAfter) {
-      this.props.onDoubleTapAfter(e, gestureState, this._getZoomableViewEventObject({
+    if (onDoubleTapAfter) {
+      onDoubleTapAfter(e, gestureState, this._getZoomableViewEventObject({
         zoomLevel: nextZoomStep,
       }));
     }

@@ -31,6 +31,7 @@ declare module '@dudigital/react-native-zoomable-view' {
     maxZoom?: number;
     minZoom?: number;
     doubleTapDelay?: number;
+    doubleTapZoomToCenter?: boolean;
     bindToBorders?: boolean;
     zoomStep?: number;
     pinchToZoomInSensitivity?: number;
