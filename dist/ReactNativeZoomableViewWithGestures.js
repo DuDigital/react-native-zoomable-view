@@ -1,4 +1,3 @@
-"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -25,14 +24,9 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.swipeDirections = void 0;
-var react_1 = __importDefault(require("react"));
-var ReactNativeZoomableView_1 = __importDefault(require("./ReactNativeZoomableView"));
-exports.swipeDirections = {
+import React from 'react';
+import ReactNativeZoomableView from './ReactNativeZoomableView';
+export var swipeDirections = {
     SWIPE_UP: 'SWIPE_UP',
     SWIPE_DOWN: 'SWIPE_DOWN',
     SWIPE_LEFT: 'SWIPE_LEFT',
@@ -81,7 +75,7 @@ var ReactNativeZoomableViewWithGestures = /** @class */ (function (_super) {
     ReactNativeZoomableViewWithGestures.prototype._validateSwipe = function (gestureState) {
         var _a = this.props, onSwipeUp = _a.onSwipeUp, onSwipeDown = _a.onSwipeDown, onSwipeLeft = _a.onSwipeLeft, onSwipeRight = _a.onSwipeRight;
         var swipeDirection = this._getSwipeDirection(gestureState);
-        var SWIPE_LEFT = exports.swipeDirections.SWIPE_LEFT, SWIPE_RIGHT = exports.swipeDirections.SWIPE_RIGHT, SWIPE_UP = exports.swipeDirections.SWIPE_UP, SWIPE_DOWN = exports.swipeDirections.SWIPE_DOWN;
+        var SWIPE_LEFT = swipeDirections.SWIPE_LEFT, SWIPE_RIGHT = swipeDirections.SWIPE_RIGHT, SWIPE_UP = swipeDirections.SWIPE_UP, SWIPE_DOWN = swipeDirections.SWIPE_DOWN;
         return ((onSwipeUp && swipeDirection === SWIPE_UP) ||
             (onSwipeDown && swipeDirection === SWIPE_DOWN) ||
             (onSwipeLeft && swipeDirection === SWIPE_LEFT) ||
@@ -96,7 +90,7 @@ var ReactNativeZoomableViewWithGestures = /** @class */ (function (_super) {
      */
     ReactNativeZoomableViewWithGestures.prototype._triggerSwipeHandlers = function (swipeDirection, gestureState) {
         var _a = this.props, onSwipe = _a.onSwipe, onSwipeUp = _a.onSwipeUp, onSwipeDown = _a.onSwipeDown, onSwipeLeft = _a.onSwipeLeft, onSwipeRight = _a.onSwipeRight;
-        var SWIPE_LEFT = exports.swipeDirections.SWIPE_LEFT, SWIPE_RIGHT = exports.swipeDirections.SWIPE_RIGHT, SWIPE_UP = exports.swipeDirections.SWIPE_UP, SWIPE_DOWN = exports.swipeDirections.SWIPE_DOWN;
+        var SWIPE_LEFT = swipeDirections.SWIPE_LEFT, SWIPE_RIGHT = swipeDirections.SWIPE_RIGHT, SWIPE_UP = swipeDirections.SWIPE_UP, SWIPE_DOWN = swipeDirections.SWIPE_DOWN;
         // trigger the general onswipe callback
         if (onSwipe) {
             onSwipe(swipeDirection, gestureState);
@@ -126,8 +120,11 @@ var ReactNativeZoomableViewWithGestures = /** @class */ (function (_super) {
      */
     ReactNativeZoomableViewWithGestures.prototype._getSwipeDirection = function (gestureState) {
         var swipeLengthThreshold = this.props.swipeLengthThreshold;
-        var SWIPE_LEFT = exports.swipeDirections.SWIPE_LEFT, SWIPE_RIGHT = exports.swipeDirections.SWIPE_RIGHT, SWIPE_UP = exports.swipeDirections.SWIPE_UP, SWIPE_DOWN = exports.swipeDirections.SWIPE_DOWN;
+        var SWIPE_LEFT = swipeDirections.SWIPE_LEFT, SWIPE_RIGHT = swipeDirections.SWIPE_RIGHT, SWIPE_UP = swipeDirections.SWIPE_UP, SWIPE_DOWN = swipeDirections.SWIPE_DOWN;
         var dx = gestureState.dx, dy = gestureState.dy;
+        if (!swipeLengthThreshold) {
+            return;
+        }
         if (this._isValidHorizontalSwipe(gestureState)) {
             if (Math.abs(dx) > swipeLengthThreshold) {
                 return dx > 0 ? SWIPE_RIGHT : SWIPE_LEFT;
@@ -182,10 +179,10 @@ var ReactNativeZoomableViewWithGestures = /** @class */ (function (_super) {
         return Math.abs(velocity) > swipeVelocityThreshold && Math.abs(directionalOffset) < swipeDirectionalThreshold;
     };
     ReactNativeZoomableViewWithGestures.prototype.render = function () {
-        return react_1.default.createElement(ReactNativeZoomableView_1.default, __assign({}, this.props, { onShiftingEnd: this._onShiftingEnd }));
+        return React.createElement(ReactNativeZoomableView, __assign({}, this.props, { onShiftingEnd: this._onShiftingEnd }));
     };
     return ReactNativeZoomableViewWithGestures;
-}(react_1.default.Component));
+}(React.Component));
 /*
 TODO: Remove this when typescript is proven to work
 ReactNativeZoomableViewWithGestures.propTypes = {
@@ -216,4 +213,5 @@ ReactNativeZoomableViewWithGestures.defaultProps = {
   onSwipeRight: null,
 };
  */
-exports.default = ReactNativeZoomableViewWithGestures;
+export default ReactNativeZoomableViewWithGestures;
+//# sourceMappingURL=ReactNativeZoomableViewWithGestures.js.map

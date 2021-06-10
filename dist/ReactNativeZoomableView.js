@@ -1,4 +1,3 @@
-"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -25,28 +24,8 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var react_1 = __importStar(require("react"));
-var react_native_1 = require("react-native");
+import React, { Component } from 'react';
+import { View, StyleSheet, PanResponder, } from 'react-native';
 var initialState = {
     lastZoomLevel: 1,
     offsetX: 0,
@@ -353,7 +332,7 @@ var ReactNativeZoomableView = /** @class */ (function (_super) {
                 _this.lastPressHolder = now;
             }
         };
-        _this.gestureHandlers = react_native_1.PanResponder.create({
+        _this.gestureHandlers = PanResponder.create({
             onStartShouldSetPanResponder: _this._handleStartShouldSetPanResponder,
             onMoveShouldSetPanResponder: _this._handleMoveShouldSetPanResponder,
             onPanResponderGrant: _this._handlePanResponderGrant,
@@ -681,8 +660,8 @@ var ReactNativeZoomableView = /** @class */ (function (_super) {
         });
     };
     ReactNativeZoomableView.prototype.render = function () {
-        return (react_1.default.createElement(react_native_1.View, __assign({ style: styles.container }, this.gestureHandlers.panHandlers, { onLayout: this._getBoxDimensions }),
-            react_1.default.createElement(react_native_1.View, { style: [styles.wrapper, this.props.style, {
+        return (React.createElement(View, __assign({ style: styles.container }, this.gestureHandlers.panHandlers, { onLayout: this._getBoxDimensions }),
+            React.createElement(View, { style: [styles.wrapper, this.props.style, {
                         transform: [
                             { scale: this.state.zoomLevel },
                             { scale: this.state.zoomLevel },
@@ -692,7 +671,7 @@ var ReactNativeZoomableView = /** @class */ (function (_super) {
                     }] }, this.props.children)));
     };
     return ReactNativeZoomableView;
-}(react_1.Component));
+}(Component));
 /*
 TODO: delete them if not needed anymore
 
@@ -746,7 +725,7 @@ ReactNativeZoomableView.defaultProps = {
     longPressDuration: 700,
     captureEvent: false,
 }; */
-var styles = react_native_1.StyleSheet.create({
+var styles = StyleSheet.create({
     wrapper: {
         flex: 1,
         width: '100%',
@@ -759,4 +738,5 @@ var styles = react_native_1.StyleSheet.create({
         position: 'relative',
     },
 });
-exports.default = ReactNativeZoomableView;
+export default ReactNativeZoomableView;
+//# sourceMappingURL=ReactNativeZoomableView.js.map

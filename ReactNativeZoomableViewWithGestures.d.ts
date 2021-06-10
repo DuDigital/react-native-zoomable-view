@@ -14,7 +14,7 @@ declare class ReactNativeZoomableViewWithGestures extends React.Component<ReactN
      * @returns {*}
      * @private
      */
-    _couldCallSwipeEvent(zoomableViewState: any): false | ((gestureState: any) => void);
+    _couldCallSwipeEvent(zoomableViewState: any): false | ((gestureState: import("react-native").PanResponderGestureState) => void);
     /**
      * Checks the swipe and validates whether we should process it or not
      *
