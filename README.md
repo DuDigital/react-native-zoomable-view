@@ -134,6 +134,7 @@ These options can be used to limit and change the zoom behavior.
 | maxZoom | number | Maximum possible zoom level (zoom in). Can be set to `null` to allow unlimited zooming | 1.5 |
 | minZoom | number | Minimum possible zoom level (zoom out) | 0.5 |
 | doubleTapDelay | number  | How much delay will still be recognized as double press (ms) | 300 |
+| doubleTapZoomToCenter | boolean | If true, double tapping will always zoom to center of View instead of the direction it was double tapped in
 | bindToBorders | boolean | If true, it makes sure the object stays within box borders | true |
 | zoomStep | number | How much zoom should be applied on double tap | 0.5 |
 | pinchToZoomInSensitivity | number | the level of resistance (sensitivity) to zoom in (0 - 10) - higher is less sensitive | 3 |
