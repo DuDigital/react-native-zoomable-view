@@ -1,13 +1,13 @@
 {
   "name": "@dudigital/react-native-zoomable-view",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "A view component for react-native with pinch to zoom, tap to move and double tap to zoom capability.",
   "main": "index.js",
   "scripts": {
     "build": "rollup -c",
     "start": "rollup -c -w",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "format": "prettier --write \"src/**/*.ts\"",
     "version": "npm run format && git add -A src",
     "postversion": "git push && git push --tags"
   },

@@ -30,6 +30,25 @@ class ReactNativeZoomableView extends Component<ReactNativeZoomableViewProps, Re
         distanceBottom: 0,
     };
 
+    static defaultProps = {
+        zoomEnabled: true,
+        initialZoom: 1,
+        initialOffsetX: 0,
+        initialOffsetY: 0,
+        maxZoom: 1.5,
+        minZoom: 0.5,
+        pinchToZoomInSensitivity: 3,
+        pinchToZoomOutSensitivity: 1,
+        zoomCenteringLevelDistance: 0.5,
+        movementSensibility: 1.9,
+        doubleTapDelay: 300,
+        bindToBorders: true,
+        zoomStep: 0.5,
+        onLongPress: null,
+        longPressDuration: 700,
+        captureEvent: false,
+    };
+
     constructor(props) {
         super(props);
 
@@ -648,6 +667,10 @@ class ReactNativeZoomableView extends Component<ReactNativeZoomableViewProps, Re
     _zoomToLocation(x: number, y: number, newZoomLevel: number, bindToBorders = true, callbk = null) {
         const offsetAdjustedPosition = this._getOffsetAdjustedPosition(x, y);
 
+        if (this.props.onZoomBefore) {
+            this.props.onZoomBefore(null, null, this._getZoomableViewEventObject());
+        }
+
         // define the changeObject and make sure the offset values are bound to view
         const changeStateObj = this._bindOffsetValuesToBorders({
             zoomLevel: newZoomLevel,
@@ -661,6 +684,10 @@ class ReactNativeZoomableView extends Component<ReactNativeZoomableViewProps, Re
         this.setState(changeStateObj, () => {
             if (callbk) {
                 callbk();
+            }
+
+            if (this.props.onZoomAfter) {
+                this.props.onZoomAfter(null, null, this._getZoomableViewEventObject());
             }
         });
     }

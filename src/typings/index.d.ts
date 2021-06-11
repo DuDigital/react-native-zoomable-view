@@ -46,20 +46,78 @@ declare module '@dudigital/react-native-zoomable-view' {
     style?: any;
 
     // callbacks
-    onDoubleTapBefore?: (event: Event, gestureState: PanResponderGestureState, zoomableViewEventObject: ZoomableViewEvent) => void;
-    onDoubleTapAfter?: (event: Event, gestureState: PanResponderGestureState, zoomableViewEventObject: ZoomableViewEvent) => void;
-    onShiftingBefore?: (event: Event, gestureState: PanResponderGestureState, zoomableViewEventObject: ZoomableViewEvent) => boolean;
-    onShiftingAfter?: (event: Event, gestureState: PanResponderGestureState, zoomableViewEventObject: ZoomableViewEvent) => boolean;
-    onShiftingEnd?: (event: Event, gestureState: PanResponderGestureState, zoomableViewEventObject: ZoomableViewEvent) => void;
-    onZoomBefore?: (event: Event, gestureState: PanResponderGestureState, zoomableViewEventObject: ZoomableViewEvent) => boolean | void;
-    onZoomAfter?: (event: Event, gestureState: PanResponderGestureState, zoomableViewEventObject: ZoomableViewEvent) => void;
-    onZoomEnd?: (event: Event, gestureState: PanResponderGestureState, zoomableViewEventObject: ZoomableViewEvent) => void;
-    onLongPress?: (event: Event, gestureState: PanResponderGestureState, zoomableViewEventObject: ZoomableViewEvent) => void;
-    onStartShouldSetPanResponder?: (event: Event, gestureState: PanResponderGestureState, zoomableViewEventObject: ZoomableViewEvent, baseComponentResult: boolean) => boolean;
-    onMoveShouldSetPanResponder?: (event: Event, gestureState: PanResponderGestureState, zoomableViewEventObject: ZoomableViewEvent, baseComponentResult: boolean) => boolean;
-    onPanResponderGrant?: (event: Event, gestureState: PanResponderGestureState, zoomableViewEventObject: ZoomableViewEvent) => void;
-    onPanResponderEnd?: (event: Event, gestureState: PanResponderGestureState, zoomableViewEventObject: ZoomableViewEvent) => void;
-    onPanResponderMove?: (event: Event, gestureState: PanResponderGestureState, zoomableViewEventObject: ZoomableViewEvent) => boolean;
+    onDoubleTapBefore?: (
+      event: Event,
+      gestureState: PanResponderGestureState,
+      zoomableViewEventObject: ZoomableViewEvent,
+    ) => void;
+    onDoubleTapAfter?: (
+      event: Event,
+      gestureState: PanResponderGestureState,
+      zoomableViewEventObject: ZoomableViewEvent,
+    ) => void;
+    onShiftingBefore?: (
+      event: Event,
+      gestureState: PanResponderGestureState,
+      zoomableViewEventObject: ZoomableViewEvent,
+    ) => boolean;
+    onShiftingAfter?: (
+      event: Event,
+      gestureState: PanResponderGestureState,
+      zoomableViewEventObject: ZoomableViewEvent,
+    ) => boolean;
+    onShiftingEnd?: (
+      event: Event,
+      gestureState: PanResponderGestureState,
+      zoomableViewEventObject: ZoomableViewEvent,
+    ) => void;
+    onZoomBefore?: (
+      event: Event,
+      gestureState: PanResponderGestureState,
+      zoomableViewEventObject: ZoomableViewEvent,
+    ) => boolean | void;
+    onZoomAfter?: (
+      event: Event,
+      gestureState: PanResponderGestureState,
+      zoomableViewEventObject: ZoomableViewEvent,
+    ) => void;
+    onZoomEnd?: (
+      event: Event,
+      gestureState: PanResponderGestureState,
+      zoomableViewEventObject: ZoomableViewEvent,
+    ) => void;
+    onLongPress?: (
+      event: Event,
+      gestureState: PanResponderGestureState,
+      zoomableViewEventObject: ZoomableViewEvent,
+    ) => void;
+    onStartShouldSetPanResponder?: (
+      event: Event,
+      gestureState: PanResponderGestureState,
+      zoomableViewEventObject: ZoomableViewEvent,
+      baseComponentResult: boolean,
+    ) => boolean;
+    onMoveShouldSetPanResponder?: (
+      event: Event,
+      gestureState: PanResponderGestureState,
+      zoomableViewEventObject: ZoomableViewEvent,
+      baseComponentResult: boolean,
+    ) => boolean;
+    onPanResponderGrant?: (
+      event: Event,
+      gestureState: PanResponderGestureState,
+      zoomableViewEventObject: ZoomableViewEvent,
+    ) => void;
+    onPanResponderEnd?: (
+      event: Event,
+      gestureState: PanResponderGestureState,
+      zoomableViewEventObject: ZoomableViewEvent,
+    ) => void;
+    onPanResponderMove?: (
+      event: Event,
+      gestureState: PanResponderGestureState,
+      zoomableViewEventObject: ZoomableViewEvent,
+    ) => boolean;
   }
 
   export interface ReactNativeZoomableViewState {
@@ -83,17 +141,17 @@ declare module '@dudigital/react-native-zoomable-view' {
   }
 
   export interface ReactNativeZoomableViewWithGesturesProps extends ReactNativeZoomableViewProps {
-    swipeLengthThreshold?: number,
-    swipeVelocityThreshold?: number,
-    swipeDirectionalThreshold?: number,
-    swipeMinZoom?: number,
-    swipeMaxZoom?: number,
-    swipeDisabled?: boolean,
-    onSwipe?: (swipeDirection: SwipeDirection, gestureState: PanResponderGestureState) => void,
-    onSwipeUp?: (gestureState: PanResponderGestureState) => void,
-    onSwipeDown?: (gestureState: PanResponderGestureState) => void,
-    onSwipeLeft?: (gestureState: PanResponderGestureState) => void,
-    onSwipeRight?: (gestureState: PanResponderGestureState) => void,
+    swipeLengthThreshold?: number;
+    swipeVelocityThreshold?: number;
+    swipeDirectionalThreshold?: number;
+    swipeMinZoom?: number;
+    swipeMaxZoom?: number;
+    swipeDisabled?: boolean;
+    onSwipe?: (swipeDirection: SwipeDirection, gestureState: PanResponderGestureState) => void;
+    onSwipeUp?: (gestureState: PanResponderGestureState) => void;
+    onSwipeDown?: (gestureState: PanResponderGestureState) => void;
+    onSwipeLeft?: (gestureState: PanResponderGestureState) => void;
+    onSwipeRight?: (gestureState: PanResponderGestureState) => void;
   }
 
   export class ReactNativeZoomableViewWithGestures extends ReactNativeZoomableView {}

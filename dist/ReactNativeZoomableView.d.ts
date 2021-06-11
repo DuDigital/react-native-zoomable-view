@@ -12,6 +12,24 @@ declare class ReactNativeZoomableView extends Component<ReactNativeZoomableViewP
         distanceTop: number;
         distanceBottom: number;
     };
+    static defaultProps: {
+        zoomEnabled: boolean;
+        initialZoom: number;
+        initialOffsetX: number;
+        initialOffsetY: number;
+        maxZoom: number;
+        minZoom: number;
+        pinchToZoomInSensitivity: number;
+        pinchToZoomOutSensitivity: number;
+        zoomCenteringLevelDistance: number;
+        movementSensibility: number;
+        doubleTapDelay: number;
+        bindToBorders: boolean;
+        zoomStep: number;
+        onLongPress: any;
+        longPressDuration: number;
+        captureEvent: boolean;
+    };
     constructor(props: any);
     componentDidUpdate(prevProps: any): void;
     /**
