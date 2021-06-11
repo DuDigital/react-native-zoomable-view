@@ -281,3 +281,12 @@ Are you looking to help out and improve this project?<br />
 Either submit Pull requests with awesome changes or reach out to me on Twitter: https://twitter.com/SimonEritsch<br />
 Helping hands are always appreciated! :)
 
+### How to contribute
+
+Just clone the example repository: https://github.com/DuDigital/react-native-zoomable-view-example
+
+Adjust the package in the typescript files in `node_modules/@dudigital/react-native-zoomable-view` folder, while running `npm transpile` **in that folder** as well.
+(the transpile command will make sure to transpile the typescript code into javascript)
+
+// We definitely need a better process here. If you have any ideas - please open an issue or PR about a solution. ;)
+// We would really appreciate it

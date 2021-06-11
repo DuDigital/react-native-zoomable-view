@@ -1,0 +1,17 @@
+# Editor configuration, see
+# https://editorconfig-specification.readthedocs.io/en/latest/#supported-pairs
+
+root = true
+
+[**]
+charset = utf-8
+indent_size = 2
+indent_style = space
+
+[{src/**,test/**}]
+end_of_line = crlf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.md]
+trim_trailing_whitespace = unset
