@@ -146,7 +146,7 @@ These options can be used to limit and change the zoom behavior.
 | longPressDuration | number | Duration in ms until a press is considered a long press | 700 |
 | captureEvent | boolean | Defines whether the pan responder of the parent element should be captured. (useful for react-native modals, set it to true) | false |
 
-#### Events
+#### Callbacks
 
 These events can be used to work with data after specific events.
 
@@ -161,6 +161,67 @@ These events can be used to work with data after specific events.
 | onZoomAfter | Will be called, while the user pinches the screen, but after the values have changed already | event, gestureState, zoomableViewEventObject | {boolean} if this returns true, ZoomableView will not process the pinch, otherwise it will |
 | onZoomEnd | Will be called after pinchzooming has ended | event, gestureState, zoomableViewEventObject | {boolean} if this returns true, ZoomableView will not process the pinch, otherwise it will |
 | onLongPress | Will be called after the user pressed on the image for a while | event, gestureState | void | 
+
+
+#### Events
+
+The following events allow you to control the ZoomableView zoom level & position from your component.
+(think of control buttons, ...)
+
+You can find an implementation example in the example repo: https://github.com/DuDigital/react-native-zoomable-view-example
+
+| name | description | params | expected return |
+| ---- | ----------- | ------ | --------------- |
+| zoomTo | Changes the zoom level to a specific number | newZoomLevel: number, bindToBorders = true | Promise<bool> |
+| zoomBy | Changes the zoom level relative to the current level (use positive numbers to zoom in, negative numbers to zoom out) | zoomLevelChange: number, bindToBorders = true | Promise<bool> |
+| moveTo | Shifts the zoomed part to a specific point (in px relative to x: 0, y: 0) | newOffsetX: number, newOffsetY: number, bindToBorders = true | Promise<void> |
+| moveBy | Shifts the zoomed part by a specific pixel number | newOffsetX: number, newOffsetY: number, bindToBorders = true | Promise<void> |
+
+
+**Example:**
+
+```TSX
+
+export default function App() {
+  // you will need a reference to the ReactNativeZoomableView component
+  const zoomableViewRef = createRef<ReactNativeZoomableView>();
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.zoomWrapper}>
+        <ReactNativeZoomableView
+          ref={zoomableViewRef}
+          bindToBorders={true}
+        >
+          <Text style={styles.caption}>HelloWorld</Text>
+        </ReactNativeZoomableView>
+      </View>
+
+      <View style={styles.controlWrapperLeft}>
+        {/* Here you see some examples of moveBy */}
+        <Button onPress={() => zoomableViewRef.current!.moveBy(-30, 0)} title="⬅️" />
+        <Button onPress={() => zoomableViewRef.current!.moveBy(30, 0)} title="➡️" />
+        <Button onPress={() => zoomableViewRef.current!.moveBy(0, -30)} title="⬆️" />
+        <Button onPress={() => zoomableViewRef.current!.moveBy(0, 30)} title="⬇️" />
+
+        {/* Here you see an example of moveTo */}
+        <Button onPress={() => zoomableViewRef.current!.moveTo(300, 200)} title="Move to" />
+      </View>
+
+      <View style={styles.controlWrapperRight}>
+        {/* Here you see examples of zoomBy */}
+        <Button onPress={() => zoomableViewRef.current!.zoomBy(-0.1)} title="-" />
+        <Button onPress={() => zoomableViewRef.current!.zoomBy(0.1)} title="+" />
+
+        {/* Here you see an example of zoomTo */}
+        <Button onPress={() => zoomableViewRef.current!.zoomTo(1)} title="reset" />
+      </View>
+    </View>
+  );
+}
+
+```
+
 
 #### Pan Responder Hooks
 
@@ -213,4 +274,10 @@ Otherwise the modal will stop the pinch2zoom event and it will not work.
 
 ## Contributing
 
-All contributions are welcome. <3
+A lot of people are now using react-native-zoomable-view and there are always smaller things to improve and change.<br />
+Therefore any contributions are more than welcome! <3<br /><br />
+
+Are you looking to help out and improve this project?<br />
+Either submit Pull requests with awesome changes or reach out to me on Twitter: https://twitter.com/SimonEritsch<br />
+Helping hands are always appreciated! :)
+
