@@ -232,7 +232,9 @@ Sometimes you need to change deeper level behavior, so we prepared these panresp
 | onStartShouldSetPanResponder | description | event, gestureState, zoomableViewEventObject, baseComponentResult | {boolean} whether panresponder should be set or not |
 | onMoveShouldSetPanResponder | description | event, gestureState, zoomableViewEventObject, baseComponentResult | {boolean} whether panresponder should be set or not |
 | onPanResponderGrant | description | event, gestureState, zoomableViewEventObject | void |
-| onPanResponderEnd | Will be called when gesture ends | event, gestureState, zoomableViewEventObject | void |
+| onPanResponderEnd | Will be called when gesture ends (more accurately, on pan responder "release") | event, gestureState, zoomableViewEventObject | void |
+| onPanResponderTerminate | Will be called when the gesture is force-interrupted by another handler | event, gestureState, zoomableViewEventObject | void |
+| onPanResponderTerminationRequest | Callback asking whether the gesture should be interrupted by another handler (**iOS only** due to https://github.com/facebook/react-native/issues/27778, https://github.com/facebook/react-native/issues/5696, ...) | event, gestureState, zoomableViewEventObject | void |
 | onPanResponderMove | Will be called when user moves while touching | event, gestureState, zoomableViewEventObject | void |
 
 ### zoomableViewEventObject

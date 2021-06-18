@@ -118,6 +118,16 @@ declare module '@dudigital/react-native-zoomable-view' {
       gestureState: PanResponderGestureState,
       zoomableViewEventObject: ZoomableViewEvent,
     ) => boolean;
+    onPanResponderTerminate?: (
+      event: Event,
+      gestureState: PanResponderGestureState,
+      zoomableViewEventObject: ZoomableViewEvent,
+    ) => void;
+    onPanResponderTerminationRequest?: (
+      event: Event,
+      gestureState: PanResponderGestureState,
+      zoomableViewEventObject: ZoomableViewEvent,
+    ) => boolean;
   }
 
   export interface ReactNativeZoomableViewState {
