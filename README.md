@@ -232,7 +232,7 @@ Sometimes you need to change deeper level behavior, so we prepared these panresp
 | onStartShouldSetPanResponder | description | event, gestureState, zoomableViewEventObject, baseComponentResult | {boolean} whether panresponder should be set or not |
 | onMoveShouldSetPanResponder | description | event, gestureState, zoomableViewEventObject, baseComponentResult | {boolean} whether panresponder should be set or not |
 | onPanResponderGrant | description | event, gestureState, zoomableViewEventObject | void |
-| onPanResponderEnd | Will be called when gesture ends | event, gestureState, zoomableViewEventObject | void |
+| onPanResponderEnd | Will be called when gesture ends (more accurately, on pan responder "release") | event, gestureState, zoomableViewEventObject | void |
 | onPanResponderMove | Will be called when user moves while touching | event, gestureState, zoomableViewEventObject | void |
 
 ### zoomableViewEventObject
