@@ -1,4 +1,7 @@
-import { ReactNativeZoomableViewState, ReactNativeZoomableViewWithGesturesProps } from '@dudigital/react-native-zoomable-view';
+import {
+  ReactNativeZoomableViewState,
+  ReactNativeZoomableViewWithGesturesProps,
+} from '@dudigital/react-native-zoomable-view';
 import React from 'react';
 import ReactNativeZoomableView from './ReactNativeZoomableView';
 
@@ -9,7 +12,10 @@ export const swipeDirections = {
   SWIPE_RIGHT: 'SWIPE_RIGHT',
 };
 
-class ReactNativeZoomableViewWithGestures extends React.Component<ReactNativeZoomableViewWithGesturesProps, ReactNativeZoomableViewState> {
+class ReactNativeZoomableViewWithGestures extends React.Component<
+  ReactNativeZoomableViewWithGesturesProps,
+  ReactNativeZoomableViewState
+> {
   _onShiftingEnd = (e, gestureState, zoomableViewState) => {
     if (this.props.onShiftingEnd) {
       this.props.onShiftingEnd(e, gestureState, zoomableViewState);
