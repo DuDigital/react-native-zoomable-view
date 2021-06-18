@@ -1,6 +1,6 @@
 {
     "printWidth": 120,
-    "endOfLine": "crlf",
+    "endOfLine": "lf",
     "quoteProps": "consistent",
     "singleQuote": true,
     "trailingComma": "all"
