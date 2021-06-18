@@ -343,6 +343,8 @@ class ReactNativeZoomableView extends Component<ReactNativeZoomableViewProps, Re
    * @private
    */
   _bindOffsetValuesToBorders(changeObj, bindToBorders = null) {
+    const { contentAspectRatio } = this.props;
+
     // if bindToBorders is disabled -> nothing do here
     if (bindToBorders === false || (bindToBorders === null && !this.props.bindToBorders)) {
       return changeObj;
@@ -353,18 +355,27 @@ class ReactNativeZoomableView extends Component<ReactNativeZoomableViewProps, Re
     const currentElementWidth = originalWidth * changeObj.zoomLevel;
     const currentElementHeight = originalHeight * changeObj.zoomLevel;
 
-    // gentle reminder for the following logic:
-    //    RATIO = W / H
-    //    H = W / RATIO
-    //    W = H * RATIO
+    let croppedWidthInPx = 0;
+    let croppedHeightInPx = 0;
 
-    const aspectRatioOnMount = originalHeight && originalWidth ? originalWidth / originalHeight : 1;
-    const { contentAspectRatio = aspectRatioOnMount } = this.props;
+    // if the content and container doesn't have the same aspect ratio,
+    // we must allow a pan movement toward the part of the content that was truncated originally
+    if (contentAspectRatio) {
+      // gentle reminder for the following logic:
+      //    RATIO = W / H
+      //    H = W / RATIO
+      //    W = H * RATIO
 
-    const wasWidthCroppedOnMount = aspectRatioOnMount < contentAspectRatio;
+      const aspectRatioOnMount = originalHeight && originalWidth ? originalWidth / originalHeight : 1;
 
-    const croppedWidthInPx = wasWidthCroppedOnMount ? originalHeight * contentAspectRatio - originalWidth : 0;
-    const croppedHeightInPx = wasWidthCroppedOnMount ? 0 : originalWidth / contentAspectRatio - originalHeight;
+      const wasWidthCroppedOnMount = aspectRatioOnMount < contentAspectRatio;
+
+      if (wasWidthCroppedOnMount) {
+        croppedWidthInPx = originalHeight * contentAspectRatio - originalWidth;
+      } else {
+        croppedHeightInPx = originalWidth / contentAspectRatio - originalHeight;
+      }
+    }
 
     // make sure that view doesn't go out of borders
     const offsetXBound = this._getBoundOffsetValue(
