@@ -8,7 +8,7 @@
     "start": "rollup -c -w",
     "transpile": "rollup -c -w",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "format": "prettier --write \"src/**/*.ts\"",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.tsx\"",
     "version": "npm run format && git add -A src",
     "postversion": "git push && git push --tags",
     "prepare": "npm run build"
