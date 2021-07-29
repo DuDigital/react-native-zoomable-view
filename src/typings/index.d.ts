@@ -44,6 +44,7 @@ declare module '@dudigital/react-native-zoomable-view' {
     longPressDuration?: number;
     captureEvent?: boolean;
     style?: any;
+    stayAtMaxZoom?: boolean;
 
     // callbacks
     onDoubleTapBefore?: (
