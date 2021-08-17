@@ -819,7 +819,6 @@ class ReactNativeZoomableView extends Component<ReactNativeZoomableViewProps, Re
             {
               transform: [
                 { scale: this.state.zoomLevel },
-                { scale: this.state.zoomLevel },
                 { translateX: this.state.offsetX },
                 { translateY: this.state.offsetY },
               ],
