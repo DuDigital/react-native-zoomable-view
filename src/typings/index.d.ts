@@ -1,6 +1,6 @@
-declare module '@dudigital/react-native-zoomable-view' {
+declare module '@openspacelabs/react-native-zoomable-view' {
   import React from 'react';
-  import { PanResponderGestureState, ViewProps } from 'react-native';
+  import { GestureResponderEvent, PanResponderGestureState, ViewProps } from 'react-native';
 
   export enum SwipeDirection {
     SWIPE_UP = 'SWIPE_UP',
@@ -13,16 +13,10 @@ declare module '@dudigital/react-native-zoomable-view' {
     zoomLevel: number;
     offsetX: number;
     offsetY: number;
-    lastZoomLevel: number;
-    lastX: number;
-    lastY: number;
-    distanceBottom: number;
-    distanceLeft: number;
-    distanceRight: number;
-    distanceTop: number;
-    lastMovePinch: boolean;
     originalHeight: number;
     originalWidth: number;
+    originalPageX: number;
+    originalPageY: number;
   }
 
   export interface ReactNativeZoomableViewProps extends ViewProps {
@@ -31,6 +25,8 @@ declare module '@dudigital/react-native-zoomable-view' {
     initialZoom?: number;
     initialOffsetX?: number;
     initialOffsetY?: number;
+    contentWidth?: number;
+    contentHeight?: number;
     maxZoom?: number;
     minZoom?: number;
     doubleTapDelay?: number;
@@ -39,107 +35,110 @@ declare module '@dudigital/react-native-zoomable-view' {
     zoomStep?: number;
     pinchToZoomInSensitivity?: number;
     pinchToZoomOutSensitivity?: number;
-    zoomCenteringLevelDistance?: number;
     movementSensibility?: number;
     longPressDuration?: number;
     captureEvent?: boolean;
     style?: any;
 
+    // debug
+    debug: boolean;
+
     // callbacks
-    onDoubleTapBefore?: (
-      event: Event,
-      gestureState: PanResponderGestureState,
-      zoomableViewEventObject: ZoomableViewEvent,
-    ) => void;
-    onDoubleTapAfter?: (
-      event: Event,
-      gestureState: PanResponderGestureState,
-      zoomableViewEventObject: ZoomableViewEvent,
-    ) => void;
+    onTransform?: (zoomableViewEventObject: ZoomableViewEvent) => void;
+    onSingleTap?: (event: GestureResponderEvent, zoomableViewEventObject: ZoomableViewEvent) => void;
+    onDoubleTapBefore?: (event: GestureResponderEvent, zoomableViewEventObject: ZoomableViewEvent) => void;
+    onDoubleTapAfter?: (event: GestureResponderEvent, zoomableViewEventObject: ZoomableViewEvent) => void;
     onShiftingBefore?: (
-      event: Event,
+      event: GestureResponderEvent,
       gestureState: PanResponderGestureState,
       zoomableViewEventObject: ZoomableViewEvent,
     ) => boolean;
     onShiftingAfter?: (
-      event: Event,
+      event: GestureResponderEvent,
       gestureState: PanResponderGestureState,
       zoomableViewEventObject: ZoomableViewEvent,
     ) => boolean;
     onShiftingEnd?: (
-      event: Event,
+      event: GestureResponderEvent,
       gestureState: PanResponderGestureState,
       zoomableViewEventObject: ZoomableViewEvent,
     ) => void;
     onZoomBefore?: (
-      event: Event,
+      event: GestureResponderEvent,
       gestureState: PanResponderGestureState,
       zoomableViewEventObject: ZoomableViewEvent,
     ) => boolean | void;
     onZoomAfter?: (
-      event: Event,
+      event: GestureResponderEvent,
       gestureState: PanResponderGestureState,
       zoomableViewEventObject: ZoomableViewEvent,
     ) => void;
     onZoomEnd?: (
-      event: Event,
+      event: GestureResponderEvent,
       gestureState: PanResponderGestureState,
       zoomableViewEventObject: ZoomableViewEvent,
     ) => void;
     onLongPress?: (
-      event: Event,
+      event: GestureResponderEvent,
       gestureState: PanResponderGestureState,
       zoomableViewEventObject: ZoomableViewEvent,
     ) => void;
     onStartShouldSetPanResponder?: (
-      event: Event,
+      event: GestureResponderEvent,
       gestureState: PanResponderGestureState,
       zoomableViewEventObject: ZoomableViewEvent,
       baseComponentResult: boolean,
     ) => boolean;
     onMoveShouldSetPanResponder?: (
-      event: Event,
+      event: GestureResponderEvent,
       gestureState: PanResponderGestureState,
       zoomableViewEventObject: ZoomableViewEvent,
       baseComponentResult: boolean,
     ) => boolean;
     onPanResponderGrant?: (
-      event: Event,
+      event: GestureResponderEvent,
       gestureState: PanResponderGestureState,
       zoomableViewEventObject: ZoomableViewEvent,
     ) => void;
     onPanResponderEnd?: (
-      event: Event,
+      event: GestureResponderEvent,
       gestureState: PanResponderGestureState,
       zoomableViewEventObject: ZoomableViewEvent,
     ) => void;
     onPanResponderMove?: (
-      event: Event,
+      event: GestureResponderEvent,
       gestureState: PanResponderGestureState,
       zoomableViewEventObject: ZoomableViewEvent,
     ) => boolean;
     onPanResponderTerminate?: (
-      event: Event,
+      event: GestureResponderEvent,
       gestureState: PanResponderGestureState,
       zoomableViewEventObject: ZoomableViewEvent,
     ) => void;
     onPanResponderTerminationRequest?: (
-      event: Event,
+      event: GestureResponderEvent,
       gestureState: PanResponderGestureState,
       zoomableViewEventObject: ZoomableViewEvent,
     ) => boolean;
   }
 
+  export interface Vec2D {
+    x: number;
+    y: number;
+  }
+
+  export interface TouchPoint extends Vec2D {
+    id: string;
+    isSecondTap?: boolean;
+  }
+
   export interface ReactNativeZoomableViewState {
-    offsetX: number;
-    offsetY: number;
-    lastX: number;
-    lastY: number;
-    lastZoomLevel: number;
-    zoomLevel: number;
+    touches: TouchPoint[];
     originalWidth: number;
     originalHeight: number;
-    lastMovePinch: boolean;
+    originalPageX: number;
+    originalPageY: number;
+    debugPoints: undefined | Vec2D[];
   }
 
   export class ReactNativeZoomableView extends React.PureComponent<ReactNativeZoomableViewProps> {
@@ -167,12 +166,12 @@ declare module '@dudigital/react-native-zoomable-view' {
   export class ReactNativeZoomableViewWithGestures extends ReactNativeZoomableView {}
 }
 
-declare module '@dudigital/react-native-zoomable-view/src/ReactNativeZoomableView' {
-  import { ReactNativeZoomableView } from '@dudigital/react-native-zoomable-view';
+declare module '@openspacelabs/react-native-zoomable-view/src/ReactNativeZoomableView' {
+  import { ReactNativeZoomableView } from '@openspacelabs/react-native-zoomable-view';
   export default ReactNativeZoomableView;
 }
 
-declare module '@dudigital/react-native-zoomable-view/src/ReactNativeZoomableViewWithGestures' {
-  import { ReactNativeZoomableViewWithGestures } from '@dudigital/react-native-zoomable-view';
+declare module '@openspacelabs/react-native-zoomable-view/src/ReactNativeZoomableViewWithGestures' {
+  import { ReactNativeZoomableViewWithGestures } from '@openspacelabs/react-native-zoomable-view';
   export default ReactNativeZoomableViewWithGestures;
 }

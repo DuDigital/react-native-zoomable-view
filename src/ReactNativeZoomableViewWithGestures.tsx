@@ -1,7 +1,7 @@
 import {
   ReactNativeZoomableViewState,
   ReactNativeZoomableViewWithGesturesProps,
-} from '@dudigital/react-native-zoomable-view';
+} from '@openspacelabs/react-native-zoomable-view';
 import React from 'react';
 import ReactNativeZoomableView from './ReactNativeZoomableView';
 
@@ -180,7 +180,7 @@ class ReactNativeZoomableViewWithGestures extends React.Component<
     return <ReactNativeZoomableView {...this.props} onShiftingEnd={this._onShiftingEnd} />;
   }
 }
-/* 
+/*
 TODO: Remove this when typescript is proven to work
 ReactNativeZoomableViewWithGestures.propTypes = {
   swipeLengthThreshold: PropTypes.number,
