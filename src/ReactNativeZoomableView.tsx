@@ -106,8 +106,8 @@ class ReactNativeZoomableView extends Component<
       onPanResponderRelease: this._handlePanResponderEnd,
       onPanResponderTerminate: props.onPanResponderTerminate,
       onPanResponderTerminationRequest:
-        props.onPanResponderTerminationRequest ?? ((evt) => false),
-      onShouldBlockNativeResponder: (evt) => false,
+        props.onPanResponderTerminationRequest ?? (() => false),
+      onShouldBlockNativeResponder: () => false,
     });
 
     this.zoomSubjectRef = createRef<View>();
@@ -1005,6 +1005,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',
+    overflow: 'hidden',
   },
 });
 
