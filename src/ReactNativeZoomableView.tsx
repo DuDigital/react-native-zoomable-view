@@ -16,7 +16,7 @@ import {
   ReactNativeZoomableViewState,
   TouchPoint,
   ZoomableViewEvent,
-} from '@openspacelabs/react-native-zoomable-view';
+} from './typings';
 
 import { AnimatedTouchFeedback } from './components';
 import { DebugTouchPoint } from './debugHelper';
