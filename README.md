@@ -15,11 +15,9 @@ We are happy to hear from you about bugs, issues and would also appreciate your 
 - [Installation](#installation)
 - [Basic Usage](#basic-usage)
 - [Props](#props)
-- [Events](#events)
+- [Methods](#methods)
 - [Pan Responder Hooks](#pan-responder-hooks)
 - [Example](#example)
-- [Expo Snack Example](#expo-snack-example)
-- [Example Repo](#example-repo)
 
 ### Installation
 
@@ -83,8 +81,6 @@ export default class App extends React.Component {
     console.log('Event: ', event);
     console.log('GestureState: ', gestureState);
     console.log('ZoomableEventObject: ', zoomableViewEventObject);
-    console.log('');
-    console.log(`Zoomed from ${zoomableViewEventObject.lastZoomLevel} to  ${zoomableViewEventObject.zoomLevel}`);
   }
 
   render() {
@@ -112,15 +108,6 @@ export default class App extends React.Component {
 }
 ```
 
-### Expo Snack Example
-
-https://snack.expo.io/SkltQtr8Q
-
-### Example Repo
-
-https://github.com/DuDigital/react-native-zoomable-view-example
-
-
 ### Props
 
 #### Options
@@ -139,10 +126,11 @@ These options can be used to limit and change the zoom behavior.
 | zoomStep | number | How much zoom should be applied on double tap | 0.5 |
 | pinchToZoomInSensitivity | number | the level of resistance (sensitivity) to zoom in (0 - 10) - higher is less sensitive | 3 |
 | pinchToZoomOutSensitivity | number | the level of resistance (sensitivity) to zoom out (0 - 10) - higher is less sensitive | 1 |
-| zoomCenteringLevelDistance | number | the (zoom level - 0 - maxZoom) distance for pinch to zoom actions until they are shifted on new pinch to zoom center - higher means it centeres slower | 0.5 |
 | movementSensibility | number | how resistant should shifting the view around be? (0.5 - 5) - higher is less sensitive | 1.9 |
 | initialOffsetX | number | The horizontal offset the image should start at | 0 |
 | initialOffsetY | number | The vertical offset the image should start at | 0 |
+| contentHeight | number | Specify you want to treat the height of the **centered** content inside the zoom subject as the zoom subject's height | undefined |
+| contentWidth | number | Specify you want to treat the width of the **centered** content inside the zoom subject as the zoom subject's width | undefined |
 | longPressDuration | number | Duration in ms until a press is considered a long press | 700 |
 | captureEvent | boolean | Defines whether the pan responder of the parent element should be captured. (useful for react-native modals, set it to true) | false |
 
@@ -152,6 +140,7 @@ These events can be used to work with data after specific events.
 
 | name | description | params | expected return |
 | ---- | ----------- | ------ | --------------- |
+| onTransform | Will be called when the transformation configuration (zoom level and offset) changes | zoomableViewEventObject | void |
 | onDoubleTapBefore | Will be called, at the start of a double tap | event, gestureState, zoomableViewEventObject | void |
 | onDoubleTapAfter | Will be called at the end of a double tap | event, gestureState, zoomableViewEventObject | void |
 | onShiftingBefore | Will be called, when user taps and moves the view, but before our view movement work kicks in (so this is the place to interrupt movement, if you need to)  | event, gestureState, zoomableViewEventObject |  {boolean} if this returns true, ZoomableView will not process the shift, otherwise it will |
@@ -163,12 +152,10 @@ These events can be used to work with data after specific events.
 | onLongPress | Will be called after the user pressed on the image for a while | event, gestureState | void | 
 
 
-#### Events
+#### Methods
 
-The following events allow you to control the ZoomableView zoom level & position from your component.
+The following methods allow you to control the ZoomableView zoom level & position from your component.
 (think of control buttons, ...)
-
-You can find an implementation example in the example repo: https://github.com/DuDigital/react-native-zoomable-view-example
 
 | name | description | params | expected return |
 | ---- | ----------- | ------ | --------------- |
@@ -242,21 +229,13 @@ Sometimes you need to change deeper level behavior, so we prepared these panresp
 The zoomableViewEventObject object is attached to every event and represents the current state of our zoomable view.
 ```
    {
-      zoomLevel: number,         // current level of zooming (usually a value between minZoom and maxZoom)
+      zoomLevel: number,         // current level of zooming denoting the scale applied to the zoom subject (usually a value between minZoom and maxZoom)
       offsetX: number,           // current offset left
       offsetY: number,           // current offset top
-      lastZoomLevel: number,     // last zoom level (before we started the movement)
-      lastX: number,             // last offset left (before we started the movement)
-      lastY: number,             // last offset top (before we started the movement)
-      lastMovePinch: boolean,    // information if a movement is going on
-      distanceBottom: number,    // view offset from bottom border
-      distanceLeft: number,      // view offset from left border
-      distanceRight: number,     // view offset from right border
-      distanceTop: number,       // view offset from bottom border
-      lastMovePinch: boolean,    // boolean, that states if this movement was a pinch movement
-      originalHeight: number,    // original height of the outer view
-      originalWidth: number,     // original width of the outer view
-      captureEvent: boolean,     // should the panresponder be taken away from parent component (used for react-native modals) 
+      originalHeight: number,    // original height of the zoom subject
+      originalWidth: number,     // original width of the zoom subject
+      originalPageX: number,     // original absolute X of the zoom subject
+      originalPageY: number,     // original absolite Y of the zoom subject
    }
 ```
 
@@ -265,30 +244,8 @@ The zoomableViewEventObject object is attached to every event and represents the
 ### React Native Modal
 
 To make this work with react-native modals, you have to set the `captureEvent` prop to `true`.
-Otherwise the modal will stop the pinch2zoom event and it will not work.
-
-
-## TODO
-
-* Improve documentation
-* Add examples for more complex scenarios (react-native-zoomable-view in a swiper)
-* TESTS
+Otherwise, the modal will stop the pinch2zoom event, and it will not work.
 
 ## Contributing
 
-A lot of people are now using react-native-zoomable-view and there are always smaller things to improve and change.<br />
-Therefore any contributions are more than welcome! <3<br /><br />
-
-Are you looking to help out and improve this project?<br />
-Either submit Pull requests with awesome changes or reach out to me on Twitter: https://twitter.com/SimonEritsch<br />
-Helping hands are always appreciated! :)
-
-### How to contribute
-
-Just clone the example repository: https://github.com/DuDigital/react-native-zoomable-view-example
-
-Adjust the package in the typescript files in `node_modules/@dudigital/react-native-zoomable-view` folder, while running `npm transpile` **in that folder** as well.
-(the transpile command will make sure to transpile the typescript code into javascript)
-
-// We definitely need a better process here. If you have any ideas - please open an issue or PR about a solution. ;)
-// We would really appreciate it
+TBD
