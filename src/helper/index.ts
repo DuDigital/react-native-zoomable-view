@@ -1,6 +1,5 @@
 import { GestureResponderEvent, PanResponderGestureState } from 'react-native';
-
-import { Vec2D } from '@openspacelabs/react-native-zoomable-view';
+import { Vec2D } from 'src/typings';
 
 export { calcNewScaledOffsetForZoomCentering } from './calcNewScaledOffsetForZoomCentering';
 
@@ -17,7 +16,7 @@ export { calcNewScaledOffsetForZoomCentering } from './calcNewScaledOffsetForZoo
  */
 export function calcGestureCenterPoint(
   e: GestureResponderEvent,
-  gestureState: PanResponderGestureState,
+  gestureState: PanResponderGestureState
 ): Vec2D | null {
   const touches = e?.nativeEvent?.touches;
   if (!touches[0]) return null;
@@ -41,7 +40,7 @@ export function calcGestureCenterPoint(
 
 export function calcGestureTouchDistance(
   e: GestureResponderEvent,
-  gestureState: PanResponderGestureState,
+  gestureState: PanResponderGestureState
 ): number | null {
   const touches = e?.nativeEvent?.touches;
   if (gestureState.numberActiveTouches !== 2 || !touches[0] || !touches[1])

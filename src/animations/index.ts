@@ -1,9 +1,9 @@
 import { Animated, Easing } from 'react-native';
-import { Vec2D } from '@openspacelabs/react-native-zoomable-view';
+import { Vec2D } from 'src/typings';
 
 export function getBoundaryCrossedAnim(
   animValue: Animated.Value,
-  toValue: number,
+  toValue: number
 ) {
   return Animated.spring(animValue, {
     overshootClamping: true,
@@ -14,7 +14,7 @@ export function getBoundaryCrossedAnim(
 
 export function getPanMomentumDecayAnim(
   animValue: Animated.Value | Animated.ValueXY,
-  velocity: number | Vec2D,
+  velocity: number | Vec2D
 ) {
   return Animated.decay(animValue, {
     velocity,
@@ -23,10 +23,7 @@ export function getPanMomentumDecayAnim(
   });
 }
 
-export function getZoomToAnimation(
-  animValue: Animated.Value,
-  toValue: number,
-) {
+export function getZoomToAnimation(animValue: Animated.Value, toValue: number) {
   return Animated.timing(animValue, {
     easing: Easing.out(Easing.ease),
     toValue,
