@@ -149,39 +149,42 @@ class ReactNativeZoomableView extends Component<
     return this.__getOffset('y');
   }
   private __setOffset(axis: 'x' | 'y', offset) {
-    const containerSize =
-      axis === 'x' ? this.state?.originalWidth : this.state?.originalHeight;
-    const contentSize =
-      axis === 'x'
-        ? this.props.contentWidth || this.state?.originalWidth
-        : this.props.contentHeight || this.state?.originalHeight;
-
-    const boundOffset =
-      contentSize && containerSize
-        ? applyPanBoundariesToOffset(
-            offset,
-            containerSize,
-            contentSize,
-            this.zoomLevel
-          )
-        : offset;
-
     const offsetState = this.__offsets[axis];
     const animValue = this.panAnim?.[axis];
 
-    if (
-      animValue &&
-      !this.gestureType &&
-      !offsetState.boundaryCrossedAnimInEffect
-    ) {
-      const boundariesApplied =
-        boundOffset !== offset && boundOffset.toFixed(3) !== offset.toFixed(3);
-      if (boundariesApplied) {
-        offsetState.boundaryCrossedAnimInEffect = true;
-        getBoundaryCrossedAnim(this.panAnim[axis], boundOffset).start(() => {
-          offsetState.boundaryCrossedAnimInEffect = false;
-        });
-        return;
+    if (this.props.bindToBorders) {
+      const containerSize =
+        axis === 'x' ? this.state?.originalWidth : this.state?.originalHeight;
+      const contentSize =
+        axis === 'x'
+          ? this.props.contentWidth || this.state?.originalWidth
+          : this.props.contentHeight || this.state?.originalHeight;
+
+      const boundOffset =
+        contentSize && containerSize
+          ? applyPanBoundariesToOffset(
+              offset,
+              containerSize,
+              contentSize,
+              this.zoomLevel
+            )
+          : offset;
+
+      if (
+        animValue &&
+        !this.gestureType &&
+        !offsetState.boundaryCrossedAnimInEffect
+      ) {
+        const boundariesApplied =
+          boundOffset !== offset &&
+          boundOffset.toFixed(3) !== offset.toFixed(3);
+        if (boundariesApplied) {
+          offsetState.boundaryCrossedAnimInEffect = true;
+          getBoundaryCrossedAnim(this.panAnim[axis], boundOffset).start(() => {
+            offsetState.boundaryCrossedAnimInEffect = false;
+          });
+          return;
+        }
       }
     }
 
@@ -658,7 +661,7 @@ class ReactNativeZoomableView extends Component<
     const offsetX = this.offsetX + shift.x;
     const offsetY = this.offsetY + shift.y;
 
-    this._setNewOffsetPosition(offsetX, offsetY, this.props.bindToBorders);
+    this._setNewOffsetPosition(offsetX, offsetY);
   }
 
   /**
@@ -666,14 +669,12 @@ class ReactNativeZoomableView extends Component<
    *
    * @param {number} newOffsetX
    * @param {number} newOffsetY
-   * @param {bool} bindToBorders
    * @param {() => void)} callback
    * @returns
    */
   _setNewOffsetPosition(
     newOffsetX: number,
     newOffsetY: number,
-    bindToBorders = true,
     callback: () => void = null
   ) {
     const { onShiftingBefore, onShiftingAfter } = this.props;
@@ -777,7 +778,6 @@ class ReactNativeZoomableView extends Component<
       zoomPositionCoordinates.x,
       zoomPositionCoordinates.y,
       nextZoomStep,
-      this.props.bindToBorders,
       () => {
         onDoubleTapAfter?.(
           e,
@@ -817,7 +817,6 @@ class ReactNativeZoomableView extends Component<
    * @param x
    * @param y
    * @param newZoomLevel
-   * @param bindToBorders
    * @param callbk
    *
    * @private
@@ -826,7 +825,6 @@ class ReactNativeZoomableView extends Component<
     x: number,
     y: number,
     newZoomLevel: number,
-    bindToBorders = true,
     callbk: () => void = null
   ) {
     this.props.onZoomBefore?.(null, null, this._getZoomableViewEventObject());
@@ -871,11 +869,10 @@ class ReactNativeZoomableView extends Component<
    * Returns a promise if everything was updated and a boolean, whether it could be updated or if it exceeded the min/max zoom limits.
    *
    * @param {number} newZoomLevel
-   * @param {bool} bindToBorders
    *
    * @return {Promise<bool>}
    */
-  zoomTo(newZoomLevel: number, bindToBorders = true): Promise<boolean> {
+  zoomTo(newZoomLevel: number): Promise<boolean> {
     return new Promise((resolve) => {
       // if we would go out of our min/max limits -> abort
       if (
@@ -886,7 +883,7 @@ class ReactNativeZoomableView extends Component<
         return;
       }
 
-      this._zoomToLocation(0, 0, newZoomLevel, bindToBorders, () => {
+      this._zoomToLocation(0, 0, newZoomLevel, () => {
         resolve(true);
       });
     });
@@ -900,20 +897,16 @@ class ReactNativeZoomableView extends Component<
    * Returns a promise if everything was updated and a boolean, whether it could be updated or if it exceeded the min/max zoom limits.
    *
    * @param {number | null} zoomLevelChange
-   * @param {bool} bindToBorders
    *
    * @return {Promise<bool>}
    */
-  zoomBy(
-    zoomLevelChange: number = null,
-    bindToBorders = true
-  ): Promise<boolean> {
+  zoomBy(zoomLevelChange: number = null): Promise<boolean> {
     // if no zoom level Change given -> just use zoom step
     if (!zoomLevelChange) {
       zoomLevelChange = this.props.zoomStep;
     }
 
-    return this.zoomTo(this.zoomLevel + zoomLevelChange, bindToBorders);
+    return this.zoomTo(this.zoomLevel + zoomLevelChange);
   }
 
   /**
@@ -922,22 +915,17 @@ class ReactNativeZoomableView extends Component<
    *
    * @param {number} newOffsetX the new position we want to move it to (x-axis)
    * @param {number} newOffsetY the new position we want to move it to (y-axis)
-   * @param {bool} bindToBorders
    *
    * @return {Promise<bool>}
    */
-  moveTo(
-    newOffsetX: number,
-    newOffsetY: number,
-    bindToBorders = true
-  ): Promise<void> {
+  moveTo(newOffsetX: number, newOffsetY: number): Promise<void> {
     const { originalWidth, originalHeight } = this.state;
 
     const offsetX = (newOffsetX - originalWidth / 2) / this.zoomLevel;
     const offsetY = (newOffsetY - originalHeight / 2) / this.zoomLevel;
 
     return new Promise((resolve) => {
-      this._setNewOffsetPosition(-offsetX, -offsetY, bindToBorders, resolve);
+      this._setNewOffsetPosition(-offsetX, -offsetY, resolve);
     });
   }
 
@@ -948,22 +936,17 @@ class ReactNativeZoomableView extends Component<
    *
    * @param {number} offsetChangeX the amount we want to move the offset by (x-axis)
    * @param {number} offsetChangeY the amount we want to move the offset by (y-axis)
-   * @param {bool} bindToBorders
    *
    * @return {Promise<bool>}
    */
-  moveBy(
-    offsetChangeX: number,
-    offsetChangeY: number,
-    bindToBorders = true
-  ): Promise<void> {
+  moveBy(offsetChangeX: number, offsetChangeY: number): Promise<void> {
     const offsetX =
       (this.offsetX * this.zoomLevel - offsetChangeX) / this.zoomLevel;
     const offsetY =
       (this.offsetY * this.zoomLevel - offsetChangeY) / this.zoomLevel;
 
     return new Promise((resolve) => {
-      this._setNewOffsetPosition(offsetX, offsetY, bindToBorders, resolve);
+      this._setNewOffsetPosition(offsetX, offsetY, resolve);
     });
   }
 
