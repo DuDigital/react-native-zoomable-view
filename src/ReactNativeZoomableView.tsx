@@ -2,6 +2,7 @@ import React, { Component, createRef, RefObject } from 'react';
 import {
   Animated,
   GestureResponderEvent,
+  InteractionManager,
   PanResponder,
   PanResponderGestureState,
   StyleSheet,
@@ -178,6 +179,12 @@ class ReactNativeZoomableView extends Component<ReactNativeZoomableViewProps, Re
       this.zoomAnim.addListener(() => this._invokeOnTransform());
       this.onTransformInvocationInitialized = true;
     }
+  }
+
+  componentDidMount() {
+    InteractionManager.runAfterInteractions(() => {
+      this._getBoxDimensions();
+    });
   }
 
   /**
