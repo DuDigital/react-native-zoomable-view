@@ -1,4 +1,4 @@
-# react-native-zoomable-view
+# @openspacelabs/react-native-zoomable-view
 
 A view component for react-native with pinch to zoom, tap to move and double tap to zoom capability.
 You can zoom everything, from normal images, text and more complex nested views.
@@ -21,11 +21,11 @@ We are happy to hear from you about bugs, issues and would also appreciate your 
 
 ### Installation
 
-`$ npm install @dudigital/react-native-zoomable-view --save`
+`$ npm install @openspacelabs/react-native-zoomable-view --save`
 
-or 
+or
 
-`$ yarn add @dudigital/react-native-zoomable-view`
+`$ yarn add @openspacelabs/react-native-zoomable-view`
 
 ### Basic Usage
 
@@ -149,7 +149,7 @@ These events can be used to work with data after specific events.
 | onZoomBefore | Will be called, while the user pinches the screen, but before our zoom work kicks in (so this is the place to interrupt zooming, if you need to) | event, gestureState, zoomableViewEventObject | {boolean} if this returns true, ZoomableView will not process the pinch, otherwise it will |
 | onZoomAfter | Will be called, while the user pinches the screen, but after the values have changed already | event, gestureState, zoomableViewEventObject | {boolean} if this returns true, ZoomableView will not process the pinch, otherwise it will |
 | onZoomEnd | Will be called after pinchzooming has ended | event, gestureState, zoomableViewEventObject | {boolean} if this returns true, ZoomableView will not process the pinch, otherwise it will |
-| onLongPress | Will be called after the user pressed on the image for a while | event, gestureState | void | 
+| onLongPress | Will be called after the user pressed on the image for a while | event, gestureState | void |
 
 
 #### Methods
@@ -248,4 +248,8 @@ Otherwise, the modal will stop the pinch2zoom event, and it will not work.
 
 ## Contributing
 
-TBD
+See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
+
+## License
+
+MIT
