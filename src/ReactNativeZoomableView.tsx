@@ -104,9 +104,26 @@ class ReactNativeZoomableView extends Component<
       onPanResponderGrant: this._handlePanResponderGrant,
       onPanResponderMove: this._handlePanResponderMove,
       onPanResponderRelease: this._handlePanResponderEnd,
-      onPanResponderTerminate: props.onPanResponderTerminate,
-      onPanResponderTerminationRequest:
-        props.onPanResponderTerminationRequest ?? (() => false),
+      onPanResponderTerminate: (evt, gestureState) => {
+        // We should also call _handlePanResponderEnd
+        // to properly perform cleanups when the gesture is terminated
+        // (aka gesture handling responsibility is taken over by another component).
+        // This also fixes a weird issue where
+        // on real device, sometimes onPanResponderRelease is not called when you lift 2 fingers up,
+        // but onPanResponderTerminate is called instead for no apparent reason.
+        this._handlePanResponderEnd(evt, gestureState);
+        this.props.onPanResponderTerminate?.(
+          evt,
+          gestureState,
+          this._getZoomableViewEventObject()
+        );
+      },
+      onPanResponderTerminationRequest: (evt, gestureState) =>
+        !!this.props.onPanResponderTerminationRequest?.(
+          evt,
+          gestureState,
+          this._getZoomableViewEventObject()
+        ),
       onShouldBlockNativeResponder: () => false,
     });
 
