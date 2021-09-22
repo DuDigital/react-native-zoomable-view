@@ -16,8 +16,6 @@ We've rewritten most of the logic in the original library to address the followi
 - [x] Added "react-native-builder-bob" as a framework for library management/maintenance
 - [x] Better internal code organization and documentation
 
-We are using this component already in production in two of our projects, but for quality assurance sake, please consider this component beta.
-We are happy to hear from you about bugs, issues and would also appreciate your pull requests, if you've made improvements or fixed bugs.
 
 ## Preview
 
