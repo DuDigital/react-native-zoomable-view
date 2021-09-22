@@ -1,7 +1,7 @@
 import {
   ReactNativeZoomableViewState,
   ReactNativeZoomableViewWithGesturesProps,
-} from '@openspacelabs/react-native-zoomable-view';
+} from './typings';
 import React from 'react';
 import ReactNativeZoomableView from './ReactNativeZoomableView';
 
@@ -36,7 +36,15 @@ class ReactNativeZoomableViewWithGestures extends React.Component<
    * @private
    */
   _couldCallSwipeEvent(zoomableViewState) {
-    const { onSwipe, onSwipeUp, onSwipeDown, onSwipeLeft, onSwipeRight, swipeMaxZoom, swipeMinZoom } = this.props;
+    const {
+      onSwipe,
+      onSwipeUp,
+      onSwipeDown,
+      onSwipeLeft,
+      onSwipeRight,
+      swipeMaxZoom,
+      swipeMinZoom,
+    } = this.props;
 
     if (swipeMaxZoom && zoomableViewState.zoomLevel > swipeMaxZoom) {
       return false;
@@ -78,7 +86,8 @@ class ReactNativeZoomableViewWithGestures extends React.Component<
    * @private
    */
   _triggerSwipeHandlers(swipeDirection, gestureState) {
-    const { onSwipe, onSwipeUp, onSwipeDown, onSwipeLeft, onSwipeRight } = this.props;
+    const { onSwipe, onSwipeUp, onSwipeDown, onSwipeLeft, onSwipeRight } =
+      this.props;
     const { SWIPE_LEFT, SWIPE_RIGHT, SWIPE_UP, SWIPE_DOWN } = swipeDirections;
 
     // trigger the general onswipe callback
@@ -143,7 +152,12 @@ class ReactNativeZoomableViewWithGestures extends React.Component<
   _isValidHorizontalSwipe(gestureState) {
     const { vx, dy } = gestureState;
     const { swipeVelocityThreshold, swipeDirectionalThreshold } = this.props;
-    return this._isValidSwipe(vx, swipeVelocityThreshold, dy, swipeDirectionalThreshold);
+    return this._isValidSwipe(
+      vx,
+      swipeVelocityThreshold,
+      dy,
+      swipeDirectionalThreshold
+    );
   }
 
   /**
@@ -157,7 +171,12 @@ class ReactNativeZoomableViewWithGestures extends React.Component<
   _isValidVerticalSwipe(gestureState) {
     const { vy, dx } = gestureState;
     const { swipeVelocityThreshold, swipeDirectionalThreshold } = this.props;
-    return this._isValidSwipe(vy, swipeVelocityThreshold, dx, swipeDirectionalThreshold);
+    return this._isValidSwipe(
+      vy,
+      swipeVelocityThreshold,
+      dx,
+      swipeDirectionalThreshold
+    );
   }
 
   /**
@@ -172,12 +191,25 @@ class ReactNativeZoomableViewWithGestures extends React.Component<
    *
    * @private
    */
-  _isValidSwipe(velocity, swipeVelocityThreshold, directionalOffset, swipeDirectionalThreshold) {
-    return Math.abs(velocity) > swipeVelocityThreshold && Math.abs(directionalOffset) < swipeDirectionalThreshold;
+  _isValidSwipe(
+    velocity,
+    swipeVelocityThreshold,
+    directionalOffset,
+    swipeDirectionalThreshold
+  ) {
+    return (
+      Math.abs(velocity) > swipeVelocityThreshold &&
+      Math.abs(directionalOffset) < swipeDirectionalThreshold
+    );
   }
 
   render() {
-    return <ReactNativeZoomableView {...this.props} onShiftingEnd={this._onShiftingEnd} />;
+    return (
+      <ReactNativeZoomableView
+        {...this.props}
+        onShiftingEnd={this._onShiftingEnd}
+      />
+    );
   }
 }
 /*

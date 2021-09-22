@@ -1,7 +1,20 @@
-# react-native-zoomable-view
+# @openspacelabs/react-native-zoomable-view
 
 A view component for react-native with pinch to zoom, tap to move and double tap to zoom capability.
 You can zoom everything, from normal images, text and more complex nested views.
+
+This library is a fork of https://www.npmjs.com/package/@dudigital/react-native-zoomable-view.
+We've rewritten most of the logic in the original library to address the following items:
+
+- [x] Fixed jittering during zooming and panning
+- [x] Fixed incorrect zoom center (happens during pinching and double tapping)
+- [x] Fixed incorrect pan boundaries
+- [x] Added the ability to zoom and pan at the same time (before you can only perform 1 of these 2 at a time)
+- [x] Added “pan momentum”, “zoom to”, and “boundaries-crossed” animations
+- [x] Added onSingleTap (besides the existing onDoubleTap)
+- [x] Added animated touch feedback when the zoom subject is tapped on
+- [x] Added "react-native-builder-bob" as a framework for library management/maintenance
+- [x] Better internal code organization and documentation
 
 We are using this component already in production in two of our projects, but for quality assurance sake, please consider this component beta.
 We are happy to hear from you about bugs, issues and would also appreciate your pull requests, if you've made improvements or fixed bugs.
@@ -21,11 +34,11 @@ We are happy to hear from you about bugs, issues and would also appreciate your 
 
 ### Installation
 
-`$ npm install @dudigital/react-native-zoomable-view --save`
+`$ npm install @openspacelabs/react-native-zoomable-view --save`
 
-or 
+or
 
-`$ yarn add @dudigital/react-native-zoomable-view`
+`$ yarn add @openspacelabs/react-native-zoomable-view`
 
 ### Basic Usage
 
@@ -35,11 +48,13 @@ Therefore no platform specific configuration needs to be done.
 Just use it as a drop in component instead of a normal view.
 
 Import ReactNativeZoomableView:
+
 ```JSX
-import ReactNativeZoomableView from '@dudigital/react-native-zoomable-view/src/ReactNativeZoomableView';
+import ReactNativeZoomableView from '@openspacelabs/react-native-zoomable-view/src/ReactNativeZoomableView';
 ```
 
 Use the component:
+
 ```JSX
 <ReactNativeZoomableView
    maxZoom={1.5}
@@ -62,50 +77,49 @@ Use the component:
 Here is a full drop in example you can use in Expo, after installing the package.
 
 ```JSX
-import React from 'react';
-import { View, Image } from 'react-native';
-import ReactNativeZoomableView from '@dudigital/react-native-zoomable-view/src/ReactNativeZoomableView';
+import * as React from 'react';
 
-export default class App extends React.Component {
-  /**
-   * Log out an example event after zooming
-   *
-   * @param event
-   * @param gestureState
-   * @param zoomableViewEventObject
-   */
-  logOutZoomState = (event, gestureState, zoomableViewEventObject) => {
-    console.log('');
-    console.log('');
-    console.log('-------------');
-    console.log('Event: ', event);
-    console.log('GestureState: ', gestureState);
-    console.log('ZoomableEventObject: ', zoomableViewEventObject);
-  }
+import { StyleSheet, View, Text, Image } from 'react-native';
+import { ReactNativeZoomableView } from '@openspacelabs/react-native-zoomable-view';
 
-  render() {
-    return (
-      <View style={{ flex: 1 }}>
+export default function App() {
+  return (
+    <View style={styles.container}>
+      <Text>ReactNativeZoomableView</Text>
+      <View style={{ borderWidth: 5, flexShrink: 1, height: 500, width: 310 }}>
         <ReactNativeZoomableView
-          maxZoom={1.5}
-          minZoom={0.5}
-          zoomStep={0.5}
-          initialZoom={1}
-          bindToBorders={true}
-          onZoomAfter={this.logOutZoomState}
-          style={{
-            padding: 10,
-            backgroundColor: 'red',
-          }}
+          maxZoom={30}
+          // Give these to the zoomable view so it can apply the boundaries around the actual content.
+          // Need to make sure the content is actually centered and the width and height are
+          // dimensions when it's rendered naturally. Not the intrinsic size.
+          // For example, an image with an intrinsic size of 400x200 will be rendered as 300x150 in this case.
+          // Therefore, we'll feed the zoomable view the 300x100 size.
+          contentWidth={300}
+          contentHeight={150}
         >
-          <Image style={{ flex: 1, width: null, height: '100%' }}
-                 source={require('./image.jpg')}
-                 resizeMode="contain" />
+          <Image
+            style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
+            source={{ uri: 'https://via.placeholder.com/400x200.png' }}
+          />
         </ReactNativeZoomableView>
       </View>
-    );
-  }
+    </View>
+  );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+  },
+  box: {
+    width: 60,
+    height: 60,
+    marginVertical: 20,
+  },
+});
 ```
 
 ### Props
@@ -114,56 +128,54 @@ export default class App extends React.Component {
 
 These options can be used to limit and change the zoom behavior.
 
-| name | type | description | default |
-| ---- | ----------- | ------ | --------------- |
-| zoomEnabled | boolean | Can be used to enable or disable the zooming dynamically | true |
-| initialZoom | number | Initial zoom level on startup | 1.0 |
-| maxZoom | number | Maximum possible zoom level (zoom in). Can be set to `null` to allow unlimited zooming | 1.5 |
-| minZoom | number | Minimum possible zoom level (zoom out) | 0.5 |
-| doubleTapDelay | number  | How much delay will still be recognized as double press (ms) | 300 |
-| doubleTapZoomToCenter | boolean | If true, double tapping will always zoom to center of View instead of the direction it was double tapped in
-| bindToBorders | boolean | If true, it makes sure the object stays within box borders | true |
-| zoomStep | number | How much zoom should be applied on double tap | 0.5 |
-| pinchToZoomInSensitivity | number | the level of resistance (sensitivity) to zoom in (0 - 10) - higher is less sensitive | 3 |
-| pinchToZoomOutSensitivity | number | the level of resistance (sensitivity) to zoom out (0 - 10) - higher is less sensitive | 1 |
-| movementSensibility | number | how resistant should shifting the view around be? (0.5 - 5) - higher is less sensitive | 1.9 |
-| initialOffsetX | number | The horizontal offset the image should start at | 0 |
-| initialOffsetY | number | The vertical offset the image should start at | 0 |
-| contentHeight | number | Specify you want to treat the height of the **centered** content inside the zoom subject as the zoom subject's height | undefined |
-| contentWidth | number | Specify you want to treat the width of the **centered** content inside the zoom subject as the zoom subject's width | undefined |
-| longPressDuration | number | Duration in ms until a press is considered a long press | 700 |
-| captureEvent | boolean | Defines whether the pan responder of the parent element should be captured. (useful for react-native modals, set it to true) | false |
+| name                      | type    | description                                                                                                                  | default   |
+| ------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------- | --------- |
+| zoomEnabled               | boolean | Can be used to enable or disable the zooming dynamically                                                                     | true      |
+| initialZoom               | number  | Initial zoom level on startup                                                                                                | 1.0       |
+| maxZoom                   | number  | Maximum possible zoom level (zoom in). Can be set to `null` to allow unlimited zooming                                       | 1.5       |
+| minZoom                   | number  | Minimum possible zoom level (zoom out)                                                                                       | 0.5       |
+| doubleTapDelay            | number  | How much delay will still be recognized as double press (ms)                                                                 | 300       |
+| doubleTapZoomToCenter     | boolean | If true, double tapping will always zoom to center of View instead of the direction it was double tapped in                  |
+| bindToBorders             | boolean | If true, it makes sure the object stays within box borders                                                                   | true      |
+| zoomStep                  | number  | How much zoom should be applied on double tap                                                                                | 0.5       |
+| pinchToZoomInSensitivity  | number  | the level of resistance (sensitivity) to zoom in (0 - 10) - higher is less sensitive                                         | 3         |
+| pinchToZoomOutSensitivity | number  | the level of resistance (sensitivity) to zoom out (0 - 10) - higher is less sensitive                                        | 1         |
+| movementSensibility       | number  | how resistant should shifting the view around be? (0.5 - 5) - higher is less sensitive                                       | 1.9       |
+| initialOffsetX            | number  | The horizontal offset the image should start at                                                                              | 0         |
+| initialOffsetY            | number  | The vertical offset the image should start at                                                                                | 0         |
+| contentHeight             | number  | Specify you want to treat the height of the **centered** content inside the zoom subject as the zoom subject's height        | undefined |
+| contentWidth              | number  | Specify you want to treat the width of the **centered** content inside the zoom subject as the zoom subject's width          | undefined |
+| longPressDuration         | number  | Duration in ms until a press is considered a long press                                                                      | 700       |
+| captureEvent              | boolean | Defines whether the pan responder of the parent element should be captured. (useful for react-native modals, set it to true) | false     |
 
 #### Callbacks
 
 These events can be used to work with data after specific events.
 
-| name | description | params | expected return |
-| ---- | ----------- | ------ | --------------- |
-| onTransform | Will be called when the transformation configuration (zoom level and offset) changes | zoomableViewEventObject | void |
-| onDoubleTapBefore | Will be called, at the start of a double tap | event, gestureState, zoomableViewEventObject | void |
-| onDoubleTapAfter | Will be called at the end of a double tap | event, gestureState, zoomableViewEventObject | void |
-| onShiftingBefore | Will be called, when user taps and moves the view, but before our view movement work kicks in (so this is the place to interrupt movement, if you need to)  | event, gestureState, zoomableViewEventObject |  {boolean} if this returns true, ZoomableView will not process the shift, otherwise it will |
-| onShiftingAfter | Will be called, when user taps and moves the view, but after the values have changed already | event, gestureState, zoomableViewEventObject | void |
-| onShiftingEnd | Will be called, when user stops a tap and move gesture | event, gestureState, zoomableViewEventObject | void |
-| onZoomBefore | Will be called, while the user pinches the screen, but before our zoom work kicks in (so this is the place to interrupt zooming, if you need to) | event, gestureState, zoomableViewEventObject | {boolean} if this returns true, ZoomableView will not process the pinch, otherwise it will |
-| onZoomAfter | Will be called, while the user pinches the screen, but after the values have changed already | event, gestureState, zoomableViewEventObject | {boolean} if this returns true, ZoomableView will not process the pinch, otherwise it will |
-| onZoomEnd | Will be called after pinchzooming has ended | event, gestureState, zoomableViewEventObject | {boolean} if this returns true, ZoomableView will not process the pinch, otherwise it will |
-| onLongPress | Will be called after the user pressed on the image for a while | event, gestureState | void | 
-
+| name              | description                                                                                                                                                | params                                       | expected return                                                                            |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| onTransform       | Will be called when the transformation configuration (zoom level and offset) changes                                                                       | zoomableViewEventObject                      | void                                                                                       |
+| onDoubleTapBefore | Will be called, at the start of a double tap                                                                                                               | event, gestureState, zoomableViewEventObject | void                                                                                       |
+| onDoubleTapAfter  | Will be called at the end of a double tap                                                                                                                  | event, gestureState, zoomableViewEventObject | void                                                                                       |
+| onShiftingBefore  | Will be called, when user taps and moves the view, but before our view movement work kicks in (so this is the place to interrupt movement, if you need to) | event, gestureState, zoomableViewEventObject | {boolean} if this returns true, ZoomableView will not process the shift, otherwise it will |
+| onShiftingAfter   | Will be called, when user taps and moves the view, but after the values have changed already                                                               | event, gestureState, zoomableViewEventObject | void                                                                                       |
+| onShiftingEnd     | Will be called, when user stops a tap and move gesture                                                                                                     | event, gestureState, zoomableViewEventObject | void                                                                                       |
+| onZoomBefore      | Will be called, while the user pinches the screen, but before our zoom work kicks in (so this is the place to interrupt zooming, if you need to)           | event, gestureState, zoomableViewEventObject | {boolean} if this returns true, ZoomableView will not process the pinch, otherwise it will |
+| onZoomAfter       | Will be called, while the user pinches the screen, but after the values have changed already                                                               | event, gestureState, zoomableViewEventObject | {boolean} if this returns true, ZoomableView will not process the pinch, otherwise it will |
+| onZoomEnd         | Will be called after pinchzooming has ended                                                                                                                | event, gestureState, zoomableViewEventObject | {boolean} if this returns true, ZoomableView will not process the pinch, otherwise it will |
+| onLongPress       | Will be called after the user pressed on the image for a while                                                                                             | event, gestureState                          | void                                                                                       |
 
 #### Methods
 
 The following methods allow you to control the ZoomableView zoom level & position from your component.
 (think of control buttons, ...)
 
-| name | description | params | expected return |
-| ---- | ----------- | ------ | --------------- |
-| zoomTo | Changes the zoom level to a specific number | newZoomLevel: number, bindToBorders = true | Promise<bool> |
-| zoomBy | Changes the zoom level relative to the current level (use positive numbers to zoom in, negative numbers to zoom out) | zoomLevelChange: number, bindToBorders = true | Promise<bool> |
-| moveTo | Shifts the zoomed part to a specific point (in px relative to x: 0, y: 0) | newOffsetX: number, newOffsetY: number, bindToBorders = true | Promise<void> |
-| moveBy | Shifts the zoomed part by a specific pixel number | newOffsetX: number, newOffsetY: number, bindToBorders = true | Promise<void> |
-
+| name   | description                                                                                                          | params                                                       | expected return |
+| ------ | -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ | --------------- |
+| zoomTo | Changes the zoom level to a specific number                                                                          | newZoomLevel: number, bindToBorders = true                   | Promise<bool>   |
+| zoomBy | Changes the zoom level relative to the current level (use positive numbers to zoom in, negative numbers to zoom out) | zoomLevelChange: number, bindToBorders = true                | Promise<bool>   |
+| moveTo | Shifts the zoomed part to a specific point (in px relative to x: 0, y: 0)                                            | newOffsetX: number, newOffsetY: number, bindToBorders = true | Promise<void>   |
+| moveBy | Shifts the zoomed part by a specific pixel number                                                                    | newOffsetX: number, newOffsetY: number, bindToBorders = true | Promise<void>   |
 
 **Example:**
 
@@ -209,24 +221,24 @@ export default function App() {
 
 ```
 
-
 #### Pan Responder Hooks
 
 Sometimes you need to change deeper level behavior, so we prepared these panresponder hooks for you.
 
-| name | description | params | expected return |
-| ---- | ----------- | ------ | --------------- |
-| onStartShouldSetPanResponder | description | event, gestureState, zoomableViewEventObject, baseComponentResult | {boolean} whether panresponder should be set or not |
-| onMoveShouldSetPanResponder | description | event, gestureState, zoomableViewEventObject, baseComponentResult | {boolean} whether panresponder should be set or not |
-| onPanResponderGrant | description | event, gestureState, zoomableViewEventObject | void |
-| onPanResponderEnd | Will be called when gesture ends (more accurately, on pan responder "release") | event, gestureState, zoomableViewEventObject | void |
-| onPanResponderTerminate | Will be called when the gesture is force-interrupted by another handler | event, gestureState, zoomableViewEventObject | void |
-| onPanResponderTerminationRequest | Callback asking whether the gesture should be interrupted by another handler (**iOS only** due to https://github.com/facebook/react-native/issues/27778, https://github.com/facebook/react-native/issues/5696, ...) | event, gestureState, zoomableViewEventObject | void |
-| onPanResponderMove | Will be called when user moves while touching | event, gestureState, zoomableViewEventObject | void |
+| name                             | description                                                                                                                                                                                                         | params                                                            | expected return                                     |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- | --------------------------------------------------- |
+| onStartShouldSetPanResponder     | description                                                                                                                                                                                                         | event, gestureState, zoomableViewEventObject, baseComponentResult | {boolean} whether panresponder should be set or not |
+| onMoveShouldSetPanResponder      | description                                                                                                                                                                                                         | event, gestureState, zoomableViewEventObject, baseComponentResult | {boolean} whether panresponder should be set or not |
+| onPanResponderGrant              | description                                                                                                                                                                                                         | event, gestureState, zoomableViewEventObject                      | void                                                |
+| onPanResponderEnd                | Will be called when gesture ends (more accurately, on pan responder "release")                                                                                                                                      | event, gestureState, zoomableViewEventObject                      | void                                                |
+| onPanResponderTerminate          | Will be called when the gesture is force-interrupted by another handler                                                                                                                                             | event, gestureState, zoomableViewEventObject                      | void                                                |
+| onPanResponderTerminationRequest | Callback asking whether the gesture should be interrupted by another handler (**iOS only** due to https://github.com/facebook/react-native/issues/27778, https://github.com/facebook/react-native/issues/5696, ...) | event, gestureState, zoomableViewEventObject                      | void                                                |
+| onPanResponderMove               | Will be called when user moves while touching                                                                                                                                                                       | event, gestureState, zoomableViewEventObject                      | void                                                |
 
 ### zoomableViewEventObject
 
 The zoomableViewEventObject object is attached to every event and represents the current state of our zoomable view.
+
 ```
    {
       zoomLevel: number,         // current level of zooming denoting the scale applied to the zoom subject (usually a value between minZoom and maxZoom)
@@ -248,4 +260,8 @@ Otherwise, the modal will stop the pinch2zoom event, and it will not work.
 
 ## Contributing
 
-TBD
+See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
+
+## License
+
+MIT

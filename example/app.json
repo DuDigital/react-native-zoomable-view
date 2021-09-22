@@ -1,0 +1,22 @@
+{
+  "name": "@openspacelabs/react-native-zoomable-view-example",
+  "displayName": "ReactNativeZoomableView Example",
+  "expo": {
+    "name": "@openspacelabs/react-native-zoomable-view-example",
+    "slug": "openspacelabs-react-native-zoomable-view-example",
+    "description": "Example app for @openspacelabs/react-native-zoomable-view",
+    "privacy": "public",
+    "version": "1.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
