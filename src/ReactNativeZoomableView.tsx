@@ -54,9 +54,9 @@ class ReactNativeZoomableView extends Component<
     initialOffsetY: 0,
     maxZoom: 1.5,
     minZoom: 0.5,
-    pinchToZoomInSensitivity: 3,
+    pinchToZoomInSensitivity: 1,
     pinchToZoomOutSensitivity: 1,
-    movementSensibility: 1.9,
+    movementSensibility: 1,
     doubleTapDelay: 300,
     bindToBorders: true,
     zoomStep: 0.5,
@@ -958,7 +958,7 @@ class ReactNativeZoomableView extends Component<
             ref={this.zoomSubjectRef}
             onLayout={this._getBoxDimensions}
             style={[
-              styles.wrapper,
+              styles.zoomSubject,
               this.props.style,
               {
                 transform: [
@@ -994,7 +994,7 @@ class ReactNativeZoomableView extends Component<
 }
 
 const styles = StyleSheet.create({
-  wrapper: {
+  zoomSubject: {
     flex: 1,
     width: '100%',
     justifyContent: 'center',

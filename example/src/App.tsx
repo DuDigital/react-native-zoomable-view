@@ -12,14 +12,14 @@ export default function App() {
           maxZoom={30}
           // Give these to the zoomable view so it can apply the boundaries around the actual content.
           // Need to make sure the content is actually centered and the width and height are
-          // dimensions when it's rendered naturally. Not the intrinsic size.
+          // measured when it's rendered naturally. Not the intrinsic sizes.
           // For example, an image with an intrinsic size of 400x200 will be rendered as 300x150 in this case.
           // Therefore, we'll feed the zoomable view the 300x100 size.
           contentWidth={300}
           contentHeight={150}
         >
           <Image
-            style={{ width: '100%', height: '100%', resizeMode: 'contain' }}
+            style={styles.img}
             source={{ uri: 'https://via.placeholder.com/400x200.png' }}
           />
         </ReactNativeZoomableView>
@@ -40,4 +40,5 @@ const styles = StyleSheet.create({
     height: 60,
     marginVertical: 20,
   },
+  img: { width: '100%', height: '100%', resizeMode: 'contain' },
 });
