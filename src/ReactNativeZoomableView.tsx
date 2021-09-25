@@ -43,7 +43,7 @@ class ReactNativeZoomableView extends Component<
   ReactNativeZoomableViewProps,
   ReactNativeZoomableViewState
 > {
-  zoomSubjectRef: RefObject<View>;
+  zoomSubjectWrapperRef: RefObject<View>;
   gestureHandlers: any;
   doubleTapFirstTapReleaseTimestamp: number;
 
@@ -127,7 +127,7 @@ class ReactNativeZoomableView extends Component<
       onShouldBlockNativeResponder: () => false,
     });
 
-    this.zoomSubjectRef = createRef<View>();
+    this.zoomSubjectWrapperRef = createRef<View>();
 
     this.zoomLevel = props.initialZoom;
     this.offsetX = props.initialOffsetX;
@@ -143,7 +143,6 @@ class ReactNativeZoomableView extends Component<
       this.zoomLevel = value;
     });
 
-    // eslint-disable-next-line react/state-in-constructor
     this.state = {
       ...initialState,
     };
@@ -229,7 +228,7 @@ class ReactNativeZoomableView extends Component<
 
   componentDidMount() {
     InteractionManager.runAfterInteractions(() => {
-      this._getBoxDimensions();
+      this.grabZoomSubjectOriginalMeasurements();
     });
   }
 
@@ -273,15 +272,22 @@ class ReactNativeZoomableView extends Component<
    *
    * @private
    */
-  _getBoxDimensions = () => {
-    this.zoomSubjectRef.current.measureInWindow((x, y, width, height) => {
-      this.setState({
-        originalWidth: width,
-        originalHeight: height,
-        originalPageX: x,
-        originalPageY: y,
-      });
-    });
+  private grabZoomSubjectOriginalMeasurements = () => {
+    // In normal conditions, we're supposed to measure zoomSubject instead of its wrapper.
+    // However, our zoomSubject may have an initial zoomLevel or offset,
+    // in which case these measurements will not represent the true "original" measurements.
+    // We just need to make sure the zoomSubjectWrapper perfectly aligns with the zoomSubject
+    // (no border, space, or anything between them)
+    this.zoomSubjectWrapperRef.current.measureInWindow(
+      (x, y, width, height) => {
+        this.setState({
+          originalWidth: width,
+          originalHeight: height,
+          originalPageX: x,
+          originalPageY: y,
+        });
+      }
+    );
   };
 
   /**
@@ -424,7 +430,6 @@ class ReactNativeZoomableView extends Component<
   _handlePanResponderMove = (
     e: GestureResponderEvent,
     gestureState: PanResponderGestureState
-    // eslint-disable-next-line consistent-return
   ) => {
     if (this.props.onPanResponderMove) {
       if (
@@ -969,11 +974,14 @@ class ReactNativeZoomableView extends Component<
 
   render() {
     return (
-      <View style={styles.container} {...this.gestureHandlers.panHandlers}>
+      <View
+        style={styles.container}
+        {...this.gestureHandlers.panHandlers}
+        ref={this.zoomSubjectWrapperRef}
+        onLayout={this.grabZoomSubjectOriginalMeasurements}
+      >
         <TouchableWithoutFeedback onPress={this._resolveAndHandleTap}>
           <Animated.View
-            ref={this.zoomSubjectRef}
-            onLayout={this._getBoxDimensions}
             style={[
               styles.zoomSubject,
               this.props.style,
@@ -1002,7 +1010,6 @@ class ReactNativeZoomableView extends Component<
         })}
         {/* For Debugging Only */}
         {(this.state.debugPoints || []).map(({ x, y }, index) => {
-          // eslint-disable-next-line react/no-array-index-key
           return <DebugTouchPoint key={index} x={x} y={y} />;
         })}
       </View>

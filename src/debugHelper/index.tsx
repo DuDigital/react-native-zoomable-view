@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import React from 'react';
 
 export const DebugTouchPoint = ({
@@ -10,16 +10,17 @@ export const DebugTouchPoint = ({
   const radius = diameter / 2;
   return (
     <View
-      style={{
-        width: diameter,
-        height: diameter,
-        borderRadius: diameter,
-        backgroundColor: color,
-        position: 'absolute',
-        left: x - radius,
-        top: y - radius,
-        opacity: 0.7,
-      }}
+      style={[
+        styles.debugPoint,
+        {
+          width: diameter,
+          height: diameter,
+          borderRadius: diameter,
+          backgroundColor: color,
+          left: x - radius,
+          top: y - radius,
+        },
+      ]}
       pointerEvents="none"
     />
   );
@@ -38,16 +39,28 @@ export const DebugRect = ({
   const width = 5;
   return (
     <View
-      style={{
-        width,
-        height,
-        backgroundColor: color,
-        position: 'absolute',
-        left: x - width / 2,
-        top: y,
-        opacity: 0.5,
-      }}
+      style={[
+        styles.debugRect,
+        {
+          width,
+          height,
+          backgroundColor: color,
+          left: x - width / 2,
+          top: y,
+        },
+      ]}
       pointerEvents="none"
     />
   );
 };
+
+const styles = StyleSheet.create({
+  debugPoint: {
+    position: 'absolute',
+    opacity: 0.7,
+  },
+  debugRect: {
+    position: 'absolute',
+    opacity: 0.5,
+  },
+});

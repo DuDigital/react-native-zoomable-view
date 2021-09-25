@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Animated, Easing } from 'react-native';
+import { Animated, Easing, StyleSheet } from 'react-native';
 
 export const AnimatedTouchFeedback = ({
   x,
@@ -37,32 +37,40 @@ export const AnimatedTouchFeedback = ({
         useNativeDriver: true,
       }),
     ]).start(self.current.onAnimationDone);
-  }, []);
+  }, [animationDelay, animationDuration]);
 
   return (
     <Animated.View
       pointerEvents="none"
-      style={{
-        width: 40,
-        height: 40,
-        borderRadius: 40,
-        backgroundColor: 'lightgray',
-        position: 'absolute',
-        opacity: appearDisappearAnimRef.current.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0, 0.3],
-        }),
-        left: x - 20,
-        top: y - 20,
-        transform: [
-          {
-            scale: appearDisappearAnimRef.current.interpolate({
-              inputRange: [0, 1],
-              outputRange: [0.5, 1],
-            }),
-          },
-        ],
-      }}
+      style={[
+        styles.animatedTouchFeedback,
+        {
+          opacity: appearDisappearAnimRef.current.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, 0.3],
+          }),
+          left: x - 20,
+          top: y - 20,
+          transform: [
+            {
+              scale: appearDisappearAnimRef.current.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0.5, 1],
+              }),
+            },
+          ],
+        },
+      ]}
     />
   );
 };
+
+const styles = StyleSheet.create({
+  animatedTouchFeedback: {
+    width: 40,
+    height: 40,
+    borderRadius: 40,
+    backgroundColor: 'lightgray',
+    position: 'absolute',
+  },
+});
