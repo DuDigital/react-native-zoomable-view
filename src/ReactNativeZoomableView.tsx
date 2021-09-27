@@ -274,7 +274,7 @@ class ReactNativeZoomableView extends Component<
    */
   private grabZoomSubjectOriginalMeasurements = () => {
     // In normal conditions, we're supposed to measure zoomSubject instead of its wrapper.
-    // However, our zoomSubject may have an initial zoomLevel or offset,
+    // However, our zoomSubject may have been transformed by an initial zoomLevel or offset,
     // in which case these measurements will not represent the true "original" measurements.
     // We just need to make sure the zoomSubjectWrapper perfectly aligns with the zoomSubject
     // (no border, space, or anything between them)
