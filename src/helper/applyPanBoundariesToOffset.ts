@@ -14,7 +14,7 @@ export function applyPanBoundariesToOffset(
   offsetScaled: number,
   containerSize: number,
   contentSize: number,
-  scale: number,
+  scale: number
 ) {
   const contentSizeUnscaled = contentSize * scale;
   const offsetUnscaled = offsetScaled * scale;
