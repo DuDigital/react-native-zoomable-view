@@ -7,9 +7,10 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text>ReactNativeZoomableView</Text>
-      <View style={{ borderWidth: 5, flexShrink: 1, height: 500, width: 310 }}>
+      <View style={styles.box}>
         <ReactNativeZoomableView
           maxZoom={30}
+          initialZoom={1.5}
           // Give these to the zoomable view so it can apply the boundaries around the actual content.
           // Need to make sure the content is actually centered and the width and height are
           // measured when it's rendered naturally. Not the intrinsic sizes.
@@ -35,10 +36,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
   },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
-  },
+  box: { borderWidth: 5, flexShrink: 1, height: 500, width: 310 },
   img: { width: '100%', height: '100%', resizeMode: 'contain' },
 });
