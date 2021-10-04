@@ -144,7 +144,6 @@ These options can be used to limit and change the zoom behavior.
 | contentHeight             | number  | Specify you want to treat the height of the **centered** content inside the zoom subject as the zoom subject's height        | undefined |
 | contentWidth              | number  | Specify you want to treat the width of the **centered** content inside the zoom subject as the zoom subject's width          | undefined |
 | longPressDuration         | number  | Duration in ms until a press is considered a long press                                                                      | 700       |
-| captureEvent              | boolean | Defines whether the pan responder of the parent element should be captured. (useful for react-native modals, set it to true) | false     |
 
 #### Callbacks
 
@@ -226,7 +225,6 @@ Sometimes you need to change deeper level behavior, so we prepared these panresp
 | name                             | description                                                                                                                                                                                                         | params                                                            | expected return                                     |
 | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- | --------------------------------------------------- |
 | onStartShouldSetPanResponder     | description                                                                                                                                                                                                         | event, gestureState, zoomableViewEventObject, baseComponentResult | {boolean} whether panresponder should be set or not |
-| onMoveShouldSetPanResponder      | description                                                                                                                                                                                                         | event, gestureState, zoomableViewEventObject, baseComponentResult | {boolean} whether panresponder should be set or not |
 | onPanResponderGrant              | description                                                                                                                                                                                                         | event, gestureState, zoomableViewEventObject                      | void                                                |
 | onPanResponderEnd                | Will be called when gesture ends (more accurately, on pan responder "release")                                                                                                                                      | event, gestureState, zoomableViewEventObject                      | void                                                |
 | onPanResponderTerminate          | Will be called when the gesture is force-interrupted by another handler                                                                                                                                             | event, gestureState, zoomableViewEventObject                      | void                                                |
@@ -250,11 +248,6 @@ The zoomableViewEventObject object is attached to every event and represents the
 ```
 
 ## Special configurations
-
-### React Native Modal
-
-To make this work with react-native modals, you have to set the `captureEvent` prop to `true`.
-Otherwise, the modal will stop the pinch2zoom event, and it will not work.
 
 ## Contributing
 
