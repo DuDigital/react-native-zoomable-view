@@ -61,7 +61,7 @@ class ReactNativeZoomableView extends Component<
     zoomStep: 0.5,
     onLongPress: null,
     longPressDuration: 700,
-    captureEvent: false,
+    captureEvent: true,
   };
 
   private panAnim = new Animated.ValueXY({ x: 0, y: 0 });
