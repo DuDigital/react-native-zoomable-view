@@ -5,7 +5,6 @@ import {
   InteractionManager,
   PanResponder,
   PanResponderGestureState,
-  Platform,
   StyleSheet,
   TouchableWithoutFeedback,
   View,
@@ -29,7 +28,7 @@ import {
 import { applyPanBoundariesToOffset } from './helper/applyPanBoundariesToOffset';
 import {
   getBoundaryCrossedAnim,
-  getPanMomentumDecayAnim,
+  // getPanMomentumDecayAnim,
   getZoomToAnimation,
 } from './animations';
 
@@ -386,12 +385,12 @@ class ReactNativeZoomableView extends Component<
   _handlePanResponderEnd = (e, gestureState) => {
     this.lastGestureCenterPosition = null;
 
-    if (Platform.OS === 'ios') {
-      getPanMomentumDecayAnim(this.panAnim, {
-        x: gestureState.vx / this.zoomLevel,
-        y: gestureState.vy / this.zoomLevel,
-      }).start();
-    }
+    // if (Platform.OS === 'ios') {
+    //   getPanMomentumDecayAnim(this.panAnim, {
+    //     x: gestureState.vx / this.zoomLevel,
+    //     y: gestureState.vy / this.zoomLevel,
+    //   }).start();
+    // }
 
     if (this.longPressTimeout) {
       clearTimeout(this.longPressTimeout);
@@ -420,6 +419,9 @@ class ReactNativeZoomableView extends Component<
 
     this.gestureType = null;
     this.gestureStarted = false;
+
+    this.offsetX = this.offsetX;
+    this.offsetY = this.offsetY;
   };
 
   /**
