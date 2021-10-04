@@ -5,8 +5,8 @@ import {
   InteractionManager,
   PanResponder,
   PanResponderGestureState,
+  Platform,
   StyleSheet,
-  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 
@@ -28,7 +28,7 @@ import {
 import { applyPanBoundariesToOffset } from './helper/applyPanBoundariesToOffset';
 import {
   getBoundaryCrossedAnim,
-  // getPanMomentumDecayAnim,
+  getPanMomentumDecayAnim,
   getZoomToAnimation,
 } from './animations';
 
@@ -383,14 +383,18 @@ class ReactNativeZoomableView extends Component<
    * @private
    */
   _handlePanResponderEnd = (e, gestureState) => {
+    if (!this.gestureType) {
+      this._resolveAndHandleTap(e);
+    }
+
     this.lastGestureCenterPosition = null;
 
-    // if (Platform.OS === 'ios') {
-    //   getPanMomentumDecayAnim(this.panAnim, {
-    //     x: gestureState.vx / this.zoomLevel,
-    //     y: gestureState.vy / this.zoomLevel,
-    //   }).start();
-    // }
+    if (Platform.OS === 'ios') {
+      getPanMomentumDecayAnim(this.panAnim, {
+        x: gestureState.vx / this.zoomLevel,
+        y: gestureState.vy / this.zoomLevel,
+      }).start();
+    }
 
     if (this.longPressTimeout) {
       clearTimeout(this.longPressTimeout);
@@ -419,9 +423,6 @@ class ReactNativeZoomableView extends Component<
 
     this.gestureType = null;
     this.gestureStarted = false;
-
-    this.offsetX = this.offsetX;
-    this.offsetY = this.offsetY;
   };
 
   /**
@@ -495,8 +496,14 @@ class ReactNativeZoomableView extends Component<
           gestureState
         );
       }
-      this.gestureType = 'shift';
-      this._handleShifting(gestureState);
+
+      let baseComponentResult =
+        Math.abs(gestureState.dx) > 2 || Math.abs(gestureState.dy) > 2;
+
+      if (baseComponentResult) {
+        this.gestureType = 'shift';
+        this._handleShifting(gestureState);
+      }
     }
   };
 
@@ -985,22 +992,20 @@ class ReactNativeZoomableView extends Component<
         ref={this.zoomSubjectWrapperRef}
         onLayout={this.grabZoomSubjectOriginalMeasurements}
       >
-        <TouchableWithoutFeedback onPress={this._resolveAndHandleTap}>
-          <Animated.View
-            style={[
-              styles.zoomSubject,
-              this.props.style,
-              {
-                transform: [
-                  { scale: this.zoomAnim },
-                  ...this.panAnim.getTranslateTransform(),
-                ],
-              },
-            ]}
-          >
-            {this.props.children}
-          </Animated.View>
-        </TouchableWithoutFeedback>
+        <Animated.View
+          style={[
+            styles.zoomSubject,
+            this.props.style,
+            {
+              transform: [
+                { scale: this.zoomAnim },
+                ...this.panAnim.getTranslateTransform(),
+              ],
+            },
+          ]}
+        >
+          {this.props.children}
+        </Animated.View>
         {this.state.touches?.map((touch) => {
           const animationDuration = this.props.doubleTapDelay;
           return (
