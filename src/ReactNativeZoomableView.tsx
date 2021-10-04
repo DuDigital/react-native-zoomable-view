@@ -494,10 +494,9 @@ class ReactNativeZoomableView extends Component<
         );
       }
 
-      let baseComponentResult =
-        Math.abs(gestureState.dx) > 2 || Math.abs(gestureState.dy) > 2;
-
-      if (baseComponentResult) {
+      const { dx, dy } = gestureState;
+      const isShiftGesture = dx > 2 || dy > 2;
+      if (isShiftGesture) {
         this.gestureType = 'shift';
         this._handleShifting(gestureState);
       }
