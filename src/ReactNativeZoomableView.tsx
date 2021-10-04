@@ -211,7 +211,10 @@ class ReactNativeZoomableView extends Component<
     return this.__offsets[axis].value;
   }
 
-  componentDidUpdate(prevProps: ReactNativeZoomableViewProps) {
+  componentDidUpdate(
+    prevProps: ReactNativeZoomableViewProps,
+    prevState: ReactNativeZoomableViewState
+  ) {
     const { zoomEnabled, initialZoom } = this.props;
     if (prevProps.zoomEnabled && !zoomEnabled) {
       this.zoomLevel = initialZoom;
@@ -224,6 +227,17 @@ class ReactNativeZoomableView extends Component<
       this.panAnim.addListener(() => this._invokeOnTransform());
       this.zoomAnim.addListener(() => this._invokeOnTransform());
       this.onTransformInvocationInitialized = true;
+    }
+
+    const currState = this.state;
+    const originalMeasurementsChanged =
+      currState.originalHeight !== prevState.originalHeight ||
+      currState.originalWidth !== prevState.originalWidth ||
+      currState.originalPageX !== prevState.originalPageX ||
+      currState.originalPageY !== prevState.originalPageY;
+
+    if (this.onTransformInvocationInitialized && originalMeasurementsChanged) {
+      this._invokeOnTransform();
     }
   }
 
