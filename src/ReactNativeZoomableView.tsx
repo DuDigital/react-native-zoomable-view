@@ -5,6 +5,7 @@ import {
   InteractionManager,
   PanResponder,
   PanResponderGestureState,
+  Platform,
   StyleSheet,
   View,
 } from 'react-native';
@@ -402,10 +403,12 @@ class ReactNativeZoomableView extends Component<
 
     this.lastGestureCenterPosition = null;
 
-    getPanMomentumDecayAnim(this.panAnim, {
-      x: gestureState.vx / this.zoomLevel,
-      y: gestureState.vy / this.zoomLevel,
-    }).start();
+    if (Platform.OS === 'ios') {
+      getPanMomentumDecayAnim(this.panAnim, {
+        x: gestureState.vx / this.zoomLevel,
+        y: gestureState.vy / this.zoomLevel,
+      }).start();
+    }
 
     if (this.longPressTimeout) {
       clearTimeout(this.longPressTimeout);
