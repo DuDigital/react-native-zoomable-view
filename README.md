@@ -141,8 +141,8 @@ These options can be used to limit and change the zoom behavior.
 | movementSensibility       | number  | how resistant should shifting the view around be? (0.5 - 5) - higher is less sensitive                                       | 1.9       |
 | initialOffsetX            | number  | The horizontal offset the image should start at                                                                              | 0         |
 | initialOffsetY            | number  | The vertical offset the image should start at                                                                                | 0         |
-| contentHeight             | number  | Specify you want to treat the height of the **centered** content inside the zoom subject as the zoom subject's height        | undefined |
-| contentWidth              | number  | Specify you want to treat the width of the **centered** content inside the zoom subject as the zoom subject's width          | undefined |
+| contentHeight             | number  | Specify if you want to treat the height of the **centered** content inside the zoom subject as the zoom subject's height        | undefined |
+| contentWidth              | number  | Specify if you want to treat the width of the **centered** content inside the zoom subject as the zoom subject's width          | undefined |
 | longPressDuration         | number  | Duration in ms until a press is considered a long press                                                                      | 700       |
 | captureEvent              | boolean | Defines whether the pan responder of the parent element should be captured. (useful for react-native modals, set it to true) | false     |
 
