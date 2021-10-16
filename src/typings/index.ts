@@ -1,4 +1,5 @@
 import {
+  Animated,
   GestureResponderEvent,
   PanResponderGestureState,
   ViewProps,
@@ -41,6 +42,8 @@ export interface ReactNativeZoomableViewProps extends ViewProps {
   longPressDuration?: number;
   captureEvent?: boolean;
   style?: any;
+
+  zoomRef?: (zoom: Animated.Value) => void;
 
   // debug
   debug?: boolean;
