@@ -43,7 +43,9 @@ export interface ReactNativeZoomableViewProps extends ViewProps {
   captureEvent?: boolean;
   style?: any;
 
-  zoomRef?: (zoom: Animated.Value) => void;
+  // Zoom animated value ref
+  zoomAnimatedValue?: Animated.Value;
+  panAnimatedValueXY?: Animated.ValueXY;
 
   // debug
   debug?: boolean;
