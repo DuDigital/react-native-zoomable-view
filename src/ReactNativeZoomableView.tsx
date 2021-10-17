@@ -62,7 +62,6 @@ class ReactNativeZoomableView extends Component<
     zoomStep: 0.5,
     onLongPress: null,
     longPressDuration: 700,
-    captureEvent: true,
   };
 
   private panAnim = new Animated.ValueXY({ x: 0, y: 0 });
@@ -100,7 +99,6 @@ class ReactNativeZoomableView extends Component<
 
     this.gestureHandlers = PanResponder.create({
       onStartShouldSetPanResponder: this._handleStartShouldSetPanResponder,
-      onMoveShouldSetPanResponder: this._handleMoveShouldSetPanResponder,
       onPanResponderGrant: this._handlePanResponderGrant,
       onPanResponderMove: this._handlePanResponderMove,
       onPanResponderRelease: this._handlePanResponderEnd,
@@ -326,36 +324,11 @@ class ReactNativeZoomableView extends Component<
       );
     }
 
-    return this.props.captureEvent;
-  };
-
-  /**
-   * Checks if the movement responder should be triggered
-   *
-   * @param e
-   * @param gestureState
-   * @returns {Boolean|boolean}
-   */
-  _handleMoveShouldSetPanResponder = (
-    e: GestureResponderEvent,
-    gestureState: PanResponderGestureState
-  ) => {
-    let baseComponentResult =
-      this.props.zoomEnabled &&
-      (Math.abs(gestureState.dx) > 2 ||
-        Math.abs(gestureState.dy) > 2 ||
-        gestureState.numberActiveTouches === 2);
-
-    if (this.props.onMoveShouldSetPanResponder) {
-      baseComponentResult = this.props.onMoveShouldSetPanResponder(
-        e,
-        gestureState,
-        this._getZoomableViewEventObject(),
-        baseComponentResult
-      );
-    }
-
-    return baseComponentResult;
+    // Always set pan responder on start
+    // of gesture so we can handle tap.
+    // "Pan threshold validation" will be handled
+    // in `onPanResponderMove` instead of in `onMoveShouldSetPanResponder`
+    return true;
   };
 
   /**
