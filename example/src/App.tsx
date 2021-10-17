@@ -20,14 +20,14 @@ export default function App() {
           // measured when it's rendered naturally. Not the intrinsic sizes.
           // For example, an image with an intrinsic size of 400x200 will be rendered as 300x150 in this case.
           // Therefore, we'll feed the zoomable view the 300x100 size.
-          contentWidth={400}
-          contentHeight={800}
+          contentWidth={300}
+          contentHeight={150}
           zoomAnimatedValue={zoomAnimatedValue}
         >
           <View style={styles.contents}>
             <Image
               style={styles.img}
-              source={{ uri: 'https://placekitten.com/400/800' }}
+              source={{ uri: 'https://placekitten.com/400/200' }}
             />
 
             {showMarkers &&
