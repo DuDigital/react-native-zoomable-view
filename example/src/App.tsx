@@ -4,9 +4,9 @@ import { StyleSheet, View, Text, Image, Animated, Button } from 'react-native';
 import { ReactNativeZoomableView } from '@openspacelabs/react-native-zoomable-view';
 
 export default function App() {
-  const zoomAnimatedValue = new Animated.Value(1);
+  const zoomAnimatedValue = React.useRef(new Animated.Value(1)).current;
   const scale = Animated.divide(1, zoomAnimatedValue);
-  const [showMarkers, setShowMarkers] = React.useState(false);
+  const [showMarkers, setShowMarkers] = React.useState(true);
 
   return (
     <View style={styles.container}>
