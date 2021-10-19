@@ -15,6 +15,7 @@ We've rewritten most of the logic in the original library to address the followi
 - [x] Added animated touch feedback when the zoom subject is tapped on
 - [x] Added "react-native-builder-bob" as a framework for library management/maintenance
 - [x] Better internal code organization and documentation
+- [x] Allowed passing in a custom pan and zoom animation values via optional props
 
 
 ## Preview

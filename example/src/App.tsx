@@ -1,9 +1,13 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text, Image } from 'react-native';
+import { StyleSheet, View, Text, Image, Animated, Button } from 'react-native';
 import { ReactNativeZoomableView } from '@openspacelabs/react-native-zoomable-view';
 
 export default function App() {
+  const zoomAnimatedValue = React.useRef(new Animated.Value(1)).current;
+  const scale = Animated.divide(1, zoomAnimatedValue);
+  const [showMarkers, setShowMarkers] = React.useState(true);
+
   return (
     <View style={styles.container}>
       <Text>ReactNativeZoomableView</Text>
@@ -18,13 +22,36 @@ export default function App() {
           // Therefore, we'll feed the zoomable view the 300x100 size.
           contentWidth={300}
           contentHeight={150}
+          zoomAnimatedValue={zoomAnimatedValue}
         >
-          <Image
-            style={styles.img}
-            source={{ uri: 'https://via.placeholder.com/400x200.png' }}
-          />
+          <View style={styles.contents}>
+            <Image
+              style={styles.img}
+              source={{ uri: 'https://placekitten.com/400/200' }}
+            />
+
+            {showMarkers &&
+              [20, 40, 60, 80].map((left) =>
+                [20, 40, 60, 80].map((top) => (
+                  <Animated.View
+                    key={`${left}x${top}`}
+                    // These markers will move and zoom with the image, but will retain their size
+                    // becuase of the scale transformation.
+                    style={[
+                      styles.marker,
+                      { left: `${left}%`, top: `${top}%` },
+                      { transform: [{ scale }] },
+                    ]}
+                  />
+                ))
+              )}
+          </View>
         </ReactNativeZoomableView>
       </View>
+      <Button
+        title={`${showMarkers ? 'Hide' : 'Show'} markers`}
+        onPress={() => setShowMarkers((value) => !value)}
+      />
     </View>
   );
 }
@@ -36,6 +63,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
   },
+  contents: { width: 200, height: 400 },
   box: { borderWidth: 5, flexShrink: 1, height: 500, width: 310 },
   img: { width: '100%', height: '100%', resizeMode: 'contain' },
+  marker: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    width: 20,
+    height: 20,
+    marginLeft: -10,
+    marginTop: -10,
+    borderRadius: 10,
+    backgroundColor: 'white',
+    borderWidth: 2,
+  },
 });
