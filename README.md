@@ -33,11 +33,9 @@ We've rewritten most of the logic in the original library to address the followi
 
 ### Installation
 
-`$ npm install @openspacelabs/react-native-zoomable-view --save`
-
-or
-
-`$ yarn add @openspacelabs/react-native-zoomable-view`
+In your package.json:
+```"@openspacelabs/react-native-zoomable-view": "git+ssh://git@github.com:openspacelabs/react-native-zoomable-view.git#d2edca464073b7b86991a8b93572b75c585c16ab",```
+Run `yarn add` or `npm install`
 
 ### Basic Usage
 
