@@ -93,6 +93,7 @@ class ReactNativeZoomableView extends Component<
   private singleTapTimeoutId: NodeJS.Timeout;
   private touches: TouchPoint[] = [];
   private doubleTapFirstTap: TouchPoint;
+  private measureZoomSubjectInterval: NodeJS.Timer;
 
   constructor(props) {
     super(props);
@@ -240,9 +241,22 @@ class ReactNativeZoomableView extends Component<
   }
 
   componentDidMount() {
-    InteractionManager.runAfterInteractions(() => {
-      this.grabZoomSubjectOriginalMeasurements();
-    });
+    this.grabZoomSubjectOriginalMeasurements();
+    // We've already run `grabZoomSubjectOriginalMeasurements` at various events
+    // to make sure the measurements are promptly updated.
+    // However, there might be cases we haven't accounted for, especially when
+    // native processes are involved. To account for those cases,
+    // we'll use an interval here to ensure we're always up-to-date.
+    // The `setState` in `grabZoomSubjectOriginalMeasurements` won't trigger a rerender
+    // if the values given haven't changed, so we're not running performance risk here.
+    this.measureZoomSubjectInterval = setInterval(
+      this.grabZoomSubjectOriginalMeasurements,
+      1e3
+    );
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.measureZoomSubjectInterval);
   }
 
   /**
@@ -286,21 +300,29 @@ class ReactNativeZoomableView extends Component<
    * @private
    */
   private grabZoomSubjectOriginalMeasurements = () => {
-    // In normal conditions, we're supposed to measure zoomSubject instead of its wrapper.
-    // However, our zoomSubject may have been transformed by an initial zoomLevel or offset,
-    // in which case these measurements will not represent the true "original" measurements.
-    // We just need to make sure the zoomSubjectWrapper perfectly aligns with the zoomSubject
-    // (no border, space, or anything between them)
-    this.zoomSubjectWrapperRef.current.measureInWindow(
-      (x, y, width, height) => {
-        this.setState({
-          originalWidth: width,
-          originalHeight: height,
-          originalPageX: x,
-          originalPageY: y,
-        });
-      }
-    );
+    // make sure we measure after animations are complete
+    InteractionManager.runAfterInteractions(() => {
+      // this setTimeout is here to fix a weird issue on iOS where the measurements are all `0`
+      // when navigating back (react-navigation stack) from another view
+      // while closing the keyboard at the same time
+      setTimeout(() => {
+        // In normal conditions, we're supposed to measure zoomSubject instead of its wrapper.
+        // However, our zoomSubject may have been transformed by an initial zoomLevel or offset,
+        // in which case these measurements will not represent the true "original" measurements.
+        // We just need to make sure the zoomSubjectWrapper perfectly aligns with the zoomSubject
+        // (no border, space, or anything between them)
+        this.zoomSubjectWrapperRef.current.measureInWindow(
+          (x, y, width, height) => {
+            this.setState({
+              originalWidth: width,
+              originalHeight: height,
+              originalPageX: x,
+              originalPageY: y,
+            });
+          }
+        );
+      });
+    });
   };
 
   /**
