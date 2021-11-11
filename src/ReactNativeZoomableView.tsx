@@ -294,7 +294,7 @@ class ReactNativeZoomableView extends Component<
     // in which case these measurements will not represent the true "original" measurements.
     // We just need to make sure the zoomSubjectWrapper perfectly aligns with the zoomSubject
     // (no border, space, or anything between them)
-    this.zoomSubjectWrapperRef.current.measureInWindow(
+    this.zoomSubjectWrapperRef.current?.measureInWindow(
       (x, y, width, height) => {
         this.setState({
           originalWidth: width,
