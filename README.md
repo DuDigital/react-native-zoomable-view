@@ -33,7 +33,10 @@ We've rewritten most of the logic in the original library to address the followi
 ### Installation
 
 In your package.json:
-`"@openspacelabs/react-native-zoomable-view": "git+ssh://git@github.com:openspacelabs/react-native-zoomable-view.git#d2edca464073b7b86991a8b93572b75c585c16ab",`
+
+```json
+"@openspacelabs/react-native-zoomable-view": "git+ssh://git@github.com:openspacelabs/react-native-zoomable-view.git#[some commit hash]",
+```
 
 Run `yarn install` or `npm install`
 
@@ -125,24 +128,25 @@ const styles = StyleSheet.create({
 
 These options can be used to limit and change the zoom behavior.
 
-| name                      | type    | description                                                                                                              | default   |
-| ------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------ | --------- |
-| zoomEnabled               | boolean | Can be used to enable or disable the zooming dynamically                                                                 | true      |
-| initialZoom               | number  | Initial zoom level on startup                                                                                            | 1.0       |
-| maxZoom                   | number  | Maximum possible zoom level (zoom in). Can be set to `null` to allow unlimited zooming                                   | 1.5       |
-| minZoom                   | number  | Minimum possible zoom level (zoom out)                                                                                   | 0.5       |
-| doubleTapDelay            | number  | How much delay will still be recognized as double press (ms)                                                             | 300       |
-| doubleTapZoomToCenter     | boolean | If true, double tapping will always zoom to center of View instead of the direction it was double tapped in              |
-| bindToBorders             | boolean | If true, it makes sure the object stays within box borders                                                               | true      |
-| zoomStep                  | number  | How much zoom should be applied on double tap                                                                            | 0.5       |
-| pinchToZoomInSensitivity  | number  | the level of resistance (sensitivity) to zoom in (0 - 10) - higher is less sensitive                                     | 3         |
-| pinchToZoomOutSensitivity | number  | the level of resistance (sensitivity) to zoom out (0 - 10) - higher is less sensitive                                    | 1         |
-| movementSensibility       | number  | how resistant should shifting the view around be? (0.5 - 5) - higher is less sensitive                                   | 1.9       |
-| initialOffsetX            | number  | The horizontal offset the image should start at                                                                          | 0         |
-| initialOffsetY            | number  | The vertical offset the image should start at                                                                            | 0         |
-| contentHeight             | number  | Specify if you want to treat the height of the **centered** content inside the zoom subject as the zoom subject's height | undefined |
-| contentWidth              | number  | Specify if you want to treat the width of the **centered** content inside the zoom subject as the zoom subject's width   | undefined |
-| longPressDuration         | number  | Duration in ms until a press is considered a long press                                                                  | 700       |
+| name                      | type    | description                                                                                                                                                                                                                                                                                                                          | default   |
+| ------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------- |
+| zoomEnabled               | boolean | Can be used to enable or disable the zooming dynamically                                                                                                                                                                                                                                                                             | true      |
+| initialZoom               | number  | Initial zoom level on startup                                                                                                                                                                                                                                                                                                        | 1.0       |
+| maxZoom                   | number  | Maximum possible zoom level (zoom in). Can be set to `null` to allow unlimited zooming                                                                                                                                                                                                                                               | 1.5       |
+| minZoom                   | number  | Minimum possible zoom level (zoom out)                                                                                                                                                                                                                                                                                               | 0.5       |
+| doubleTapDelay            | number  | How much delay will still be recognized as double press (ms)                                                                                                                                                                                                                                                                         | 300       |
+| doubleTapZoomToCenter     | boolean | If true, double tapping will always zoom to center of View instead of the direction it was double tapped in                                                                                                                                                                                                                          |
+| bindToBorders             | boolean | If true, it makes sure the object stays within box borders                                                                                                                                                                                                                                                                           | true      |
+| zoomStep                  | number  | How much zoom should be applied on double tap                                                                                                                                                                                                                                                                                        | 0.5       |
+| pinchToZoomInSensitivity  | number  | the level of resistance (sensitivity) to zoom in (0 - 10) - higher is less sensitive                                                                                                                                                                                                                                                 | 3         |
+| pinchToZoomOutSensitivity | number  | the level of resistance (sensitivity) to zoom out (0 - 10) - higher is less sensitive                                                                                                                                                                                                                                                | 1         |
+| movementSensibility       | number  | how resistant should shifting the view around be? (0.5 - 5) - higher is less sensitive                                                                                                                                                                                                                                               | 1.9       |
+| initialOffsetX            | number  | The horizontal offset the image should start at                                                                                                                                                                                                                                                                                      | 0         |
+| initialOffsetY            | number  | The vertical offset the image should start at                                                                                                                                                                                                                                                                                        | 0         |
+| contentHeight             | number  | Specify if you want to treat the height of the **centered** content inside the zoom subject as the zoom subject's height                                                                                                                                                                                                             | undefined |
+| contentWidth              | number  | Specify if you want to treat the width of the **centered** content inside the zoom subject as the zoom subject's width                                                                                                                                                                                                               | undefined |
+| panBoundaryPadding        | number  | At certain scales, the edge of the content is bounded too close to the edge of the container, making it difficult to pan to and interact with the edge of the content. To fix this, we'd wanna allow the content to pan just a little further away from the container's edge. Hence, the "pan boundary padding", measured in pixels. | 0         |
+| longPressDuration         | number  | Duration in ms until a press is considered a long press                                                                                                                                                                                                                                                                              | 700       |
 
 #### Callbacks
 

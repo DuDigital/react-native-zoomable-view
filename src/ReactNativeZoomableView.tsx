@@ -61,6 +61,9 @@ class ReactNativeZoomableView extends Component<
     zoomStep: 0.5,
     onLongPress: null,
     longPressDuration: 700,
+    contentWidth: undefined,
+    contentHeight: undefined,
+    panBoundaryPadding: 0,
   };
 
   private panAnim = new Animated.ValueXY({ x: 0, y: 0 });
@@ -185,7 +188,8 @@ class ReactNativeZoomableView extends Component<
               offset,
               containerSize,
               contentSize,
-              this.zoomLevel
+              this.zoomLevel,
+              this.props.panBoundaryPadding
             )
           : offset;
 
