@@ -61,6 +61,9 @@ class ReactNativeZoomableView extends Component<
     zoomStep: 0.5,
     onLongPress: null,
     longPressDuration: 700,
+    contentWidth: undefined,
+    contentHeight: undefined,
+    panBoundaryPadding: 0,
   };
 
   private panAnim = new Animated.ValueXY({ x: 0, y: 0 });
@@ -185,7 +188,8 @@ class ReactNativeZoomableView extends Component<
               offset,
               containerSize,
               contentSize,
-              this.zoomLevel
+              this.zoomLevel,
+              this.props.panBoundaryPadding
             )
           : offset;
 
@@ -314,7 +318,9 @@ class ReactNativeZoomableView extends Component<
         // in which case these measurements will not represent the true "original" measurements.
         // We just need to make sure the zoomSubjectWrapper perfectly aligns with the zoomSubject
         // (no border, space, or anything between them)
-        this.zoomSubjectWrapperRef.current?.measureInWindow(
+        const zoomSubjectWrapperRef = this.zoomSubjectWrapperRef;
+        // we don't wanna measure when zoomSubjectWrapperRef is not yet available or has been unmounted
+        zoomSubjectWrapperRef.current?.measureInWindow(
           (x, y, width, height) => {
             this.setState({
               originalWidth: width,
