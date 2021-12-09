@@ -32,13 +32,15 @@ We've rewritten most of the logic in the original library to address the followi
 
 ### Installation
 
-In your package.json:
+We are working with the original maintainers of this library to transfer the NPM alias for `react-native-zoomable-view`. In the meantime, you will want to use `@openspacelabs/react-native-zoomable-view` as the package identifier.
 
-```json
-"@openspacelabs/react-native-zoomable-view": "git+ssh://git@github.com:openspacelabs/react-native-zoomable-view.git#[some commit hash]",
-```
+To add this package, run 
 
-Run `yarn install` or `npm install`
+`npm add @openspacelabs/react-native-zoomable-view`
+
+or 
+
+`yarn add @openspacelabs/react-native-zoomable-view`
 
 ### Basic Usage
 
