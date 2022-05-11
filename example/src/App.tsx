@@ -23,7 +23,7 @@ export default function App() {
           // Therefore, we'll feed the zoomable view the 300x100 size.
           contentWidth={300}
           contentHeight={150}
-          // panBoundaryPadding={50}
+          panBoundaryPadding={50}
           zoomAnimatedValue={zoomAnimatedValue}
         >
           <View style={styles.contents}>
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
   },
-  contents: { flex: 1, alignSelf: 'stretch', backgroundColor: 'red' },
+  contents: { flex: 1, alignSelf: 'stretch', backgroundColor: 'wheat' },
   box: { borderWidth: 5, flexShrink: 1, height: 500, width: 310 },
   img: { width: '100%', height: '100%', resizeMode: 'contain' },
   marker: {
