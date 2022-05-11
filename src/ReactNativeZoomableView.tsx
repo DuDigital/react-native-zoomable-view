@@ -535,6 +535,8 @@ class ReactNativeZoomableView extends Component<
     e: GestureResponderEvent,
     gestureState: PanResponderGestureState
   ) {
+    if (!this.props.zoomEnabled) return;
+
     const {
       maxZoom,
       minZoom,
@@ -877,6 +879,8 @@ class ReactNativeZoomableView extends Component<
     newZoomLevel: number,
     callbk: () => void = null
   ) {
+    if (!this.props.zoomEnabled) return;
+
     this.props.onZoomBefore?.(null, null, this._getZoomableViewEventObject());
 
     // == Perform Zoom Animation ==
