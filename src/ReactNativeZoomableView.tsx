@@ -722,14 +722,9 @@ class ReactNativeZoomableView extends Component<
    *
    * @param {number} newOffsetX
    * @param {number} newOffsetY
-   * @param {() => void)} callback
    * @returns
    */
-  _setNewOffsetPosition(
-    newOffsetX: number,
-    newOffsetY: number,
-    callback: () => void = null
-  ) {
+  async _setNewOffsetPosition(newOffsetX: number, newOffsetY: number) {
     const { onShiftingBefore, onShiftingAfter } = this.props;
 
     if (onShiftingBefore?.(null, null, this._getZoomableViewEventObject())) {
@@ -742,7 +737,6 @@ class ReactNativeZoomableView extends Component<
     this.panAnim.setValue({ x: this.offsetX, y: this.offsetY });
     this.zoomAnim.setValue(this.zoomLevel);
 
-    callback?.();
     onShiftingAfter?.(null, null, this._getZoomableViewEventObject());
   }
 
@@ -830,16 +824,13 @@ class ReactNativeZoomableView extends Component<
     this._zoomToLocation(
       zoomPositionCoordinates.x,
       zoomPositionCoordinates.y,
-      nextZoomStep,
-      () => {
-        onDoubleTapAfter?.(
-          e,
-          this._getZoomableViewEventObject({
-            zoomLevel: nextZoomStep,
-          })
-        );
-      }
-    );
+      nextZoomStep
+    ).then(() => {
+      onDoubleTapAfter?.(
+        e,
+        this._getZoomableViewEventObject({ zoomLevel: nextZoomStep })
+      );
+    });
   }
 
   /**
@@ -870,16 +861,10 @@ class ReactNativeZoomableView extends Component<
    * @param x
    * @param y
    * @param newZoomLevel
-   * @param callbk
    *
    * @private
    */
-  _zoomToLocation(
-    x: number,
-    y: number,
-    newZoomLevel: number,
-    callbk: () => void = null
-  ) {
+  async _zoomToLocation(x: number, y: number, newZoomLevel: number) {
     if (!this.props.zoomEnabled) return;
 
     this.props.onZoomBefore?.(null, null, this._getZoomableViewEventObject());
@@ -915,7 +900,6 @@ class ReactNativeZoomableView extends Component<
     });
     // == Zoom Animation Ends ==
 
-    callbk?.();
     this.props.onZoomAfter?.(null, null, this._getZoomableViewEventObject());
   }
 
@@ -927,21 +911,16 @@ class ReactNativeZoomableView extends Component<
    *
    * @return {Promise<bool>}
    */
-  zoomTo(newZoomLevel: number): Promise<boolean> {
-    return new Promise((resolve) => {
+  async zoomTo(newZoomLevel: number): Promise<boolean> {
+    if (
       // if we would go out of our min/max limits -> abort
-      if (
-        newZoomLevel >= this.props.maxZoom ||
-        newZoomLevel <= this.props.minZoom
-      ) {
-        resolve(false);
-        return;
-      }
+      newZoomLevel > this.props.maxZoom ||
+      newZoomLevel < this.props.minZoom
+    )
+      return false;
 
-      this._zoomToLocation(0, 0, newZoomLevel, () => {
-        resolve(true);
-      });
-    });
+    await this._zoomToLocation(0, 0, newZoomLevel);
+    return true;
   }
 
   /**
@@ -979,9 +958,7 @@ class ReactNativeZoomableView extends Component<
     const offsetX = (newOffsetX - originalWidth / 2) / this.zoomLevel;
     const offsetY = (newOffsetY - originalHeight / 2) / this.zoomLevel;
 
-    return new Promise((resolve) => {
-      this._setNewOffsetPosition(-offsetX, -offsetY, resolve);
-    });
+    return this._setNewOffsetPosition(-offsetX, -offsetY);
   }
 
   /**
@@ -1000,9 +977,7 @@ class ReactNativeZoomableView extends Component<
     const offsetY =
       (this.offsetY * this.zoomLevel - offsetChangeY) / this.zoomLevel;
 
-    return new Promise((resolve) => {
-      this._setNewOffsetPosition(offsetX, offsetY, resolve);
-    });
+    return this._setNewOffsetPosition(offsetX, offsetY);
   }
 
   render() {
