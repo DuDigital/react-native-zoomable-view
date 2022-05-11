@@ -64,6 +64,7 @@ class ReactNativeZoomableView extends Component<
     contentWidth: undefined,
     contentHeight: undefined,
     panBoundaryPadding: 0,
+    visualTouchFeedbackEnabled: true,
   };
 
   private panAnim = new Animated.ValueXY({ x: 0, y: 0 });
@@ -1026,18 +1027,19 @@ class ReactNativeZoomableView extends Component<
         >
           {this.props.children}
         </Animated.View>
-        {this.state.touches?.map((touch) => {
-          const animationDuration = this.props.doubleTapDelay;
-          return (
-            <AnimatedTouchFeedback
-              x={touch.x}
-              y={touch.y}
-              key={touch.id}
-              animationDuration={animationDuration}
-              onAnimationDone={() => this._removeTouch(touch)}
-            />
-          );
-        })}
+        {this.props.visualTouchFeedbackEnabled &&
+          this.state.touches?.map((touch) => {
+            const animationDuration = this.props.doubleTapDelay;
+            return (
+              <AnimatedTouchFeedback
+                x={touch.x}
+                y={touch.y}
+                key={touch.id}
+                animationDuration={animationDuration}
+                onAnimationDone={() => this._removeTouch(touch)}
+              />
+            );
+          })}
         {/* For Debugging Only */}
         {(this.state.debugPoints || []).map(({ x, y }, index) => {
           return <DebugTouchPoint key={index} x={x} y={y} />;
