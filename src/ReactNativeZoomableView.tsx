@@ -407,6 +407,8 @@ class ReactNativeZoomableView extends Component<
       this._resolveAndHandleTap(e);
     }
 
+    this.setState({ debugPoints: [] });
+
     this.lastGestureCenterPosition = null;
 
     getPanMomentumDecayAnim(this.panAnim, {
@@ -713,6 +715,12 @@ class ReactNativeZoomableView extends Component<
 
     const offsetX = this.offsetX + shift.x;
     const offsetY = this.offsetY + shift.y;
+
+    if (this.props.debug) {
+      const x = gestureState.moveX - this.state.originalPageX;
+      const y = gestureState.moveY - this.state.originalPageY;
+      this.setState({ debugPoints: [{ x, y }] });
+    }
 
     this._setNewOffsetPosition(offsetX, offsetY);
   }
