@@ -1,6 +1,6 @@
 import * as React from 'react';
-
 import { StyleSheet, View, Text, Image, Animated, Button } from 'react-native';
+// @ts-ignore
 import { ReactNativeZoomableView } from '@openspacelabs/react-native-zoomable-view';
 
 export default function App() {
@@ -64,9 +64,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
   },
-  contents: { flex: 1, alignSelf: 'stretch' },
-  box: { borderWidth: 5, flexShrink: 1, height: 500, width: 310 },
-  img: { width: '100%', height: '100%', resizeMode: 'contain' },
+  contents: {
+    flex: 1,
+    alignSelf: 'stretch',
+  },
+  box: {
+    borderWidth: 5,
+    flexShrink: 1,
+    height: 500,
+    width: 310,
+  },
+  img: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
+  },
   marker: {
     position: 'absolute',
     top: '50%',
