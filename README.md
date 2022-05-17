@@ -273,7 +273,10 @@ The zoomableViewEventObject object is attached to every event and represents the
 
 See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
 
-### OpenSpace Labs
+## OpenSpace Labs
+          
+![OpenSpace_Logo](https://user-images.githubusercontent.com/2142140/168903797-3c13ba4e-f72b-411f-b6e4-3ee8e1abfce3.png)
+
 
 This library is maintained by [OpenSpace Labs](https://openspace.ai).
 Openspace is the Google StreetView AND Git for construction sites.
