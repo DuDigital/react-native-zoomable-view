@@ -3,7 +3,7 @@
 A view component for react-native with pinch to zoom, tap to move and double tap to zoom capability.
 You can zoom everything, from normal images, text and more complex nested views.
 
-This library is a fork of https://www.npmjs.com/package/@dudigital/react-native-zoomable-view.
+This library is a fork of [@dudigital/react-native-zoomable-view](https://www.npmjs.com/package/@dudigital/react-native-zoomable-view).
 We've rewritten most of the logic in the original library to address the following items:
 
 - [x] Fixed jittering during zooming and panning
@@ -17,9 +17,18 @@ We've rewritten most of the logic in the original library to address the followi
 - [x] Better internal code organization and documentation
 - [x] Allowed passing in a custom pan and zoom animation values via optional props
 
-## M1 Macs
+## What sets this library apart from the other zoom-pan library?
 
-Note that if try to run this library on an M1 Mac Simulator, the animations will be quite jittery/jumpy.
+This library offers a much better user experience than the others:
+
+- The ability to zoom and pan at the same time.
+- No jittering during zooming.
+- Zoom center correctly placed at the pinch center - currently this is the ONLY react-native library that offers this.
+- And many other goodies. Check out the documentation below for more details.
+
+## M1 Mac iOS Simulator
+
+Note that if try to run this library on an M1 Mac iOS Simulator, the animations will be quite jittery/jumpy.
 Test it on a real physical device or non-M1 Mac to see the actual performance.
 
 ## Preview
@@ -263,6 +272,18 @@ The zoomableViewEventObject object is attached to every event and represents the
 ## Contributing
 
 See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
+
+### OpenSpace Labs
+
+This library is maintained by [OpenSpace Labs](https://openspace.ai).
+Openspace is the Google StreetView AND Git for construction sites.
+Based in San Francisco, OpenSpace has raised series D by the time this is written.
+We're doing a lot of cool things with AI, Machine Vision, 3D/2D Imagery, React/React Native, and more.
+
+Join us and help revolutionize the construction industry. We're [hiring on all front](https://www.openspace.ai/careers/)!
+
+Check out our [Glassdoor](https://www.glassdoor.com/Overview/Working-at-OpenSpace-CA-EI_IE3061140.11,23.htm)
+and [blog posts](https://openspace.ai/blog/).
 
 ## License
 
