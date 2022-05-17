@@ -286,7 +286,7 @@ Openspace is the Google StreetView AND Git for construction sites.
 Based in San Francisco, OpenSpace has raised series D by the time this is written.
 We're doing a lot of cool things with AI, Machine Vision, 3D/2D Imagery, React/React Native, and more.
 
-Join us and help revolutionize the construction industry. We're [hiring on all front](https://www.openspace.ai/careers/)!
+Join us and help revolutionize the construction industry. We're [hiring on all fronts](https://www.openspace.ai/careers/)!
 
 Check out our [Glassdoor](https://www.glassdoor.com/Overview/Working-at-OpenSpace-CA-EI_IE3061140.11,23.htm)
 and [blog posts](https://openspace.ai/blog/).
