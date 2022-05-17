@@ -17,7 +17,7 @@ We've rewritten most of the logic in the original library to address the followi
 - [x] Better internal code organization and documentation
 - [x] Allowed passing in a custom pan and zoom animation values via optional props
 
-## What sets this library apart from the other zoom-pan library?
+## What sets this library apart from the other zoom-pan libraries?
 
 This library offers a much better user experience than the others:
 
@@ -31,10 +31,12 @@ This library offers a much better user experience than the others:
 Note that if try to run this library on an M1 Mac iOS Simulator, the animations will be quite jittery/jumpy.
 Test it on a real physical device or non-M1 Mac to see the actual performance.
 
-## Preview
+## Demo
+
+Want to run the library on your physical device right here right now?
+Check out this [Expo Snack](https://snack.expo.dev/@thomasttvo/eaf257)
 
 ![](https://thumbs.gfycat.com/NaughtyBlackandwhiteBudgie-size_restricted.gif)
-
 
 ## Getting started
 
@@ -275,7 +277,7 @@ The zoomableViewEventObject object is attached to every event and represents the
 See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
 
 ## OpenSpace Labs
-          
+
 ![OpenSpace_Logo](https://user-images.githubusercontent.com/2142140/168903797-3c13ba4e-f72b-411f-b6e4-3ee8e1abfce3.png)
 
 
