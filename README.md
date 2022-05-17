@@ -17,6 +17,11 @@ We've rewritten most of the logic in the original library to address the followi
 - [x] Better internal code organization and documentation
 - [x] Allowed passing in a custom pan and zoom animation values via optional props
 
+## M1 Macs
+
+Note that if try to run this library on an M1 Mac Simulator, the animations will be quite jittery/jumpy.
+Test it on a real physical device or non-M1 Mac to see the actual performance.
+
 ## Preview
 
 ![](https://thumbs.gfycat.com/PalatableMeanGnat-size_restricted.gif)
