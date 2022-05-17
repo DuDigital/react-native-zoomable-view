@@ -1,22 +1,32 @@
 {
-  "name": "@openspacelabs/react-native-zoomable-view-example",
-  "displayName": "ReactNativeZoomableView Example",
   "expo": {
     "name": "@openspacelabs/react-native-zoomable-view-example",
     "slug": "openspacelabs-react-native-zoomable-view-example",
-    "description": "Example app for @openspacelabs/react-native-zoomable-view",
-    "privacy": "public",
-    "version": "1.0.0",
-    "platforms": [
-      "ios",
-      "android",
-      "web"
+    "version": "2.0.1",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
     ],
     "ios": {
       "supportsTablet": true
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ]
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
   }
 }

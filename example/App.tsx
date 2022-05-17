@@ -1,5 +1,4 @@
 import * as React from 'react';
-
 import { StyleSheet, View, Text, Image, Animated, Button } from 'react-native';
 // @ts-ignore
 import { ReactNativeZoomableView } from '@openspacelabs/react-native-zoomable-view';
