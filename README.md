@@ -33,7 +33,8 @@ Test it on a real physical device or non-M1 Mac to see the actual performance.
 
 ## Preview
 
-![](https://thumbs.gfycat.com/PalatableMeanGnat-size_restricted.gif)
+![](https://thumbs.gfycat.com/NaughtyBlackandwhiteBudgie-size_restricted.gif)
+
 
 ## Getting started
 
