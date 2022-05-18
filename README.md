@@ -280,16 +280,14 @@ See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the 
 
 ![OpenSpace_Logo](https://user-images.githubusercontent.com/2142140/168903797-3c13ba4e-f72b-411f-b6e4-3ee8e1abfce3.png)
 
-
-This library is maintained by [OpenSpace Labs](https://openspace.ai).
-Openspace is the Google StreetView AND Git for construction sites.
-Based in San Francisco, OpenSpace has raised series D by the time this is written.
+This library was authored by [@SimonErich](https://github.com/SimonErich) and is now maintained by [OpenSpace Labs](https://openspace.ai).
+Based in San Francisco, Openspace is "like Google StreetView plus Git for construction sites".
 We're doing a lot of cool things with AI, Machine Vision, 3D/2D Imagery, React/React Native, and more.
 
 Join us and help revolutionize the construction industry. We're [hiring on all fronts](https://www.openspace.ai/careers/)!
 
 Check out our [Glassdoor](https://www.glassdoor.com/Overview/Working-at-OpenSpace-CA-EI_IE3061140.11,23.htm)
-and [blog posts](https://openspace.ai/blog/).
+and [blog posts](https://www.openspace.ai/blog/).
 
 ## License
 
