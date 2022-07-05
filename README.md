@@ -1,6 +1,7 @@
 # 🚩🚩🚩 Attention: Deprecated 🚩🚩🚩
 <p>Sadly we are not using react-native in any of our projects anymore and therefore don't use this either. We tried to apply some fixes from time to time, but it took up way more time than we have available for a fun project. We also wanted to do a complete rewrite using react-animated for performance reasons, but we never made it past a prototype. Since we did not find enough contributors to keep the project alive and did not want to leave the users hanging, we decided to deprecate our codebase and talk to some of the people, who have forked and worked on it.</p>
-<p>Fortunately the awesome guys from [openspacelabs](https://github.com/openspacelabs/) have used this package and extended it in their repo. We have talked to them and they have agreed that now have their fork is the defacto successor of react-native-zoomable-view.<br /><br />
+<p>Fortunately the awesome guys from [openspacelabs](https://github.com/openspacelabs/) have used this package and extended it in their repo. We have talked to them and they have agreed that now have their fork is the defacto successor of react-native-zoomable-view.<br />
+<br />There is also a reanimated version, with a (as far as I can see bit smaller feature set - but it might be perfect for you) available: https://github.com/kesha-antonov/react-native-zoom-reanimated<br /><br />
 Please only use their package going forward: https://github.com/openspacelabs/react-native-zoomable-view .<br />
 This package will not be developed anymore and as soon as their npm package is published, we will archive our npm package.</p>
 
