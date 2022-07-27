@@ -47,6 +47,7 @@ class ReactNativeZoomableView extends Component<ReactNativeZoomableViewProps, Re
     onLongPress: null,
     longPressDuration: 700,
     captureEvent: false,
+    stayAtMaxZoom: false,
   };
 
   constructor(props) {
@@ -634,11 +635,11 @@ class ReactNativeZoomableView extends Component<ReactNativeZoomableViewProps, Re
    * @returns {*}
    */
   _getNextZoomStep() {
-    const { zoomStep, maxZoom, initialZoom } = this.props;
+    const { zoomStep, maxZoom, initialZoom, stayAtMaxZoom } = this.props;
     const { zoomLevel } = this.state;
 
     if (zoomLevel === maxZoom) {
-      return initialZoom;
+      return stayAtMaxZoom ? maxZoom : initialZoom;
     }
 
     let nextZoomStep = zoomLevel + zoomLevel * zoomStep;
