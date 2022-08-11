@@ -730,7 +730,7 @@ class ReactNativeZoomableView extends Component<ReactNativeZoomableViewProps, Re
   zoomTo(newZoomLevel: number, bindToBorders = true): Promise<boolean> {
     return new Promise((resolve) => {
       // if we would go out of our min/max limits -> abort
-      if (newZoomLevel >= this.props.maxZoom || newZoomLevel <= this.props.minZoom) {
+      if (newZoomLevel > this.props.maxZoom || newZoomLevel < this.props.minZoom) {
         resolve(false);
         return;
       }
