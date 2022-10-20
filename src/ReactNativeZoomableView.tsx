@@ -412,8 +412,8 @@ class ReactNativeZoomableView extends Component<
 
     this.lastGestureCenterPosition = null;
 
-    // Trigger final shift animation unless disablePanOnInitialZoom is set and we're on zoom level 1
-    if(!(this.gestureType === 'shift' && this.props.disablePanOnInitialZoom && this.zoomLevel === 1)) {
+    // Trigger final shift animation unless disablePanOnInitialZoom is set and we're on the initial zoom level
+    if(!(this.gestureType === 'shift' && this.props.disablePanOnInitialZoom && this.zoomLevel === this.props.initialZoom)) {
       getPanMomentumDecayAnim(this.panAnim, {
         x: gestureState.vx / this.zoomLevel,
         y: gestureState.vy / this.zoomLevel,
@@ -711,8 +711,8 @@ class ReactNativeZoomableView extends Component<
    * @private
    */
   _handleShifting(gestureState: PanResponderGestureState) {
-    // Skips shifting if disablePanOnInitialZoom is set and we're on zoom level 1
-    if(this.props.disablePanOnInitialZoom && this.zoomLevel === 1) {
+    // Skips shifting if disablePanOnInitialZoom is set and we're on the initial zoom level
+    if(this.props.disablePanOnInitialZoom && this.zoomLevel === this.props.initialZoom) {
       return;
     }
     const shift = this._calcOffsetShiftSinceLastGestureState({
