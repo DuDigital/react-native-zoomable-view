@@ -1,0 +1,16 @@
+name: Checks
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install modules
+      run: yarn
+    - name: Run tsc
+      run: yarn run typescript
+    - name: Run ESLint
+      run: yarn run lint
+    - name: Run tests
+      run: yarn run test
+
