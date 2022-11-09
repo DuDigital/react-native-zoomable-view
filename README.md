@@ -81,7 +81,7 @@ Here is a full drop in example you can use in Expo, after installing the package
 ```JSX
 import React from 'react';
 import { View, Image } from 'react-native';
-import ReactNativeZoomableView from '@dudigital/react-native-zoomable-view/src/ReactNativeZoomableView';
+import { ReactNativeZoomableView } from '@dudigital/react-native-zoomable-view';
 
 export default class App extends React.Component {
   /**
