@@ -31,6 +31,7 @@ declare module '@dudigital/react-native-zoomable-view' {
     initialZoom?: number;
     initialOffsetX?: number;
     initialOffsetY?: number;
+    contentAspectRatio?: number;
     maxZoom?: number;
     minZoom?: number;
     doubleTapDelay?: number;

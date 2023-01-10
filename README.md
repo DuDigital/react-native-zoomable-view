@@ -158,6 +158,7 @@ These options can be used to limit and change the zoom behavior.
 | movementSensibility | number | how resistant should shifting the view around be? (0.5 - 5) - higher is less sensitive | 1.9 |
 | initialOffsetX | number | The horizontal offset the image should start at | 0 |
 | initialOffsetY | number | The vertical offset the image should start at | 0 |
+| contentAspectRatio | number | To provide if the children does not have the same aspect ratio as ReactNativeZoomableView | ReactNativeZoomableView onMount's aspect ratio |
 | longPressDuration | number | Duration in ms until a press is considered a long press | 700 |
 | captureEvent | boolean | Defines whether the pan responder of the parent element should be captured. (useful for react-native modals, set it to true) | false |
 

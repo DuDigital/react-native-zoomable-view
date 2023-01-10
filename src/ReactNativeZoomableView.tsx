@@ -267,12 +267,13 @@ class ReactNativeZoomableView extends Component<ReactNativeZoomableViewProps, Re
     containerSize: number,
     elementSize: number,
     zoomLevel: number,
+    startOffset: number,
   ) {
     const zoomLevelOffsetValue = zoomLevel * offsetValue;
 
     const containerToScaledElementRatioSub = 1 - containerSize / elementSize;
     const halfLengthPlusScaledHalf = 0.5 + 0.5 / zoomLevel;
-    const startBorder = containerSize * containerToScaledElementRatioSub * halfLengthPlusScaledHalf;
+    const startBorder = containerSize * containerToScaledElementRatioSub * halfLengthPlusScaledHalf + startOffset;
     const endBorder = (containerSize + startBorder - containerSize) * -1;
 
     // calculate distance to start and end borders
@@ -342,6 +343,8 @@ class ReactNativeZoomableView extends Component<ReactNativeZoomableViewProps, Re
    * @private
    */
   _bindOffsetValuesToBorders(changeObj, bindToBorders = null) {
+    const { contentAspectRatio } = this.props;
+
     // if bindToBorders is disabled -> nothing do here
     if (bindToBorders === false || (bindToBorders === null && !this.props.bindToBorders)) {
       return changeObj;
@@ -352,6 +355,28 @@ class ReactNativeZoomableView extends Component<ReactNativeZoomableViewProps, Re
     const currentElementWidth = originalWidth * changeObj.zoomLevel;
     const currentElementHeight = originalHeight * changeObj.zoomLevel;
 
+    let croppedWidthInPx = 0;
+    let croppedHeightInPx = 0;
+
+    // if the content and container doesn't have the same aspect ratio,
+    // we must allow a pan movement toward the part of the content that was truncated originally
+    if (contentAspectRatio) {
+      // gentle reminder for the following logic:
+      //    RATIO = W / H
+      //    H = W / RATIO
+      //    W = H * RATIO
+
+      const aspectRatioOnMount = originalHeight && originalWidth ? originalWidth / originalHeight : 1;
+
+      const wasWidthCroppedOnMount = aspectRatioOnMount < contentAspectRatio;
+
+      if (wasWidthCroppedOnMount) {
+        croppedWidthInPx = originalHeight * contentAspectRatio - originalWidth;
+      } else {
+        croppedHeightInPx = originalWidth / contentAspectRatio - originalHeight;
+      }
+    }
+
     // make sure that view doesn't go out of borders
     const offsetXBound = this._getBoundOffsetValue(
       'x',
@@ -359,6 +384,7 @@ class ReactNativeZoomableView extends Component<ReactNativeZoomableViewProps, Re
       originalWidth,
       currentElementWidth,
       changeObj.zoomLevel,
+      croppedWidthInPx / 2,
     );
     changeObj.offsetX = offsetXBound;
 
@@ -368,6 +394,7 @@ class ReactNativeZoomableView extends Component<ReactNativeZoomableViewProps, Re
       originalHeight,
       currentElementHeight,
       changeObj.zoomLevel,
+      croppedHeightInPx / 2,
     );
     changeObj.offsetY = offsetYBound;
 
